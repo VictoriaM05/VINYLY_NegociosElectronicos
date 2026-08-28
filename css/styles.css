@@ -1,0 +1,174 @@
+:root {
+  --morado: #7C5CD6;
+  --rosa: #E0609E;
+  --dorado: #F2C14E;
+  --oscuro: #14141A;  
+  --gris: #6B6B76;     
+  --blanco: #FFFFFF;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; 
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: var(--oscuro);
+}
+
+/* quita el subrayado y color azul por defecto de los links */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* BARRA DE NAVEGACIÓN */
+.navbar {
+  display: flex;              /* pone los elementos en fila */
+  align-items: center;        /* los centra verticalmente */
+  justify-content: space-between; /* logo a la izquierda, resto a la derecha */
+  padding: 15px 40px;
+  border-bottom: 1px solid #eee;
+}
+
+.logo img {
+  height: 64px; 
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;        /* espacio entre cada link */
+  list-style: none; /* quita los puntitos de la lista */
+}
+
+.nav-links a {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* el círculo con las iniciales de perfil */
+.avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%; 
+  background: var(--morado);
+  color: var(--blanco);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* SECCIÓN HERO */
+.hero {
+  display: flex;               
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 60px 40px;
+  background: var(--oscuro);
+  color: var(--blanco);
+  border-radius: 16px;
+  margin: 30px 40px;
+}
+
+.hero-eyebrow {
+  color: var(--dorado);
+  font-size: 13px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.hero-texto h1 {
+  font-size: 40px;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.hero-descripcion {
+  color: #cccccc;
+  max-width: 400px;
+  margin-bottom: 25px;
+}
+
+.hero-botones {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.btn-primario {
+  background: var(--blanco);
+  color: var(--oscuro);
+  border: none;
+  padding: 14px 26px;
+  border-radius: 30px; 
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-secundario {
+  color: var(--blanco);
+  border-bottom: 1px solid var(--blanco);
+  padding-bottom: 3px;
+  font-weight: bold;
+}
+
+.disco {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--morado) 20%, #1c1c22 21%);
+  margin: 0 auto;
+  animation: girar 8s linear infinite; /* aplica la animación de abajo */
+}
+
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* FOOTER */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;       
+  gap: 30px;
+  padding: 40px;
+  background: var(--oscuro);
+  color: var(--blanco);
+}
+
+.footer-columna h4 {
+  margin-bottom: 12px;
+  color: var(--gris);
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.footer-columna a,
+.footer-columna p {
+  display: block;
+  margin-bottom: 8px;
+  color: #dddddd;
+  font-size: 14px;
+}
+
+@media (max-width: 700px) {
+  .nav-links {
+    display: none; /* oculta los links en celular */
+  }
+  .hero {
+    flex-direction: column; /* apila texto e imagen en vez de ponerlos lado a lado */
+    text-align: center;
+  }
+}
