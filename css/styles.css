@@ -137,6 +137,57 @@ a {
   to   { transform: rotate(360deg); }
 }
 
+/* Nosotros */
+.nosotros {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  padding: 60px 40px;
+  margin: 0 40px 30px;
+}
+ 
+/* reutiliza el disco del hero pero un poco más chico */
+.disco-chico {
+  width: 160px;
+  height: 160px;
+}
+ 
+.nosotros-eyebrow {
+  color: var(--morado);
+  font-size: 13px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+ 
+.nosotros-texto h2 {
+  font-size: 34px;
+  margin-bottom: 15px;
+}
+ 
+.nosotros-descripcion {
+  color: var(--gris);
+  max-width: 480px;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+ 
+.nosotros-datos {
+  display: flex;
+  gap: 40px;
+}
+ 
+.dato h3 {
+  font-size: 26px;
+  color: var(--morado);
+}
+ 
+.dato p {
+  font-size: 13px;
+  color: var(--gris);
+}
+
 /* FOOTER */
 .footer {
   display: flex;
