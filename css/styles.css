@@ -7,6 +7,10 @@
   --blanco: #FFFFFF;
 }
 
+html {
+  scroll-behavior: smooth; /* hace que saltar a un #ancla se vea como scroll animado */
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -14,7 +18,7 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
   color: var(--oscuro);
 }
 
@@ -29,91 +33,206 @@ a {
   display: flex;              /* pone los elementos en fila */
   align-items: center;        /* los centra verticalmente */
   justify-content: space-between; /* logo a la izquierda, resto a la derecha */
-  padding: 15px 40px;
-  border-bottom: 1px solid #eee;
+  padding: 18px 60px;
+  background: var(--blanco);
+  border-bottom: 1px solid rgba(20, 20, 26, 0.06);
+  box-shadow: 0 2px 14px rgba(20, 20, 26, 0.05); /* sombra suave en vez de línea dura */
+  position: sticky;   /* se queda pegado arriba al hacer scroll */
+  top: 0;
+  z-index: 100;
 }
 
 .logo img {
-  height: 64px; 
+  height: 64px;
+  transition: transform 0.2s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
 }
 
 .nav-links {
   display: flex;
-  gap: 30px;        /* espacio entre cada link */
+  gap: 44px;        /* espacio entre cada link */
   list-style: none; /* quita los puntitos de la lista */
 }
 
 .nav-links a {
-  font-weight: bold;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  font-size: 14px;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 4px;
+  transition: color 0.2s ease;
+}
+
+/* la rayita degradada que aparece debajo del link al pasar el mouse */
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--morado), var(--rosa));
+  transition: width 0.25s ease;
+}
+
+.nav-links a:hover {
+  color: var(--morado);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
 }
 
 .nav-icons {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
+}
+
+/* Carrito e Iniciar sesión */
+.nav-icons a:not(.avatar) {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(20, 20, 26, 0.15);
+  transition: all 0.2s ease;
+}
+
+.nav-icons a:not(.avatar):hover {
+  border-color: var(--morado);
+  color: var(--morado);
 }
 
 /* el círculo con las iniciales de perfil */
 .avatar {
-  width: 35px;
-  height: 35px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%; 
-  background: var(--morado);
+  background: linear-gradient(135deg, var(--morado), var(--rosa));
   color: var(--blanco);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(124, 92, 214, 0.4); /* sombra con el mismo color, se ve como brillo */
 }
 
 /* SECCIÓN HERO */
 .hero {
+  position: relative;
+  overflow: hidden;       /* para que los brillos de fondo no se salgan del cuadro */
   display: flex;               
   align-items: center;
   justify-content: space-between;
   gap: 40px;
-  padding: 60px 40px;
-  background: var(--oscuro);
+  padding: 60px 80px;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(224, 96, 158, 0.28), transparent 40%),
+    radial-gradient(circle at 88% 78%, rgba(124, 92, 214, 0.35), transparent 45%),
+    radial-gradient(circle at 50% 100%, rgba(242, 193, 78, 0.14), transparent 40%),
+    var(--oscuro);
   color: var(--blanco);
-  border-radius: 16px;
-  margin: 30px 40px;
+  min-height: 100vh;   /* ocupa toda la altura de la pantalla */
+  width: 100%;
+}
+
+/* textura de puntitos sobre el fondo oscuro */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 26px 26px;
+  z-index: 0;
+}
+
+/* el texto y la imagen van encima de la textura */
+.hero-texto, .hero-imagen {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-eyebrow {
+  font-family: 'Space Mono', monospace;
   color: var(--dorado);
   font-size: 13px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-bottom: 15px;
+
+  opacity: 0;
+  animation: aparecer 0.7s ease forwards;
+  animation-delay: 0.1s;
 }
 
 .hero-texto h1 {
-  font-size: 40px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 44px;
+  font-weight: 700;
   margin-bottom: 15px;
   line-height: 1.2;
+
+  opacity: 0;
+  animation: aparecer 0.7s ease forwards;
+  animation-delay: 0.25s;
+}
+
+/* la palabra destacada del título, con degradado de color */
+.acento {
+  background: linear-gradient(90deg, var(--rosa), var(--dorado));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* animación de entrada */
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .hero-descripcion {
   color: #cccccc;
   max-width: 400px;
   margin-bottom: 25px;
+
+  opacity: 0;
+  animation: aparecer 0.7s ease forwards;
+  animation-delay: 0.4s;
 }
 
 .hero-botones {
   display: flex;
   gap: 20px;
   align-items: center;
+
+  opacity: 0;
+  animation: aparecer 0.7s ease forwards;
+  animation-delay: 0.55s;
 }
 
 .btn-primario {
   background: var(--blanco);
   color: var(--oscuro);
   border: none;
-  padding: 14px 26px;
+  padding: 16px 30px;
   border-radius: 30px; 
   font-weight: bold;
   cursor: pointer;
+  display: inline-block;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primario:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(224, 96, 158, 0.4); /* brillo de color al pasar el mouse */
 }
 
 .btn-secundario {
@@ -123,13 +242,93 @@ a {
   font-weight: bold;
 }
 
-.disco {
-  width: 220px;
-  height: 220px;
+.hero-imagen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-imagen::before {
+  content: '';
+  position: absolute;
+  width: 380px;
+  height: 380px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--morado) 20%, #1c1c22 21%);
+  background: radial-gradient(circle, rgba(124, 92, 214, 0.4), transparent 70%);
+  filter: blur(6px);
+  animation: pulso 4s ease-in-out infinite; 
+}
+
+.disco {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  position: relative; 
+  z-index: 1;
+
+  background:
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.18), transparent 35%),
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      #1a1a1f 0px, #1a1a1f 3px,
+      #242429 3px, #242429 6px
+    );
+
+  box-shadow:
+    0 25px 55px rgba(0, 0, 0, 0.55),          /* sombra debajo, le da volumen */
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06); /* brillo finito en el borde */
+
   margin: 0 auto;
-  animation: girar 8s linear infinite; /* aplica la animación de abajo */
+  animation: girar 10s linear infinite;
+}
+
+/* el resplandor de fondo crece y se desvanece en bucle */
+@keyframes pulso {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50%      { transform: scale(1.15); opacity: 1; }
+}
+
+/* puntos de color flotando alrededor del disco */
+.brillo {
+  position: absolute;
+  border-radius: 50%;
+  animation: flotar 3.6s ease-in-out infinite;
+}
+
+.brillo-1 { top: 8%;  left: 2%;  width: 12px; height: 12px; background: var(--dorado); }
+.brillo-2 { bottom: 12%; right: 4%; width: 16px; height: 16px; background: var(--rosa); animation-delay: 0.8s; }
+.brillo-3 { top: 55%; left: -6%; width: 9px;  height: 9px;  background: var(--morado); animation-delay: 1.5s; }
+
+@keyframes flotar {
+  0%, 100% { transform: translateY(0); opacity: 0.8; }
+  50%      { transform: translateY(-16px); opacity: 1; }
+}
+
+/* la etiqueta de color en el centro del disco */
+.disco::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 36%;
+  height: 36%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--morado), var(--rosa));
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+/* el hoyito del centro, encima de la etiqueta */
+.disco::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6%;
+  height: 6%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--oscuro);
 }
 
 @keyframes girar {
@@ -137,7 +336,7 @@ a {
   to   { transform: rotate(360deg); }
 }
 
-/* Nosotros */
+/* SECCIÓN NOSOTROS */
 .nosotros {
   display: flex;
   align-items: center;
@@ -146,13 +345,13 @@ a {
   padding: 60px 40px;
   margin: 0 40px 30px;
 }
- 
+
 /* reutiliza el disco del hero pero un poco más chico */
 .disco-chico {
   width: 160px;
   height: 160px;
 }
- 
+
 .nosotros-eyebrow {
   color: var(--morado);
   font-size: 13px;
@@ -160,29 +359,29 @@ a {
   margin-bottom: 10px;
   font-weight: bold;
 }
- 
+
 .nosotros-texto h2 {
   font-size: 34px;
   margin-bottom: 15px;
 }
- 
+
 .nosotros-descripcion {
   color: var(--gris);
   max-width: 480px;
   margin-bottom: 30px;
   line-height: 1.5;
 }
- 
+
 .nosotros-datos {
   display: flex;
   gap: 40px;
 }
- 
+
 .dato h3 {
   font-size: 26px;
   color: var(--morado);
 }
- 
+
 .dato p {
   font-size: 13px;
   color: var(--gris);
@@ -218,8 +417,19 @@ a {
   .nav-links {
     display: none; /* oculta los links en celular */
   }
-  .hero {
+  .hero, .nosotros {
     flex-direction: column; /* apila texto e imagen en vez de ponerlos lado a lado */
     text-align: center;
+  }
+  .nosotros-datos {
+    justify-content: center;
+  }
+  .disco {
+    width: 200px;
+    height: 200px;
+  }
+  .hero-imagen::before {
+    width: 260px;
+    height: 260px;
   }
 }
