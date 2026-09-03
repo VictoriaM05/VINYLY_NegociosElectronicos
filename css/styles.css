@@ -124,33 +124,40 @@ a {
   box-shadow: 0 4px 12px rgba(124, 92, 214, 0.4); /* sombra con el mismo color, se ve como brillo */
 }
 
-/* SECCIÓN HERO */
-.hero {
+.portada {
   position: relative;
-  overflow: hidden;       /* para que los brillos de fondo no se salgan del cuadro */
-  display: flex;               
-  align-items: center;
-  justify-content: center;
-  gap: 150px;
-  padding: 60px 80px;
+  overflow: hidden;
   background:
     radial-gradient(circle at 12% 20%, rgba(224, 96, 158, 0.28), transparent 40%),
-    radial-gradient(circle at 88% 78%, rgba(124, 92, 214, 0.35), transparent 45%),
-    radial-gradient(circle at 50% 100%, rgba(242, 193, 78, 0.14), transparent 40%),
+    radial-gradient(circle at 88% 30%, rgba(124, 92, 214, 0.35), transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(242, 193, 78, 0.14), transparent 40%),
     var(--oscuro);
-  color: var(--blanco);
-  min-height: 100vh;   /* ocupa toda la altura de la pantalla */
-  width: 100%;
 }
 
-/* textura de puntitos sobre el fondo oscuro */
-.hero::before {
+.portada::before {
   content: '';
   position: absolute;
   inset: 0;
   background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
   background-size: 26px 26px;
-  z-index: 0;
+}
+
+.hero, .newsletter {
+  position: relative;
+  z-index: 1; /* para que el contenido quede encima de la textura de puntitos */
+}
+
+/* SECCIÓN HERO */
+.hero {
+  position: relative;
+  display: flex;               
+  align-items: center;
+  justify-content: center;
+  gap: 150px;
+  padding: 60px 80px;
+  color: var(--blanco);
+  min-height: 100vh;   /* ocupa toda la altura de la pantalla */
+  width: 100%;
 }
 
 /* el texto y la imagen van encima de la textura */
@@ -386,6 +393,76 @@ a {
 .dato p {
   font-size: 13px;
   color: var(--gris);
+}
+
+/* NEWSLETTER */
+.newsletter {
+  position: relative;
+  overflow: hidden;
+  padding: 100px 40px;
+  text-align: center;
+  color: var(--blanco);
+}
+
+/* el recuadro tipo "vidrio" flotando sobre el fondo */
+.newsletter-card {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 56px 48px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+}
+
+.newsletter h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 30px;
+  margin-bottom: 12px;
+}
+
+.newsletter p {
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 420px;
+  margin: 0 auto 32px;
+}
+
+.newsletter-form {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.newsletter-form input[type="text"] {
+  min-width: 260px;
+  padding: 14px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--blanco);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+.newsletter-form input[type="text"]::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.newsletter-form input[type="text"]:focus {
+  outline: none;
+  border-color: var(--morado);
+}
+
+/* el mensaje que aparece después de "enviar" el formulario */
+.newsletter-gracias {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dorado);
 }
 
 /* FOOTER */

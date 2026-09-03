@@ -13,7 +13,9 @@
 <body>
 
   <!-- ===== LANDING ===== -->
-  <section class="hero" id="inicio">
+   <div class="portada">
+
+    <section class="hero" id="inicio">
 
     <div class="hero-texto">
       <p class="hero-eyebrow">Edición Limitada</p>
@@ -36,6 +38,18 @@
 
   </section>
 
+  <section class="newsletter">
+  <div class="newsletter-card">
+    <h2>No te pierdas ningún lanzamiento</h2>
+    <p>Suscríbete y sé el primero en enterarte de nuevas ediciones limitadas.</p>
+
+    <form class="newsletter-form">
+      <input type="text" placeholder="tu@correo.com">
+      <button type="submit" class="btn-primario">Suscribirme</button>
+    </form>
+  </div>
+</section>
+
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
 
@@ -56,7 +70,23 @@
       <p>Premium Sound, Pop Edition</p>
     </div>
 
+   </div>
+
+
   </footer>
+
+<script>
+    // Agarra el formulario del newsletter
+    const formNewsletter = document.querySelector('.newsletter-form');
+ 
+    // Escucha el evento "submit" (cuando alguien le da clic a "Suscribirme")
+    formNewsletter.addEventListener('submit', function (evento) {
+      evento.preventDefault(); // evita que la página se recargue o intente enviar datos de verdad
+ 
+      // Reemplaza el formulario por un mensaje de confirmación
+      formNewsletter.innerHTML = '<p class="newsletter-gracias">¡Gracias por suscribirte!</p>';
+    });
+  </script>
 
 </body>
 </html>
