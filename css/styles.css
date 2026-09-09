@@ -5,6 +5,8 @@
   --oscuro: #14141A;  
   --gris: #6B6B76;     
   --blanco: #FFFFFF;
+  --turquesa: #3FBFB0;
+  --crema: #F6F3EE;
 }
 
 html {
@@ -255,6 +257,23 @@ a {
   border-color: var(--dorado); /* la rayita de abajo también */
 }
 
+.btn-gradiente {
+  background: linear-gradient(90deg, var(--morado), var(--rosa));
+  color: var(--blanco);
+  border: none;
+  padding: 15px 28px;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+ 
+.btn-gradiente:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(124, 92, 214, 0.35);
+}
+
 .hero-imagen {
   display: flex;
   align-items: center;
@@ -471,30 +490,229 @@ a {
   color: var(--dorado);
 }
 
+
 /* FOOTER */
 .footer {
+  position: relative;   /* necesario para poder posicionar el disco adentro */
+  overflow: hidden;     /* esto es lo que "recorta" el disco gigante */
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;       
   gap: 30px;
-  padding: 40px;
+  padding: 50px 40px;
+  background: var(--crema); /* fondo claro, igual que en tu referencia */
+  color: var(--oscuro);
+}
+ 
+/* dos manchas de color difuminadas, simulando el "anillo" del logo original */
+.footer-swirl-1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 620px;
+  height: 200px;
+  transform: translate(-50%, -65%) rotate(-16deg);
+  background: linear-gradient(90deg, transparent, var(--turquesa) 40%, transparent 75%);
+  filter: blur(30px);
+  opacity: 0.55;
+  z-index: 0;
+}
+ 
+.footer-swirl-2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 620px;
+  height: 200px;
+  transform: translate(-50%, -35%) rotate(12deg);
+  background: linear-gradient(90deg, transparent, var(--rosa) 35%, var(--morado) 60%, transparent 85%);
+  filter: blur(30px);
+  opacity: 0.55;
+  z-index: 0;
+}
+ 
+/* el disco gigante de fondo, centrado y más grande que el footer */
+.footer-disco {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  z-index: 1; /* encima del swirl, pero detrás del texto */
+ 
+  background:
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.18), transparent 35%),
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      #24242c 0px, #24242c 3px,
+      #34343e 3px, #34343e 6px
+    );
+}
+ 
+/* la etiqueta de color al centro del disco de fondo */
+.footer-disco::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 34%;
+  height: 34%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--morado), var(--rosa));
+  opacity: 1;
+}
+ 
+/* el hoyito del centro */
+.footer-disco::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6%;
+  height: 6%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
   background: var(--oscuro);
-  color: var(--blanco);
 }
 
+.footer-izquierda {
+  display: flex;
+  gap: 60px;
+  position: relative;
+  z-index: 2;
+}
+ 
+/* el texto del footer debe quedar ENCIMA del disco y el swirl */
+.footer-columna {
+  position: relative;
+  z-index: 2;
+}
+ 
 .footer-columna h4 {
   margin-bottom: 12px;
   color: var(--gris);
+  font-family: 'Space Mono', monospace;
   font-size: 13px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-
+ 
 .footer-columna a,
 .footer-columna p {
   display: block;
   margin-bottom: 8px;
-  color: #dddddd;
+  color: var(--oscuro);
   font-size: 14px;
+}
+ 
+.footer-columna a {
+  transition: color 0.2s ease;
+}
+ 
+.footer-columna a:hover {
+  color: var(--morado);
+}
+ 
+/* la columna de la marca: wordmark grande + tagline elegante */
+.footer-marca h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--oscuro);
+  letter-spacing: 0;
+  text-transform: none;
+  margin-bottom: 6px;
+}
+ 
+.footer-marca p {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gris);
+}
+
+/* LOGIN / REGISTRO */
+.auth {
+  min-height: calc(100vh - 101px); /* resta más o menos lo que mide tu navbar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: var(--crema);
+}
+ 
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--blanco);
+  padding: 48px 40px;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px rgba(20, 20, 26, 0.08);
+  text-align: center;
+}
+ 
+.auth-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--morado);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+ 
+.auth-card h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px;
+  margin-bottom: 28px;
+}
+ 
+.login-form,
+.registro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+ 
+.login-form input,
+.registro-form input {
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(20, 20, 26, 0.15);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+ 
+.login-form input:focus,
+.registro-form input:focus {
+  outline: none;
+  border-color: var(--morado);
+}
+ 
+.auth-alt {
+  font-size: 14px;
+  color: var(--gris);
+}
+ 
+.auth-alt a {
+  color: var(--morado);
+  font-weight: 600;
+}
+ 
+.auth-alt a:hover {
+  text-decoration: underline;
+}
+ 
+.auth-gracias {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  color: var(--morado);
+  font-size: 18px;
 }
 
 @media (max-width: 700px) {

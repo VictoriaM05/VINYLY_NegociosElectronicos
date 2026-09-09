@@ -3,72 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+ 
     <link rel="stylesheet" href="css/styles.css" />
-
-    <title>VINYLY- Tienda de Vinilos</title>
+ 
+    <title>VINYLY - Iniciar sesión</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
+ 
   <!-- ===== BARRA DE NAVEGACION ===== -->
   <header class="navbar">
-
+ 
     <div class="logo">
       <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
     </div>
-
+ 
     <ul class="nav-links">
       <li><a href="landing.html">Inicio</a></li>
       <li><a href="catalogo.html">Catálogo</a></li>
-      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
     </ul>
-
+ 
     <div class="nav-icons">
       <a href="carrito.html">Carrito</a>
       <a href="login.html">Iniciar sesión</a>
       <a href="perfil.html" class="avatar">CV</a>
     </div>
-
+ 
   </header>
-
-  <!-- ===== SECCIÓN NOSOTROS ===== -->
-  <section class="nosotros" id="nosotros">
-
-    <div class="nosotros-imagen">
-      <img src="resources/imagen_albumes_menu.png" alt="collage-menu" class="collage-menu">
+ 
+  <!-- ===== INICIAR SESIÓN ===== -->
+  <section class="auth">
+    <div class="auth-card">
+      <p class="auth-eyebrow">Bienvenido de nuevo</p>
+      <h1>Inicia sesión</h1>
+ 
+      <form class="login-form">
+        <input type="text" placeholder="Correo electrónico">
+        <input type="password" placeholder="Contraseña">
+        <button type="submit" class="btn-gradiente">Iniciar sesión</button>
+      </form>
+ 
+      <p class="auth-alt">¿Aún no tienes cuenta? <a href="registro.html">Regístrate</a></p>
     </div>
-
-    <div class="nosotros-texto">
-      <p class="nosotros-eyebrow">Nuestra historia</p>
-      <h2>Somos VINYLY</h2>
-      <p class="nosotros-descripcion">
-        Nacimos de una obsesión simple: el pop suena distinto en vinilo.
-        Conectamos a fans con ediciones prensadas de sus
-        artistas favoritos, cuidando cada detalle del sonido y del empaque.
-      </p>
-
-      <div class="nosotros-datos">
-        <div class="dato">
-          <h3>500+</h3>
-          <p>Títulos disponibles</p>
-        </div>
-        <div class="dato">
-          <h3>Hartos</h3>
-          <p>Artistas para escuchar</p>
-        </div>
-      </div>
-    </div>
-
   </section>
-
+ 
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
  
     <div class="footer-swirl-1"></div>
     <div class="footer-swirl-2"></div>
- 
     <div class="footer-disco"></div>
  
     <div class="footer-izquierda">
@@ -91,6 +76,18 @@
     </div>
  
   </footer>
-
+ 
+  <script>
+    // Agarra el formulario de login
+    const formLogin = document.querySelector('.login-form');
+ 
+    formLogin.addEventListener('submit', function (evento) {
+      evento.preventDefault(); // no manda nada de verdad, es solo simulación
+ 
+      formLogin.innerHTML = '<p class="auth-gracias">¡Sesión iniciada correctamente! 🎉</p>';
+    });
+  </script>
+ 
 </body>
 </html>
+ 
