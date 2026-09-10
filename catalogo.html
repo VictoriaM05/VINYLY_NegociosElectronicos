@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <title>VINYLY - Catálogo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ===== BARRA DE NAVEGACION ===== -->
+  <header class="navbar">
+
+    <div class="logo">
+      <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="landing.html">Inicio</a></li>
+      <li><a href="catalogo.html" class="active">Catálogo</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <a href="carrito.html">Carrito</a>
+      <a href="login.html">Iniciar sesión</a>
+      <a href="perfil.html" class="avatar">CV</a>
+    </div>
+
+  </header>
+
+  <!-- ===== ENCABEZADO DEL CATÁLOGO ===== -->
+  <section class="catalogo-hero">
+    <p class="catalogo-eyebrow">Explora la colección</p>
+    <h1>Catálogo</h1>
+    <p class="catalogo-sub">Vinilos prensados en alta calidad de tus artistas pop favoritos.</p>
+  </section>
+
+  <!-- ===== CUADRÍCULA DE PRODUCTOS ===== -->
+  <section class="catalogo-grid">
+
+    <div class="producto-card">
+      <div class="producto-img img-1"></div>
+      <div class="producto-info">
+        <h3>Neón Nocturno</h3>
+        <p class="producto-artista">Nova Reyes</p>
+        <div class="producto-footer">
+          <span class="producto-precio">$420</span>
+          <button class="btn-agregar">Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="producto-card">
+      <div class="producto-img img-2"></div>
+      <div class="producto-info">
+        <h3>Corazón de Cristal</h3>
+        <p class="producto-artista">Aria Duval</p>
+        <div class="producto-footer">
+          <span class="producto-precio">$380</span>
+          <button class="btn-agregar">Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="producto-card">
+      <div class="producto-img img-3"></div>
+      <div class="producto-info">
+        <h3>Luces de la Ciudad</h3>
+        <p class="producto-artista">Marco Solis</p>
+        <div class="producto-footer">
+          <span class="producto-precio">$450</span>
+          <button class="btn-agregar">Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="producto-card">
+      <div class="producto-img img-4"></div>
+      <div class="producto-info">
+        <h3>Eco Dorado</h3>
+        <p class="producto-artista">Kel Osei</p>
+        <div class="producto-footer">
+          <span class="producto-precio">$400</span>
+          <button class="btn-agregar">Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="producto-card">
+      <div class="producto-img img-5"></div>
+      <div class="producto-info">
+        <h3>Días de Verano</h3>
+        <p class="producto-artista">Luna Cortés</p>
+        <div class="producto-footer">
+          <span class="producto-precio">$380</span>
+          <button class="btn-agregar">Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="producto-card">
+      <div class="producto-img img-6"></div>
+      <div class="producto-info">
+        <h3>Piel de Papel</h3>
+        <p class="producto-artista">Iker Ramos</p>
+        <div class="producto-footer">
+          <span class="producto-precio">$420</span>
+          <button class="btn-agregar">Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="producto-card">
+      <div class="producto-img img-7"></div>
+      <div class="producto-info">
+        <h3>Satélite</h3>
+        <p class="producto-artista">Nova Reyes</p>
+        <div class="producto-footer">
+          <span class="producto-precio">$460</span>
+          <button class="btn-agregar">Agregar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="producto-card">
+      <div class="producto-img img-8"></div>
+      <div class="producto-info">
+        <h3>Terciopelo</h3>
+        <p class="producto-artista">Aria Duval</p>
+        <div class="producto-footer">
+          <span class="producto-precio">$400</span>
+          <button class="btn-agregar">Agregar</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+
+    <div class="footer-swirl-1"></div>
+    <div class="footer-swirl-2"></div>
+    <div class="footer-disco"></div>
+
+    <div class="footer-izquierda">
+      <div class="footer-columna">
+        <h4>Enlaces</h4>
+        <a href="landing.html">Inicio</a>
+        <a href="index.html#nosotros">Nosotros</a>
+      </div>
+
+      <div class="footer-columna">
+        <h4>Contacto</h4>
+        <p>******</p>
+        <p>www.vinyly.com</p>
+      </div>
+    </div>
+
+    <div class="footer-columna footer-marca">
+      <h4>VINYLY</h4>
+      <p>Premium Sound, Pop Edition</p>
+    </div>
+
+  </footer>
+
+  <script>
+    // Agarra TODOS los botones "Agregar" del catálogo
+    const botonesAgregar = document.querySelectorAll('.btn-agregar');
+
+    // A cada uno le pone el mismo comportamiento simulado
+    botonesAgregar.forEach(function (boton) {
+      boton.addEventListener('click', function () {
+        boton.textContent = 'Agregado ✓';
+        boton.classList.add('agregado');
+
+        // después de 1.5 segundos regresa a como estaba
+        setTimeout(function () {
+          boton.textContent = 'Agregar';
+          boton.classList.remove('agregado');
+        }, 1500);
+      });
+    });
+  </script>
+
+</body>
+</html>

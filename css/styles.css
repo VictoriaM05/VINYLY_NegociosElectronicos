@@ -715,6 +715,121 @@ a {
   font-size: 18px;
 }
 
+/* CATÁLOGO */
+.catalogo-hero {
+  text-align: center;
+  padding: 80px 40px 40px;
+  background: var(--crema);
+}
+ 
+.catalogo-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--morado);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+ 
+.catalogo-hero h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+ 
+.catalogo-sub {
+  color: var(--gris);
+  max-width: 480px;
+  margin: 0 auto;
+}
+ 
+.catalogo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); /* se acomoda solo según el ancho disponible */
+  gap: 32px;
+  padding: 20px 60px 90px;
+  background: var(--crema);
+}
+ 
+.producto-card {
+  background: var(--blanco);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(20, 20, 26, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+ 
+.producto-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 25px 45px rgba(20, 20, 26, 0.12);
+}
+ 
+/* la "portada" del disco: un cuadrado con degradado de color */
+.producto-img {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* siempre cuadrado, sin importar el ancho de la tarjeta */
+}
+ 
+.img-1 { background: linear-gradient(135deg, var(--morado), var(--rosa)); }
+.img-2 { background: linear-gradient(135deg, var(--rosa), var(--dorado)); }
+.img-3 { background: linear-gradient(135deg, var(--turquesa), var(--morado)); }
+.img-4 { background: linear-gradient(135deg, var(--dorado), var(--turquesa)); }
+.img-5 { background: linear-gradient(135deg, var(--oscuro), var(--morado)); }
+.img-6 { background: linear-gradient(135deg, var(--rosa), var(--morado)); }
+.img-7 { background: linear-gradient(135deg, var(--turquesa), var(--rosa)); }
+.img-8 { background: linear-gradient(135deg, var(--dorado), var(--morado)); }
+ 
+.producto-info {
+  padding: 18px 20px 22px;
+}
+ 
+.producto-info h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+ 
+.producto-artista {
+  font-size: 13px;
+  color: var(--gris);
+  margin-bottom: 16px;
+}
+ 
+.producto-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+ 
+.producto-precio {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 14px;
+}
+ 
+.btn-agregar {
+  background: var(--oscuro);
+  color: var(--blanco);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+ 
+.btn-agregar:hover {
+  background: var(--morado);
+}
+ 
+/* estado "agregado", después del clic */
+.btn-agregar.agregado {
+  background: var(--turquesa);
+}
+ 
+
 @media (max-width: 700px) {
   .nav-links {
     display: none; /* oculta los links en celular */
