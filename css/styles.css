@@ -34,7 +34,6 @@ a {
 .navbar {
   display: flex;              /* pone los elementos en fila */
   align-items: center;        /* los centra verticalmente */
-  justify-content: space-between; /* logo a la izquierda, resto a la derecha */
   padding: 18px 60px;
   background: var(--blanco);
   border-bottom: 1px solid rgba(20, 20, 26, 0.06);
@@ -57,6 +56,7 @@ a {
   display: flex;
   gap: 44px;        /* espacio entre cada link */
   list-style: none; /* quita los puntitos de la lista */
+  margin-left: 60px;
 }
 
 .nav-links a {
@@ -94,6 +94,7 @@ a {
   display: flex;
   align-items: center;
   gap: 18px;
+  margin-left: auto;
 }
 
 /* Carrito e Iniciar sesión */
@@ -779,6 +780,9 @@ a {
 .img-6 { background: linear-gradient(135deg, var(--rosa), var(--morado)); }
 .img-7 { background: linear-gradient(135deg, var(--turquesa), var(--rosa)); }
 .img-8 { background: linear-gradient(135deg, var(--dorado), var(--morado)); }
+.img-9 { background: linear-gradient(135deg, var(--rosa), var(--dorado)); }
+.img-10 { background: linear-gradient(135deg, var(--dorado), var(--turquesa)); }
+
  
 .producto-info {
   padding: 18px 20px 22px;
