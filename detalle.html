@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <title>VINYLY - Detalle del producto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ===== BARRA DE NAVEGACION ===== -->
+  <header class="navbar">
+
+    <div class="logo">
+      <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="landing.html">Inicio</a></li>
+      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <a href="carrito.html">Carrito</a>
+      <a href="login.html">Iniciar sesión</a>
+      <a href="perfil.html" class="avatar">CV</a>
+    </div>
+
+  </header>
+
+  <!-- ===== DETALLE DEL PRODUCTO ===== -->
+  <section class="detalle">
+ 
+    <div class="detalle-imagen" id="detalleImagen"></div>
+ 
+    <div class="detalle-info">
+      <a href="catalogo.html" class="detalle-regresar">← Regresar al catálogo</a>
+ 
+      <h1 id="detalleNombre">Cargando...</h1>
+      <p class="detalle-artista" id="detalleArtista"></p>
+      <p class="detalle-precio" id="detallePrecio"></p>
+ 
+      <p class="detalle-descripcion" id="detalleDescripcion"></p>
+ 
+      <div class="detalle-botones">
+        <button class="btn-gradiente" id="btnCarritoDetalle">Agregar al carrito</button>
+        <p class="detalle-mensaje" id="mensajeCarrito">Muy pronto podrás agregarlo a tu carrito 🛒</p>
+      </div>
+    </div>
+ 
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+
+    <div class="footer-swirl-1"></div>
+    <div class="footer-swirl-2"></div>
+    <div class="footer-disco"></div>
+
+    <div class="footer-izquierda">
+      <div class="footer-columna">
+        <h4>Enlaces</h4>
+        <a href="landing.html">Inicio</a>
+        <a href="index.html#nosotros">Nosotros</a>
+      </div>
+
+      <div class="footer-columna">
+        <h4>Contacto</h4>
+        <p>******</p>
+        <p>www.vinyly.com</p>
+      </div>
+    </div>
+
+    <div class="footer-columna footer-marca">
+      <h4>VINYLY</h4>
+      <p>Premium Sound, Pop Edition</p>
+    </div>
+
+  </footer>
+
+  <script src="js/productos.js"></script>
+  <script>
+    // 1. Leemos los parámetros de la URL (todo lo que va después del "?")
+    const parametros = new URLSearchParams(window.location.search);
+ 
+    // 2. Sacamos el valor de "id". Si no viene ninguno (o alguien abre la página sin "?id="),
+    //    usamos el producto 1 como valor por defecto.
+    const idProducto = Number(parametros.get('id')) || 1;
+ 
+    // 3. Buscamos, dentro del arreglo "productos" (viene de productos.js),
+    //    el que tenga ese mismo id.
+    const producto = productos.find(function (p) {
+      return p.id === idProducto;
+    });
+ 
+    // 4. Si lo encontramos, rellenamos cada parte de la página con sus datos.
+    if (producto) {
+      document.getElementById('detalleImagen').classList.add(producto.imagen);
+      document.getElementById('detalleNombre').textContent = producto.nombre;
+      document.getElementById('detalleArtista').textContent = producto.artista;
+      document.getElementById('detallePrecio').textContent = producto.precio;
+      document.getElementById('detalleDescripcion').textContent = producto.descripcion;
+    }
+ 
+    // el botón de "Agregar al carrito" en detalle solo muestra un aviso, no guarda nada
+    const btnCarritoDetalle = document.getElementById('btnCarritoDetalle');
+    const mensajeCarrito = document.getElementById('mensajeCarrito');
+ 
+    btnCarritoDetalle.addEventListener('click', function () {
+      mensajeCarrito.classList.add('visible');
+    });
+  </script>
+ 
+</body>
+</html>

@@ -99,12 +99,34 @@ a {
 
 /* BIENVENIDA (index.html) */
 .bienvenida {
+  position: relative;
+  overflow: hidden; /* para que la textura de puntitos no se salga del cuadro */
   text-align: center;
   padding: 80px 40px 60px;
+  color: var(--blanco);
   background:
-    radial-gradient(circle at 15% 20%, rgba(224, 96, 158, 0.1), transparent 45%),
-    radial-gradient(circle at 85% 80%, rgba(124, 92, 214, 0.1), transparent 45%),
-    var(--crema);
+    radial-gradient(circle at 12% 20%, rgba(224, 96, 158, 0.28), transparent 40%),
+    radial-gradient(circle at 88% 30%, rgba(124, 92, 214, 0.35), transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(242, 193, 78, 0.14), transparent 40%),
+    var(--oscuro);
+}
+ 
+/* la textura de puntitos, igual que en el hero del landing */
+.bienvenida::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+ 
+/* todo el contenido va encima de la textura */
+.bienvenida-eyebrow,
+.bienvenida h1,
+.bienvenida-sub,
+.bienvenida-features {
+  position: relative;
+  z-index: 1;
 }
  
 .bienvenida-eyebrow {
@@ -112,7 +134,7 @@ a {
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--morado);
+  color: var(--dorado);
   font-weight: 700;
   margin-bottom: 10px;
 }
@@ -121,10 +143,11 @@ a {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 40px;
   margin-bottom: 12px;
+  color: var(--blanco);
 }
  
 .bienvenida-sub {
-  color: var(--gris);
+  color: rgba(255, 255, 255, 0.72);
   max-width: 480px;
   margin: 0 auto;
 }
@@ -149,8 +172,10 @@ a {
 }
  
 .feature p {
+  position: relative;
+  z-index: 1;
   font-size: 13px;
-  color: var(--gris);
+  color: rgba(255, 255, 255, 0.75);
   font-weight: 600;
 }
  
@@ -929,7 +954,217 @@ a {
 .btn-agregar.agregado {
   background: var(--turquesa);
 }
- 
+
+/* DETALLE DE PRODUCTO */
+.detalle {
+  display: flex;
+  gap: 60px;
+  flex-wrap: wrap;
+  padding: 70px 60px;
+  background: var(--blanco);
+}
+
+.detalle-imagen {
+  flex: 1;
+  min-width: 280px;
+  max-width: 420px;
+  aspect-ratio: 1 / 1;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px rgba(20, 20, 26, 0.12);
+}
+
+.detalle-info {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.detalle-regresar {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--morado);
+  font-weight: 700;
+  margin-bottom: 24px;
+  transition: color 0.2s ease;
+}
+
+.detalle-regresar:hover {
+  color: var(--rosa);
+}
+
+.detalle-info h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.detalle-artista {
+  color: var(--gris);
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+
+.detalle-precio {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--morado);
+  margin-bottom: 24px;
+}
+
+.detalle-descripcion {
+  color: var(--gris);
+  line-height: 1.6;
+  max-width: 460px;
+  margin-bottom: 32px;
+}
+
+.detalle-botones {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* el aviso de "Próximamente", oculto hasta que le des clic al botón */
+.detalle-mensaje {
+  font-size: 13px;
+  color: var(--gris);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.detalle-mensaje.visible {
+  opacity: 1;
+}
+
+/* botón "Ver detalle" dentro de las tarjetas de producto */
+.producto-detalle {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--morado);
+  margin-bottom: 14px;
+  transition: color 0.2s ease;
+}
+
+.producto-detalle:hover {
+  color: var(--rosa);
+}
+
+/* CONTACTO */
+.contacto-hero {
+  text-align: center;
+  padding: 80px 40px 40px;
+  background: var(--crema);
+}
+
+.contacto-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--morado);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.contacto-hero h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.contacto-sub {
+  color: var(--gris);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.contacto-contenido {
+  display: flex;
+  gap: 60px;
+  flex-wrap: wrap;
+  padding: 60px 60px 90px;
+  background: var(--blanco);
+}
+
+.contacto-info {
+  flex: 1;
+  min-width: 260px;
+}
+
+.contacto-info h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+
+.contacto-info h3:not(:first-child) {
+  margin-top: 30px;
+}
+
+.contacto-info p {
+  color: var(--gris);
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.contacto-redes {
+  display: flex;
+  gap: 18px;
+}
+
+.contacto-redes a {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--morado);
+  transition: color 0.2s ease;
+}
+
+.contacto-redes a:hover {
+  color: var(--rosa);
+}
+
+.contacto-form {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contacto-form input,
+.contacto-form textarea {
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(20, 20, 26, 0.15);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  resize: none; /* que no se pueda estirar el textarea jalando la esquina */
+}
+
+.contacto-form input:focus,
+.contacto-form textarea:focus {
+  outline: none;
+  border-color: var(--morado);
+}
+
+.contacto-gracias {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  color: var(--morado);
+  font-size: 18px;
+}
 
 @media (max-width: 700px) {
   .nav-links {
@@ -949,5 +1184,8 @@ a {
   .hero-imagen::before {
     width: 260px;
     height: 260px;
+  }
+  .contacto-contenido {
+    padding: 40px 30px 60px;
   }
 }
