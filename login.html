@@ -15,12 +15,12 @@
   <!-- ===== BARRA DE NAVEGACION ===== -->
   <header class="navbar">
  
-    <div class="logo">
+    <a href="landing.html" class="logo">
       <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
-    </div>
+    </a>
  
     <ul class="nav-links">
-      <li><a href="landing.html">Inicio</a></li>
+      <li><a href="index.html">Inicio</a></li>
       <li><a href="catalogo.html">Catálogo</a></li>
       <li><a href="index.html#nosotros">Nosotros</a></li>
       <li><a href="contacto.html">Contacto</a></li>
@@ -85,11 +85,26 @@
     formLogin.addEventListener('submit', function (evento) {
       evento.preventDefault(); // no manda nada de verdad, es solo simulación
  
-      formLogin.innerHTML = '<p class="auth-gracias">¡Sesión iniciada correctamente! 🎉</p>';
+      // Tomamos el correo escrito y usamos la parte anterior a la arroba como nombre.
+      const correo = formLogin.querySelector('input[type="text"]').value.trim();
+      let nombre = 'Invitado';
+
+      if (correo.includes('@')) {
+        const nombreCorreo = correo.split('@')[0].trim();
+        if (nombreCorreo) {
+          nombre = nombreCorreo;
+        }
+      }
+
+      // Ponemos la primera letra del nombre en mayúscula.
+      nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+
+      // Reemplazamos el formulario por el mensaje de acceso y el saludo personalizado.
+      formLogin.innerHTML = '<p class="auth-gracias">Inicio de sesión correctamente</p><p class="auth-bienvenida">Bienvenido, ' + nombre + '</p>';
 
       // espera 1.5 segundos para que se alcance a leer el mensaje, y luego redirige
       setTimeout(function () {
-        window.location.href = 'index.html';
+        window.location.href = 'perfil.html';
       }, 1500);
     });
   </script>

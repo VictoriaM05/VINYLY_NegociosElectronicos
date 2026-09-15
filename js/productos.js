@@ -10,4 +10,8 @@ const productos = [
   { id: 8,  nombre: "Terciopelo",        artista: "Aria Duval",  precio: "$400 MXN", imagen: "img-8",  descripcion: "Suave y envolvente, este disco explora sonidos más orgánicos sin perder la esencia pop de Aria Duval." },
   { id: 9,  nombre: "Terciopelo",        artista: "Aria Duval",  precio: "$400 MXN", imagen: "img-9",  descripcion: "Edición alternativa de Terciopelo, con una funda de color distinto para coleccionistas." },
   { id: 10, nombre: "Terciopelo",        artista: "Aria Duval",  precio: "$400 MXN", imagen: "img-10", descripcion: "Edición limitada en vinilo de color de Terciopelo, ideal para completar la colección." },
+  { id: 11, nombre: "Romance",        artista: "Camila Cabello",  precio: "$700 MXN", imagen: "img-11", foto: "resources/romance_disco.jpg", descripcion: "El tercer álbum de estudio de Camila Cabello, una declaración de amor pop con toques latinos, ahora disponible en vinilo." },
+  { id: 12, nombre: "Back To Black",        artista: "Amy Winehouse",  precio: "$650 MXN", imagen: "img-12", foto: "resources/backtoblack_disco.jpg", descripcion: "..." },
+  { id: 13, nombre: "Thank U Next",       artista: "Ariana Grande",  precio: "$760 MXN", imagen: "img-13", foto: "resources/thankunext_disco.jpg", descripcion: "..." },
 ];
+

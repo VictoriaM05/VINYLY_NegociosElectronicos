@@ -3,99 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
+
     <link rel="stylesheet" href="css/styles.css" />
- 
-    <title>VINYLY - Crear cuenta</title>
+
+    <title>VINYLY - Mi perfil</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
- 
+
   <!-- ===== BARRA DE NAVEGACION ===== -->
   <header class="navbar">
- 
+
     <a href="landing.html" class="logo">
       <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
     </a>
- 
+
     <ul class="nav-links">
       <li><a href="index.html">Inicio</a></li>
       <li><a href="catalogo.html">Catálogo</a></li>
       <li><a href="index.html#nosotros">Nosotros</a></li>
       <li><a href="contacto.html">Contacto</a></li>
     </ul>
- 
+
     <div class="nav-icons">
       <a href="carrito.html">Carrito</a>
       <a href="login.html">Iniciar sesión</a>
       <a href="perfil.html" class="avatar">CV</a>
     </div>
- 
+
   </header>
- 
-  <!-- ===== REGISTRO ===== -->
-  <section class="auth">
-    <div class="auth-card">
-      <p class="auth-eyebrow">Únete a VINYLY</p>
-      <h1>Crea tu cuenta</h1>
- 
-      <form class="registro-form">
-        <input type="text" placeholder="Nombre">
-        <input type="text" placeholder="Correo electrónico">
-        <input type="password" placeholder="Contraseña">
-        <input type="password" placeholder="Confirmar contraseña">
-        <button type="submit" class="btn-gradiente">Crear cuenta</button>
-      </form>
- 
-      <p class="auth-alt">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+
+  <!-- ===== PERFIL ===== -->
+  <main class="perfil">
+    <div class="perfil-contenido">
+      <header class="perfil-header">
+        <div class="perfil-avatar">PE</div>
+        <div>
+          <p class="perfil-eyebrow">Mi perfil</p>
+          <h1>Pedrito Vinilo</h1>
+        </div>
+      </header>
+
+      <div class="perfil-grid">
+        <section class="perfil-card">
+          <h2>Mis datos</h2>
+          <div class="perfil-dato">
+            <span class="perfil-dato-label">Nombre</span>
+            <span class="perfil-dato-valor">Pedrito Vinilo</span>
+          </div>
+          <div class="perfil-dato">
+            <span class="perfil-dato-label">Correo</span>
+            <span class="perfil-dato-valor">pedrito@vinyly.com</span>
+          </div>
+          <div class="perfil-dato">
+            <span class="perfil-dato-label">Miembro desde</span>
+            <span class="perfil-dato-valor">15 de septiembre de 2025</span>
+          </div>
+        </section>
+
+        <section class="perfil-card perfil-compras">
+          <h2>Mis compras</h2>
+          <span class="perfil-badge">Próximamente</span>
+        </section>
+      </div>
+
+      <button type="button" class="btn-salir" id="btnSalir">Cerrar sesión</button>
     </div>
-  </section>
- 
+  </main>
+
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
- 
+
     <div class="footer-swirl-1"></div>
     <div class="footer-swirl-2"></div>
     <div class="footer-disco"></div>
- 
+
     <div class="footer-izquierda">
       <div class="footer-columna">
         <h4>Enlaces</h4>
         <a href="landing.html">Inicio</a>
         <a href="index.html#nosotros">Nosotros</a>
       </div>
- 
+
       <div class="footer-columna">
         <h4>Contacto</h4>
         <p>******</p>
         <p>www.vinyly.com</p>
       </div>
     </div>
- 
+
     <div class="footer-columna footer-marca">
       <h4>VINYLY</h4>
       <p>Premium Sound, Pop Edition</p>
     </div>
- 
+
   </footer>
- 
+
   <script>
-    // Agarra el formulario de registro
-    const formRegistro = document.querySelector('.registro-form');
- 
-    formRegistro.addEventListener('submit', function (evento) {
-      evento.preventDefault(); // solo simulación, no crea ninguna cuenta real
- 
-      // Mostramos el resultado de registro y esperamos antes de cambiar de página.
-      formRegistro.innerHTML = '<p class="auth-gracias">Registro exitoso</p>';
+    // Seleccionamos el botón para cerrar la sesión simulada.
+    const btnSalir = document.getElementById('btnSalir');
+
+    // Cambiamos el texto, esperamos un segundo y redirigimos al landing.
+    btnSalir.addEventListener('click', function () {
+      btnSalir.textContent = 'Cerrando sesión...';
+      btnSalir.disabled = true;
 
       setTimeout(function () {
-        window.location.href = 'login.html';
-      }, 1500);
+        window.location.href = 'landing.html';
+      }, 1000);
     });
   </script>
- 
+
 </body>
 </html>
- 
