@@ -929,6 +929,40 @@ a {
   max-width: 480px;
   margin: 0 auto;
 }
+
+.catalogo-busqueda {
+  display: block;
+  max-width: 520px;
+  margin: 28px auto 0;
+  text-align: left;
+}
+
+.catalogo-busqueda span {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--gris);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.catalogo-busqueda input {
+  width: 100%;
+  padding: 14px 20px;
+  border: 1px solid rgba(107, 107, 118, 0.3);
+  border-radius: 999px;
+  background: var(--blanco);
+  color: var(--oscuro);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.catalogo-busqueda input:focus {
+  border-color: var(--morado);
+  box-shadow: 0 0 0 3px rgba(124, 92, 214, 0.14);
+}
  
 .catalogo-grid {
   display: grid;
@@ -937,13 +971,43 @@ a {
   padding: 20px 60px 90px;
   background: var(--crema);
 }
+
+.catalogo-sin-resultados {
+  grid-column: 1 / -1;
+  color: var(--gris);
+  padding: 30px 0;
+  text-align: center;
+}
  
 .producto-card {
+  position: relative;
   background: var(--blanco);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 15px 35px rgba(20, 20, 26, 0.06);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.producto-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: var(--blanco);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-nuevo {
+  background: var(--turquesa);
+}
+
+.badge-oferta {
+  background: var(--rosa);
 }
  
 .producto-card:hover {

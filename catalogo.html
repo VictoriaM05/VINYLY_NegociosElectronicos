@@ -39,12 +39,19 @@
     <p class="catalogo-eyebrow">Explora la colección</p>
     <h1>Catálogo</h1>
     <p class="catalogo-sub">Vinilos prensados en alta calidad de tus artistas pop favoritos.</p>
+    <label class="catalogo-busqueda" for="buscador-productos">
+      <span>Buscar álbum o artista</span>
+      <input type="search" id="buscador-productos" placeholder="Ej. Taylor Swift" autocomplete="off">
+    </label>
   </section>
 
   <!-- ===== CUADRÍCULA DE PRODUCTOS ===== -->
   <section class="catalogo-grid">
 
+    <p class="catalogo-sin-resultados" hidden>No encontramos ningún álbum con ese nombre.</p>
+
     <div class="producto-card">
+      <span class="producto-badge badge-nuevo">Nuevo</span>
       <img src="resources/1989.jpg" alt="1989 - Taylor Swift" class="producto-img">
       <div class="producto-info">
         <h3>1989</h3>
@@ -58,6 +65,7 @@
     </div>
 
     <div class="producto-card">
+      <span class="producto-badge badge-nuevo">Nuevo</span>
       <img src="resources/starboy.jpg" alt="Starboy - The Weeknd" class="producto-img">
       <div class="producto-info">
         <h3>Starboy</h3>
@@ -71,6 +79,7 @@
     </div>
 
     <div class="producto-card">
+      <span class="producto-badge badge-oferta">Oferta</span>
       <div class="producto-img img-3"></div>
       <div class="producto-info">
         <h3>Luces de la Ciudad</h3>
@@ -84,6 +93,7 @@
     </div>
 
     <div class="producto-card">
+      <span class="producto-badge badge-nuevo">Nuevo</span>
       <div class="producto-img img-4"></div>
       <div class="producto-info">
         <h3>Eco Dorado</h3>
@@ -205,6 +215,28 @@
   </footer>
 
   <script>
+    const buscadorProductos = document.querySelector('#buscador-productos');
+    const tarjetasProducto = document.querySelectorAll('.catalogo-grid .producto-card');
+    const mensajeSinResultados = document.querySelector('.catalogo-sin-resultados');
+
+    buscadorProductos.addEventListener('input', function () {
+      const consulta = buscadorProductos.value.trim().toLowerCase();
+      let resultados = 0;
+
+      tarjetasProducto.forEach(function (tarjeta) {
+        const nombreAlbum = tarjeta.querySelector('h3').textContent.toLowerCase();
+        const nombreArtista = tarjeta.querySelector('.producto-artista').textContent.toLowerCase();
+        const coincide = nombreAlbum.includes(consulta) || nombreArtista.includes(consulta);
+
+        tarjeta.style.display = coincide ? '' : 'none';
+        if (coincide) {
+          resultados += 1;
+        }
+      });
+
+      mensajeSinResultados.hidden = resultados > 0;
+    });
+
     // Agarra TODOS los botones "Agregar" del catálogo
     const botonesAgregar = document.querySelectorAll('.btn-agregar');
 
