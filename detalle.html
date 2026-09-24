@@ -49,11 +49,25 @@
       <p class="detalle-descripcion" id="detalleDescripcion"></p>
  
       <div class="detalle-botones">
+        <div class="detalle-cantidad" aria-label="Cantidad">
+          <button type="button" class="btn-cantidad" id="btnCantidadMenos" aria-label="Disminuir cantidad">-</button>
+          <span id="cantidadProducto">1</span>
+          <button type="button" class="btn-cantidad" id="btnCantidadMas" aria-label="Aumentar cantidad">+</button>
+        </div>
         <button class="btn-gradiente" id="btnCarritoDetalle">Agregar al carrito</button>
-        <p class="detalle-mensaje" id="mensajeCarrito">Muy pronto podrás agregarlo a tu carrito 🛒</p>
+        <p class="detalle-mensaje" id="mensajeCarrito">Agregado al carrito ✓</p>
       </div>
     </div>
  
+  </section>
+
+  <!-- ===== PRODUCTOS RELACIONADOS ===== -->
+  <section class="relacionados">
+    <div class="relacionados-header">
+      <p class="catalogo-eyebrow">También puede gustarte</p>
+      <h2>Productos relacionados</h2>
+    </div>
+    <div class="relacionados-grid" id="productosRelacionados"></div>
   </section>
 
   <!-- ===== FOOTER ===== -->
@@ -85,6 +99,7 @@
   </footer>
 
   <script src="js/productos.js"></script>
+  <script src="js/carrito.js"></script>
   <script>
   // 1. Leemos los parámetros de la URL (todo lo que va después del "?")
   const parametros = new URLSearchParams(window.location.search);
@@ -119,11 +134,67 @@
     document.getElementById('detalleDescripcion').textContent = producto.descripcion;
   }
 
-  // el botón de "Agregar al carrito" en detalle solo muestra un aviso, no guarda nada
+  // Renderiza productos distintos al actual y respeta las fotos reales cuando existen.
+  const contenedorRelacionados = document.getElementById('productosRelacionados');
+  const productosRelacionados = productos
+    .filter(function (productoRelacionado) {
+      return productoRelacionado.id !== idProducto;
+    })
+    .slice(0, 4);
+
+  productosRelacionados.forEach(function (productoRelacionado) {
+    const tarjeta = document.createElement('article');
+    tarjeta.className = 'producto-card';
+
+    const imagen = document.createElement('div');
+    imagen.className = `producto-img ${productoRelacionado.imagen || ''}`;
+    if (productoRelacionado.foto) {
+      imagen.style.backgroundImage = `url('${productoRelacionado.foto}')`;
+      imagen.style.backgroundSize = 'cover';
+      imagen.style.backgroundPosition = 'center';
+    }
+
+    tarjeta.innerHTML = `
+      <div class="producto-info">
+        <h3>${productoRelacionado.nombre}</h3>
+        <p class="producto-artista">${productoRelacionado.artista}</p>
+        <a href="detalle.html?id=${productoRelacionado.id}" class="producto-detalle">Ver detalle →</a>
+        <div class="producto-footer">
+          <span class="producto-precio">${productoRelacionado.precio}</span>
+        </div>
+      </div>
+    `;
+    tarjeta.prepend(imagen);
+    contenedorRelacionados.appendChild(tarjeta);
+  });
+
+  // Controla la cantidad elegida para el producto que se está viendo.
+  let cantidadProducto = 1;
+  const elementoCantidad = document.getElementById('cantidadProducto');
+  const btnCantidadMenos = document.getElementById('btnCantidadMenos');
+  const btnCantidadMas = document.getElementById('btnCantidadMas');
+
+  function actualizarCantidad(nuevaCantidad) {
+    cantidadProducto = Math.max(1, nuevaCantidad);
+    elementoCantidad.textContent = cantidadProducto;
+  }
+
+  btnCantidadMenos.addEventListener('click', function () {
+    actualizarCantidad(cantidadProducto - 1);
+  });
+
+  btnCantidadMas.addEventListener('click', function () {
+    actualizarCantidad(cantidadProducto + 1);
+  });
+
+  // Agrega el producto actual al carrito persistente y muestra confirmación.
   const btnCarritoDetalle = document.getElementById('btnCarritoDetalle');
   const mensajeCarrito = document.getElementById('mensajeCarrito');
 
   btnCarritoDetalle.addEventListener('click', function () {
+    if (producto) {
+      agregarAlCarrito(producto, cantidadProducto);
+    }
     mensajeCarrito.classList.add('visible');
   });
 </script>

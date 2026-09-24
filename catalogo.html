@@ -214,6 +214,8 @@
 
   </footer>
 
+  <script src="js/productos.js"></script>
+  <script src="js/carrito.js"></script>
   <script>
     const buscadorProductos = document.querySelector('#buscador-productos');
     const tarjetasProducto = document.querySelectorAll('.catalogo-grid .producto-card');
@@ -243,6 +245,17 @@
     // A cada uno le pone el mismo comportamiento simulado
     botonesAgregar.forEach(function (boton) {
       boton.addEventListener('click', function () {
+        const tarjeta = boton.closest('.producto-card');
+        const enlaceDetalle = tarjeta.querySelector('.producto-detalle');
+        const idProducto = Number(new URL(enlaceDetalle.href, window.location.href).searchParams.get('id'));
+        const producto = productos.find(function (item) {
+          return item.id === idProducto;
+        });
+
+        if (producto) {
+          agregarAlCarrito(producto, 1);
+        }
+
         boton.textContent = 'Agregado ✓';
         boton.classList.add('agregado');
 

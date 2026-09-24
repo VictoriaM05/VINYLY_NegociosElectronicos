@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <title>VINYLY - Carrito</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ===== BARRA DE NAVEGACION ===== -->
+  <header class="navbar">
+
+    <a href="landing.html" class="logo">
+      <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <a href="carrito.html" class="active">Carrito</a>
+      <a href="login.html">Iniciar sesión</a>
+      <a href="perfil.html" class="avatar">CV</a>
+    </div>
+
+  </header>
+
+  <!-- ===== CARRITO ===== -->
+  <main class="carrito-pagina">
+    <section class="carrito-encabezado">
+      <p class="catalogo-eyebrow">Tu selección</p>
+      <h1>Carrito</h1>
+      <p>Revisa tus vinilos antes de continuar.</p>
+    </section>
+
+    <section class="carrito-contenido">
+      <div class="carrito-lista" id="carritoLista"></div>
+
+      <section class="carrito-resumen" id="carritoResumen" hidden>
+        <p class="carrito-resumen-linea">
+          <span>Subtotal</span>
+          <strong id="carritoSubtotal">$0 MXN</strong>
+        </p>
+        <p class="carrito-resumen-linea carrito-total">
+          <span>Total</span>
+          <strong id="carritoTotal">$0 MXN</strong>
+        </p>
+        <button class="btn-gradiente" id="btnPagar">Ir a pagar</button>
+        <p class="carrito-mensaje" id="mensajePago" hidden>Próximamente: este es el siguiente paso de tu compra.</p>
+      </section>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+
+    <div class="footer-swirl-1"></div>
+    <div class="footer-swirl-2"></div>
+    <div class="footer-disco"></div>
+
+    <div class="footer-izquierda">
+      <div class="footer-columna">
+        <h4>Enlaces</h4>
+        <a href="landing.html">Inicio</a>
+        <a href="index.html#nosotros">Nosotros</a>
+      </div>
+
+      <div class="footer-columna">
+        <h4>Contacto</h4>
+        <p>******</p>
+        <p>www.vinyly.com</p>
+      </div>
+    </div>
+
+    <div class="footer-columna footer-marca">
+      <h4>VINYLY</h4>
+      <p>Premium Sound, Pop Edition</p>
+    </div>
+
+  </footer>
+
+  <script src="js/carrito.js"></script>
+  <script>
+    const carritoLista = document.getElementById('carritoLista');
+    const carritoResumen = document.getElementById('carritoResumen');
+    const carritoSubtotal = document.getElementById('carritoSubtotal');
+    const carritoTotal = document.getElementById('carritoTotal');
+    const btnPagar = document.getElementById('btnPagar');
+    const mensajePago = document.getElementById('mensajePago');
+
+    // Da formato de moneda a los precios numéricos del carrito.
+    function formatearPrecio(precio) {
+      return `$${Number(precio).toLocaleString('es-MX')} MXN`;
+    }
+
+    // Crea la imagen usando primero la foto real y después la clase de color.
+    function configurarImagenCarrito(elementoImagen, producto) {
+      elementoImagen.className = `producto-img ${producto.imagen || ''}`;
+
+      if (producto.foto) {
+        elementoImagen.style.backgroundImage = `url('${producto.foto}')`;
+        elementoImagen.style.backgroundSize = 'cover';
+        elementoImagen.style.backgroundPosition = 'center';
+      }
+    }
+
+    // Muestra el estado vacío o las filas actuales del carrito.
+    function renderizarCarrito() {
+      const carrito = obtenerCarrito();
+      carritoLista.innerHTML = '';
+      mensajePago.hidden = true;
+
+      if (carrito.length === 0) {
+        carritoResumen.hidden = true;
+        carritoLista.innerHTML = `
+          <div class="carrito-vacio">
+            <h2>Tu carrito está vacío</h2>
+            <p>Aún no has elegido ningún vinilo para tu colección.</p>
+            <a href="catalogo.html" class="btn-gradiente">Ir al catálogo</a>
+          </div>
+        `;
+        return;
+      }
+
+      carritoResumen.hidden = false;
+      let total = 0;
+
+      carrito.forEach(function (producto) {
+        const subtotalProducto = producto.precio * producto.cantidad;
+        total += subtotalProducto;
+
+        const fila = document.createElement('article');
+        fila.className = 'carrito-item';
+        fila.dataset.id = producto.id;
+        fila.innerHTML = `
+          <div class="carrito-producto">
+            <div class="carrito-imagen"></div>
+            <div>
+              <h2>${producto.nombre}</h2>
+              <p class="producto-artista">${producto.artista}</p>
+              <p class="carrito-precio-unitario">${formatearPrecio(producto.precio)} c/u</p>
+            </div>
+          </div>
+          <div class="carrito-cantidad">
+            <button type="button" class="btn-cantidad" data-accion="disminuir" aria-label="Disminuir cantidad">-</button>
+            <span>${producto.cantidad}</span>
+            <button type="button" class="btn-cantidad" data-accion="aumentar" aria-label="Aumentar cantidad">+</button>
+          </div>
+          <strong class="carrito-subtotal">${formatearPrecio(subtotalProducto)}</strong>
+          <button type="button" class="carrito-eliminar" data-accion="eliminar">Eliminar</button>
+        `;
+
+        configurarImagenCarrito(fila.querySelector('.carrito-imagen'), producto);
+        carritoLista.appendChild(fila);
+      });
+
+      carritoSubtotal.textContent = formatearPrecio(total);
+      carritoTotal.textContent = formatearPrecio(total);
+    }
+
+    // Actualiza cantidades o elimina un producto sin recargar la página.
+    carritoLista.addEventListener('click', function (evento) {
+      const boton = evento.target.closest('button[data-accion]');
+      if (!boton) {
+        return;
+      }
+
+      const fila = boton.closest('.carrito-item');
+      const idProducto = Number(fila.dataset.id);
+      const producto = obtenerCarrito().find(function (item) {
+        return item.id === idProducto;
+      });
+
+      if (boton.dataset.accion === 'eliminar') {
+        quitarDelCarrito(idProducto);
+      } else if (producto) {
+        const cambio = boton.dataset.accion === 'aumentar' ? 1 : -1;
+        cambiarCantidad(idProducto, producto.cantidad + cambio);
+      }
+
+      renderizarCarrito();
+    });
+
+    // El pago queda simulado para este bloque del proyecto.
+    btnPagar.addEventListener('click', function () {
+      mensajePago.hidden = false;
+    });
+
+    renderizarCarrito();
+  </script>
+
+</body>
+</html>
