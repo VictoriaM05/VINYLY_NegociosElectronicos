@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>VINYLY Admin - Promociones</title>
+</head>
+<body class="admin-page">
+  <aside class="admin-sidebar">
+    <a class="admin-brand" href="admin-dashboard.html">
+      <img src="resources/icono_vinyly.jpg" alt="">
+      <span>VINYLY <small>ADMIN</small></span>
+    </a>
+    <nav class="admin-nav" aria-label="Menú de administración">
+      <a class="admin-nav-link" href="admin-dashboard.html">Dashboard</a>
+      <a class="admin-nav-link" href="admin-productos.html">Productos</a>
+      <a class="admin-nav-link" href="admin-pedidos.html">Pedidos</a>
+      <a class="admin-nav-link is-active" href="admin-promociones.html" aria-current="page">Promociones</a>
+    </nav>
+    <a class="admin-exit" href="landing.html">Salir <span aria-hidden="true">↗</span></a>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-page-header">
+      <div>
+        <p class="admin-eyebrow">Beneficios para clientes</p>
+        <h1>Promociones</h1>
+      </div>
+      <span class="admin-date">CÓDIGOS DE DEMOSTRACIÓN</span>
+    </header>
+
+    <section class="admin-table-section admin-listing-table" aria-label="Lista de promociones">
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr><th>Promoción</th><th>Código</th><th>Descuento</th><th>Vigencia</th><th>Estado</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Pop de temporada</td><td><code class="admin-promo-code">POP10</code></td><td>10%</td><td>Hasta 31 oct 2026</td><td><span class="admin-status status-delivered">Activa</span></td></tr>
+            <tr><td>Vinilo de bienvenida</td><td><code class="admin-promo-code">VINYLY15</code></td><td>15%</td><td>Hasta 15 nov 2026</td><td><span class="admin-status status-delivered">Activa</span></td></tr>
+            <tr><td>Semana de clásicos</td><td><code class="admin-promo-code">CLASICOS20</code></td><td>20%</td><td>Hasta 20 sep 2026</td><td><span class="admin-status status-cancelled">Finalizada</span></td></tr>
+            <tr><td>Envío de colección</td><td><code class="admin-promo-code">ENVIOGRATIS</code></td><td>Envío gratis</td><td>Hasta 05 dic 2026</td><td><span class="admin-status status-pending">Programada</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

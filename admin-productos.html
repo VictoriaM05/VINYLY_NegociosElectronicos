@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>VINYLY Admin - Productos</title>
+</head>
+<body class="admin-page">
+  <aside class="admin-sidebar">
+    <a class="admin-brand" href="admin-dashboard.html">
+      <img src="resources/icono_vinyly.jpg" alt="">
+      <span>VINYLY <small>ADMIN</small></span>
+    </a>
+    <nav class="admin-nav" aria-label="Menú de administración">
+      <a class="admin-nav-link" href="admin-dashboard.html">Dashboard</a>
+      <a class="admin-nav-link is-active" href="admin-productos.html" aria-current="page">Productos</a>
+      <a class="admin-nav-link" href="admin-pedidos.html">Pedidos</a>
+      <a class="admin-nav-link" href="admin-promociones.html">Promociones</a>
+    </nav>
+    <a class="admin-exit" href="landing.html">Salir <span aria-hidden="true">↗</span></a>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-page-header">
+      <div>
+        <p class="admin-eyebrow">Catálogo de tienda</p>
+        <h1>Productos</h1>
+      </div>
+      <button class="btn-gradiente admin-primary-button" id="add-product-button" type="button">Agregar producto</button>
+    </header>
+
+    <section class="admin-form-panel" id="product-form-panel" aria-labelledby="product-form-title" hidden>
+      <div class="admin-section-heading">
+        <div>
+          <p class="admin-eyebrow">Edición temporal</p>
+          <h2 id="product-form-title">Agregar producto</h2>
+        </div>
+      </div>
+      <form id="product-form" class="admin-product-form">
+        <label>Nombre<input id="product-name" name="nombre" type="text" required></label>
+        <label>Artista<input id="product-artist" name="artista" type="text" required></label>
+        <label>Precio (MXN)<input id="product-price" name="precio" type="number" min="0" step="1" required></label>
+        <label class="admin-form-description">Descripción<textarea id="product-description" name="descripcion" rows="3"></textarea></label>
+        <div class="admin-form-actions">
+          <button class="btn-gradiente admin-primary-button" type="submit">Guardar producto</button>
+          <button class="admin-secondary-button" id="cancel-product-button" type="button">Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <p class="admin-feedback" id="product-feedback" role="status" aria-live="polite"></p>
+
+    <section class="admin-table-section" aria-label="Lista de productos">
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr><th>Nombre</th><th>Artista</th><th>Precio</th><th class="admin-actions-heading">Acciones</th></tr>
+          </thead>
+          <tbody id="products-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/productos.js"></script>
+  <script src="js/admin-productos.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>VINYLY Admin - Dashboard</title>
+</head>
+<body class="admin-page">
+  <aside class="admin-sidebar">
+    <a class="admin-brand" href="admin-dashboard.html">
+      <img src="resources/icono_vinyly.jpg" alt="">
+      <span>VINYLY <small>ADMIN</small></span>
+    </a>
+    <nav class="admin-nav" aria-label="Menú de administración">
+      <a class="admin-nav-link is-active" href="admin-dashboard.html" aria-current="page">Dashboard</a>
+      <a class="admin-nav-link" href="admin-productos.html">Productos</a>
+      <a class="admin-nav-link" href="admin-pedidos.html">Pedidos</a>
+      <a class="admin-nav-link" href="admin-promociones.html">Promociones</a>
+    </nav>
+    <a class="admin-exit" href="landing.html">Salir <span aria-hidden="true">↗</span></a>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-page-header">
+      <div>
+        <p class="admin-eyebrow">Resumen de tienda</p>
+        <h1>Dashboard</h1>
+      </div>
+      <span class="admin-date">PANEL DE ADMINISTRACIÓN</span>
+    </header>
+
+    <section class="admin-stats" aria-label="Resumen de indicadores">
+      <article class="admin-stat">
+        <p class="admin-stat-label">Productos</p>
+        <p class="admin-stat-value">15</p>
+        <p class="admin-stat-note">Álbumes en catálogo</p>
+      </article>
+      <article class="admin-stat">
+        <p class="admin-stat-label">Pedidos</p>
+        <p class="admin-stat-value">5</p>
+        <p class="admin-stat-note">Pedidos registrados</p>
+      </article>
+      <article class="admin-stat admin-stat-highlight">
+        <p class="admin-stat-label">Ingresos</p>
+        <p class="admin-stat-value">$15,200</p>
+        <p class="admin-stat-note">MXN · dato de demostración</p>
+      </article>
+    </section>
+
+    <section class="admin-section">
+      <div class="admin-section-heading">
+        <div>
+          <p class="admin-eyebrow">Actividad reciente</p>
+          <h2>Últimos movimientos</h2>
+        </div>
+        <a class="admin-text-link" href="admin-pedidos.html">Ver pedidos</a>
+      </div>
+      <div class="admin-activity-list">
+        <div class="admin-activity-row"><span class="admin-activity-dot"></span><span><strong>Pedido #105</strong> · Mariana López</span><span class="admin-activity-status">En preparación</span></div>
+        <div class="admin-activity-row"><span class="admin-activity-dot activity-dot-turquoise"></span><span><strong>Pedido #104</strong> · Diego Martínez</span><span class="admin-activity-status">Entregado</span></div>
+        <div class="admin-activity-row"><span class="admin-activity-dot activity-dot-gold"></span><span><strong>Pedido #103</strong> · Sofía Ramírez</span><span class="admin-activity-status">Pendiente</span></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
