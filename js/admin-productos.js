@@ -12,6 +12,55 @@ const formularioProducto = document.getElementById('product-form');
 const panelFormularioProducto = document.getElementById('product-form-panel');
 const tituloFormularioProducto = document.getElementById('product-form-title');
 const mensajeProductos = document.getElementById('product-feedback');
+const modalEliminarProducto = document.getElementById('modalEliminarProducto');
+const textoEliminarProducto = document.getElementById('textoEliminarProducto');
+const botonConfirmarEliminar = document.getElementById('confirmarEliminar');
+let productoPendienteEliminar = null;
+let botonDisparadorEliminar = null;
+
+function cerrarModalEliminar() {
+  modalEliminarProducto.hidden = true;
+  document.body.classList.remove('modal-abierto');
+  productoPendienteEliminar = null;
+
+  if (botonDisparadorEliminar && botonDisparadorEliminar.isConnected) {
+    botonDisparadorEliminar.focus();
+  }
+  botonDisparadorEliminar = null;
+}
+
+function abrirModalEliminar(producto, boton) {
+  productoPendienteEliminar = producto;
+  botonDisparadorEliminar = boton;
+  textoEliminarProducto.textContent = '¿Seguro que quieres eliminar ' + producto.nombre + '? Esta acción no se puede deshacer.';
+  modalEliminarProducto.hidden = false;
+  document.body.classList.add('modal-abierto');
+  botonConfirmarEliminar.focus();
+}
+
+document.getElementById('cerrarModalEliminar').addEventListener('click', cerrarModalEliminar);
+document.getElementById('cancelarEliminar').addEventListener('click', cerrarModalEliminar);
+modalEliminarProducto.addEventListener('click', function (evento) {
+  if (evento.target === modalEliminarProducto) {
+    cerrarModalEliminar();
+  }
+});
+document.addEventListener('keydown', function (evento) {
+  if (evento.key === 'Escape' && !modalEliminarProducto.hidden) {
+    cerrarModalEliminar();
+  }
+});
+botonConfirmarEliminar.addEventListener('click', function () {
+  if (!productoPendienteEliminar) {
+    return;
+  }
+
+  const producto = productoPendienteEliminar;
+  productosAdmin.splice(productosAdmin.indexOf(producto), 1);
+  renderizarProductos();
+  cerrarModalEliminar();
+  mensajeProductos.textContent = producto.nombre + ' se quitó de esta vista.';
+});
 
 function formatearPrecio(precio) {
   const importe = Number(String(precio).replace(/[^\d.]/g, ''));
@@ -53,11 +102,7 @@ function renderizarProductos() {
     botonEliminar.type = 'button';
     botonEliminar.textContent = 'Eliminar';
     botonEliminar.addEventListener('click', function () {
-      if (window.confirm('¿Seguro que quieres eliminar ' + producto.nombre + '?')) {
-        productosAdmin.splice(productosAdmin.indexOf(producto), 1);
-        renderizarProductos();
-        mensajeProductos.textContent = producto.nombre + ' se quitó de esta vista.';
-      }
+      abrirModalEliminar(producto, botonEliminar);
     });
 
     celdaAcciones.append(botonEditar, botonEliminar);

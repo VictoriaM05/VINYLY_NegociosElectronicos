@@ -65,6 +65,19 @@
     </section>
   </main>
 
+  <div class="modal-overlay" id="modalEliminarProducto" hidden>
+    <section class="modal-caja" role="dialog" aria-modal="true" aria-labelledby="tituloEliminarProducto" aria-describedby="textoEliminarProducto">
+      <button class="modal-cerrar" id="cerrarModalEliminar" type="button" aria-label="Cerrar">×</button>
+      <p class="modal-etiqueta">Acción permanente</p>
+      <h2 id="tituloEliminarProducto">Eliminar producto</h2>
+      <p class="modal-texto" id="textoEliminarProducto"></p>
+      <div class="modal-acciones">
+        <button class="modal-boton-secundario" id="cancelarEliminar" type="button">Cancelar</button>
+        <button class="modal-boton-peligro" id="confirmarEliminar" type="button">Eliminar</button>
+      </div>
+    </section>
+  </div>
+
   <script src="js/productos.js"></script>
   <script src="js/admin-productos.js"></script>
 </body>

@@ -60,6 +60,26 @@
     </section>
   </main>
 
+  <div class="modal-overlay" id="modalTerminos" hidden>
+    <section class="modal-caja" role="dialog" aria-modal="true" aria-labelledby="tituloTerminos" aria-describedby="textoTerminos">
+      <button class="modal-cerrar" id="cerrarModalTerminos" type="button" aria-label="Cerrar">×</button>
+      <p class="modal-etiqueta">Un momento antes de pagar</p>
+      <h2 id="tituloTerminos">Antes de continuar</h2>
+      <p class="modal-texto" id="textoTerminos">
+        Al continuar, confirmas que los productos de tu carrito y el total son correctos.
+        Tus datos se utilizarían únicamente para gestionar esta compra simulada.
+      </p>
+      <label class="modal-checkbox">
+        <input id="aceptarTerminos" type="checkbox">
+        <span>He leído y acepto los términos y condiciones y el aviso de privacidad.</span>
+      </label>
+      <div class="modal-acciones">
+        <button class="modal-boton-secundario" id="cancelarTerminos" type="button">Cancelar</button>
+        <button class="btn-gradiente" id="continuarTerminos" type="button" disabled>Continuar</button>
+      </div>
+    </section>
+  </div>
+
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
 
@@ -97,6 +117,50 @@
     const carritoTotal = document.getElementById('carritoTotal');
     const btnPagar = document.getElementById('btnPagar');
     const mensajePago = document.getElementById('mensajePago');
+    const modalTerminos = document.getElementById('modalTerminos');
+    const aceptarTerminos = document.getElementById('aceptarTerminos');
+    const continuarTerminos = document.getElementById('continuarTerminos');
+
+    function cerrarModalTerminos() {
+      modalTerminos.hidden = true;
+      document.body.classList.remove('modal-abierto');
+      aceptarTerminos.checked = false;
+      continuarTerminos.disabled = true;
+      btnPagar.focus();
+    }
+
+    function abrirModalTerminos() {
+      aceptarTerminos.checked = false;
+      continuarTerminos.disabled = true;
+      modalTerminos.hidden = false;
+      document.body.classList.add('modal-abierto');
+      document.getElementById('cerrarModalTerminos').focus();
+    }
+
+    aceptarTerminos.addEventListener('change', function () {
+      continuarTerminos.disabled = !aceptarTerminos.checked;
+    });
+
+    document.getElementById('cerrarModalTerminos').addEventListener('click', cerrarModalTerminos);
+    document.getElementById('cancelarTerminos').addEventListener('click', cerrarModalTerminos);
+    modalTerminos.addEventListener('click', function (evento) {
+      if (evento.target === modalTerminos) {
+        cerrarModalTerminos();
+      }
+    });
+    continuarTerminos.addEventListener('click', function () {
+      if (!aceptarTerminos.checked) {
+        return;
+      }
+
+      cerrarModalTerminos();
+      mensajePago.hidden = false;
+    });
+    document.addEventListener('keydown', function (evento) {
+      if (evento.key === 'Escape' && !modalTerminos.hidden) {
+        cerrarModalTerminos();
+      }
+    });
 
     // Da formato de moneda a los precios numéricos del carrito.
     function formatearPrecio(precio) {
@@ -193,7 +257,7 @@
 
     // El pago queda simulado para este bloque del proyecto.
     btnPagar.addEventListener('click', function () {
-      mensajePago.hidden = false;
+      abrirModalTerminos();
     });
 
     renderizarCarrito();
