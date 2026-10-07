@@ -36,12 +36,30 @@
 
   <!-- ===== BIENVENIDA ===== -->
   <section class="bienvenida">
-    <p class="bienvenida-eyebrow">La colección que se escucha</p>
-    <h1>Elige una historia. <span class="acento">Ponla a girar.</span></h1>
-    <p class="bienvenida-sub">
-      Vinilos seleccionados para convertir cada escucha en un momento especial.
-    </p>
- 
+    <div class="bienvenida-contenido">
+      <p class="bienvenida-eyebrow">La colección que se escucha</p>
+      <h1>Elige una historia. <span class="acento">Ponla a girar.</span></h1>
+      <p class="bienvenida-sub">
+        Vinilos seleccionados para convertir cada escucha en un momento especial.
+      </p>
+
+      <div class="bienvenida-features">
+        <div class="feature">
+          <span class="feature-icono" aria-hidden="true">📦</span>
+          <p>Envío</p>
+        </div>
+        <div class="feature">
+          <span class="feature-icono" aria-hidden="true">✦</span>
+          <p>Ediciones limitadas</p>
+        </div>
+        <div class="feature">
+          <span class="feature-icono" aria-hidden="true">♫</span>
+          <p>Calidad</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bienvenida-collage" role="group" aria-label="Portadas de la colección"></div>
   </section>
  
   <!-- ===== DESTACADOS ===== -->
@@ -170,6 +188,23 @@
   <script src="js/productos.js"></script>
   <script src="js/carrito.js"></script>
   <script>
+    const collageBienvenida = document.querySelector('.bienvenida-collage');
+    const portadasBienvenida = productos.filter(function (producto) {
+      return [6, 10, 13, 14].includes(producto.id);
+    });
+
+    portadasBienvenida.forEach(function (producto, indice) {
+      const portada = document.createElement('figure');
+      portada.className = 'bienvenida-portada portada-' + (indice + 1);
+
+      const imagen = document.createElement('img');
+      imagen.src = producto.foto;
+      imagen.alt = producto.nombre + ' — ' + producto.artista;
+
+      portada.appendChild(imagen);
+      collageBienvenida.appendChild(portada);
+    });
+
     // Conecta cada botón destacado con el producto correspondiente del arreglo.
     const botonesDestacados = document.querySelectorAll('.destacados-grid .btn-agregar');
 
