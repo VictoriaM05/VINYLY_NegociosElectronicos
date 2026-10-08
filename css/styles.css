@@ -1386,14 +1386,37 @@ a {
 }
 
 .admin-feedback {
-  min-height: 20px;
-  margin: 18px 0 8px;
-  color: var(--turquesa);
-  font-size: 13px;
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 900;
+  max-width: 340px;
+  padding: 14px 20px;
+  border-left: 4px solid var(--turquesa);
+  border-radius: 14px;
+  background: var(--oscuro);
+  color: var(--blanco);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+  font-size: 14px;
   font-weight: 600;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+.admin-feedback::before {
+  content: '✓ ';
+  color: var(--turquesa);
+}
+
+.admin-feedback.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .admin-table-section {
+  margin-top: 28px;
   overflow: hidden;
   border: 1px solid rgba(20, 20, 26, 0.07);
   border-radius: 12px;

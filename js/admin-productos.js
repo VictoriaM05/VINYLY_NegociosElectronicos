@@ -17,6 +17,16 @@ const textoEliminarProducto = document.getElementById('textoEliminarProducto');
 const botonConfirmarEliminar = document.getElementById('confirmarEliminar');
 let productoPendienteEliminar = null;
 let botonDisparadorEliminar = null;
+let temporizadorAviso = null;
+
+function mostrarAviso(texto) {
+  mensajeProductos.textContent = texto;
+  mensajeProductos.classList.add('visible');
+  clearTimeout(temporizadorAviso);
+  temporizadorAviso = setTimeout(function () {
+    mensajeProductos.classList.remove('visible');
+  }, 3000);
+}
 
 function cerrarModalEliminar() {
   modalEliminarProducto.hidden = true;
@@ -59,7 +69,7 @@ botonConfirmarEliminar.addEventListener('click', function () {
   productosAdmin.splice(productosAdmin.indexOf(producto), 1);
   renderizarProductos();
   cerrarModalEliminar();
-  mensajeProductos.textContent = producto.nombre + ' se quitó de esta vista.';
+  mostrarAviso(producto.nombre + ' se eliminó correctamente.');
 });
 
 function formatearPrecio(precio) {
@@ -121,7 +131,7 @@ function abrirFormulario(producto) {
     ? String(producto.precio).replace(/[^\d.]/g, '')
     : '';
   formularioProducto.elements.descripcion.value = producto ? producto.descripcion || '' : '';
-  mensajeProductos.textContent = '';
+  mensajeProductos.classList.remove('visible');
   panelFormularioProducto.hidden = false;
   formularioProducto.elements.nombre.focus();
 }
@@ -152,7 +162,7 @@ formularioProducto.addEventListener('submit', function (event) {
       return elemento.id === productoEnEdicion;
     });
     Object.assign(producto, { nombre, artista, precio, descripcion });
-    mensajeProductos.textContent = nombre + ' se actualizó en esta vista.';
+    mostrarAviso(nombre + ' se actualizó correctamente.');
   } else {
     productosAdmin.push({
       id: siguienteIdProducto++,
@@ -163,7 +173,7 @@ formularioProducto.addEventListener('submit', function (event) {
       imagen: '',
       foto: ''
     });
-    mensajeProductos.textContent = nombre + ' se agregó a esta vista.';
+    mostrarAviso(nombre + ' se agregó correctamente.');
   }
 
   renderizarProductos();
