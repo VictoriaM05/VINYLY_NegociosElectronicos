@@ -59,7 +59,7 @@
       </div>
     </div>
 
-    <div class="bienvenida-collage" role="group" aria-label="Portadas de la colección"></div>
+    <img class="bienvenida-foto" src="resources/tienda-pop.jpg" alt="" aria-hidden="true">
   </section>
  
   <!-- ===== DESTACADOS ===== -->
@@ -124,26 +124,65 @@
     </div>
 
     <div class="nosotros-texto">
-      <p class="nosotros-eyebrow">Nuestra historia</p>
-      <h2>Somos VINYLY</h2>
-      <p class="nosotros-descripcion">
-        Nacimos de una obsesión simple: el pop suena distinto en vinilo.
-        Conectamos a fans con ediciones prensadas de sus
-        artistas favoritos, cuidando cada detalle del sonido y del empaque.
-      </p>
-
-      <p class="nosotros-mision">
-        <strong>Misión:</strong> Conectar a los fans del pop con vinilos de edición limitada, prensados con alta calidad y seleccionados para que cada escucha se sienta especial.
-      </p>
-
-      <div class="nosotros-info">
-        <p><span>📍 Ubicación</span> Aguascalientes, Ags., México</p>
-        <p><span>🕒 Horario</span> Lunes a viernes, 9:00 a 18:00</p>
+      <div class="nosotros-encabezado nosotros-reveal">
+        <p class="nosotros-eyebrow">De la aguja a tu colección</p>
+        <h2>El pop también <span class="acento">gira distinto.</span></h2>
+        <p class="nosotros-descripcion">
+          Nacimos de una obsesión simple: el pop suena distinto en vinilo.
+          Reunimos ediciones para fans que disfrutan cada detalle, del primer surco
+          al arte de la portada.
+        </p>
       </div>
 
-      <div class="nosotros-datos">
+      <ol class="nosotros-recorrido nosotros-reveal" aria-label="El recorrido de VINYLY">
+        <li>
+          <span class="recorrido-punto" aria-hidden="true"></span>
+          <div>
+            <h3>Una obsesión por el pop</h3>
+            <p>La idea de escucharlo de una forma distinta.</p>
+          </div>
+        </li>
+        <li>
+          <span class="recorrido-punto" aria-hidden="true"></span>
+          <div>
+            <h3>Una selección con intención</h3>
+            <p>Ediciones y prensados elegidos para fans.</p>
+          </div>
+        </li>
+        <li>
+          <span class="recorrido-punto" aria-hidden="true"></span>
+          <div>
+            <h3>Hoy, una historia por lado</h3>
+            <p>Tu próxima escucha favorita puede empezar aquí.</p>
+          </div>
+        </li>
+      </ol>
+
+      <blockquote class="nosotros-mision nosotros-reveal">
+        <span class="mision-etiqueta">Nuestra misión</span>
+        <p>Conectar a los fans del pop con vinilos de edición limitada y alta calidad, para que cada escucha se sienta especial.</p>
+      </blockquote>
+
+      <div class="nosotros-info nosotros-reveal">
+        <p>
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path>
+            <circle cx="12" cy="10" r="2.5"></circle>
+          </svg>
+          <span><strong>Ubicación</strong>Aguascalientes, Ags., México</span>
+        </p>
+        <p>
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 2"></path>
+          </svg>
+          <span><strong>Horario</strong>Lunes a viernes, 9:00 a 18:00</span>
+        </p>
+      </div>
+
+      <div class="nosotros-datos nosotros-reveal">
         <div class="dato">
-          <h3>500+</h3>
+          <h3><span class="nosotros-contador" data-cuenta="500">500</span>+</h3>
           <p>Títulos disponibles</p>
         </div>
         <div class="dato">
@@ -188,22 +227,56 @@
   <script src="js/productos.js"></script>
   <script src="js/carrito.js"></script>
   <script>
-    const collageBienvenida = document.querySelector('.bienvenida-collage');
-    const portadasBienvenida = productos.filter(function (producto) {
-      return [6, 10, 13, 14].includes(producto.id);
-    });
+    // Anima los bloques y el contador al entrar en pantalla.
+    const seccionNosotros = document.querySelector('.nosotros');
+    const elementosNosotros = seccionNosotros.querySelectorAll('.nosotros-reveal');
+    const contadorNosotros = seccionNosotros.querySelector('.nosotros-contador');
+    const movimientoReducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    portadasBienvenida.forEach(function (producto, indice) {
-      const portada = document.createElement('figure');
-      portada.className = 'bienvenida-portada portada-' + (indice + 1);
+    if (!movimientoReducido && 'IntersectionObserver' in window) {
+      elementosNosotros.forEach(function (elemento, indice) {
+        elemento.style.setProperty('--retraso-entrada', (indice * 110) + 'ms');
+      });
 
-      const imagen = document.createElement('img');
-      imagen.src = producto.foto;
-      imagen.alt = producto.nombre + ' — ' + producto.artista;
+      seccionNosotros.classList.add('nosotros-con-animacion');
+      contadorNosotros.textContent = '0';
 
-      portada.appendChild(imagen);
-      collageBienvenida.appendChild(portada);
-    });
+      const observadorNosotros = new IntersectionObserver(function (entradas, observador) {
+        entradas.forEach(function (entrada) {
+          if (!entrada.isIntersecting) {
+            return;
+          }
+
+          if (entrada.target.matches('.nosotros-reveal')) {
+            entrada.target.classList.add('nosotros-visible');
+            observador.unobserve(entrada.target);
+          }
+
+          if (entrada.target.matches('.nosotros-contador')) {
+            const valorFinal = Number(contadorNosotros.dataset.cuenta);
+            const inicio = performance.now();
+            const duracion = 1400;
+
+            function actualizarContador(ahora) {
+              const progreso = Math.min((ahora - inicio) / duracion, 1);
+              contadorNosotros.textContent = String(Math.floor(valorFinal * progreso));
+
+              if (progreso < 1) {
+                requestAnimationFrame(actualizarContador);
+              }
+            }
+
+            requestAnimationFrame(actualizarContador);
+            observador.unobserve(entrada.target);
+          }
+        });
+      }, { threshold: 0.2 });
+
+      elementosNosotros.forEach(function (elemento) {
+        observadorNosotros.observe(elemento);
+      });
+      observadorNosotros.observe(contadorNosotros);
+    }
 
     // Conecta cada botón destacado con el producto correspondiente del arreglo.
     const botonesDestacados = document.querySelectorAll('.destacados-grid .btn-agregar');
