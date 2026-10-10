@@ -36,35 +36,105 @@
 
   <!-- ===== ENCABEZADO DE CONTACTO ===== -->
   <section class="contacto-hero">
-    <p class="contacto-eyebrow">¿Tienes alguna duda?</p>
-    <h1>Contáctanos</h1>
-    <p class="contacto-sub">Escríbenos y te respondemos en menos de 24 horas.</p>
+
+    <!-- el disco firma, girando y medio escondido a la derecha -->
+    <div class="disco" aria-hidden="true"></div>
+    <span class="brillo brillo-1" aria-hidden="true"></span>
+    <span class="brillo brillo-2" aria-hidden="true"></span>
+
+    <div class="contacto-hero-texto">
+      <p class="contacto-eyebrow">¿Tienes alguna duda?</p>
+      <h1><span class="acento">Contáctanos</span></h1>
+      <p class="contacto-sub">Pregúntanos por tu pedido, por un álbum que no encuentras o para colaborar. Nos encanta hablar de música.</p>
+      <span class="contacto-badge"><span class="contacto-punto"></span> Respondemos en menos de 24 horas</span>
+    </div>
+
   </section>
 
   <!-- ===== INFORMACIÓN + FORMULARIO ===== -->
   <section class="contacto-contenido">
+    <div class="contacto-caja">
 
-    <div class="contacto-info">
-      <h3>Información</h3>
-      <p><span class="contacto-icono">📍</span> Aguascalientes, Ags., México</p>
-      <p><span class="contacto-icono">📞</span> (300) 456-7890</p>
-      <p><span class="contacto-icono">🕒</span> Lunes a viernes, 9:00 - 18:00</p>
+      <aside class="contacto-info">
+        <h2>Información</h2>
+        <p class="contacto-info-sub">Aquí estamos para ayudarte con tus vinilos.</p>
 
-      <h3>Síguenos</h3>
-      <div class="contacto-redes">
-        <a href="#">Instagram</a>
-        <a href="#">TikTok</a>
-        <a href="#">Twitter</a>
+        <ul class="contacto-datos">
+          <li class="contacto-dato">
+            <span class="contacto-icono">📍</span>
+            <div>
+              <span class="contacto-dato-label">Ubicación</span>
+              <p class="contacto-dato-valor">Aguascalientes, Ags., México</p>
+            </div>
+          </li>
+          <li class="contacto-dato">
+            <span class="contacto-icono">📞</span>
+            <div>
+              <span class="contacto-dato-label">Teléfono</span>
+              <a href="tel:3004567890" class="contacto-dato-valor">(300) 456-7890</a>
+            </div>
+          </li>
+          <li class="contacto-dato">
+            <span class="contacto-icono">🕒</span>
+            <div>
+              <span class="contacto-dato-label">Horario</span>
+              <p class="contacto-dato-valor">Lunes a viernes, 9:00 - 18:00</p>
+            </div>
+          </li>
+        </ul>
+
+        <h3>Síguenos</h3>
+        <div class="contacto-redes">
+          <a href="#">Instagram ↗</a>
+          <a href="#">TikTok ↗</a>
+          <a href="#">Twitter ↗</a>
+        </div>
+      </aside>
+
+      <div class="contacto-form-panel">
+
+        <form class="contacto-form" id="formContacto">
+          <h2>Envíanos un mensaje</h2>
+          <p class="contacto-form-sub">Cuéntanos qué necesitas y te contestamos pronto.</p>
+
+          <fieldset class="contacto-asuntos">
+            <legend>¿Sobre qué es?</legend>
+            <div class="contacto-chips">
+              <label class="chip"><input type="radio" name="asunto" value="pedido" checked><span>📦 Mi pedido</span></label>
+              <label class="chip"><input type="radio" name="asunto" value="album"><span>💿 Un álbum</span></label>
+              <label class="chip"><input type="radio" name="asunto" value="colaboracion"><span>🤝 Colaboración</span></label>
+              <label class="chip"><input type="radio" name="asunto" value="otro"><span>✨ Otro</span></label>
+            </div>
+          </fieldset>
+
+          <div class="campo">
+            <input type="text" id="cNombre" placeholder=" " autocomplete="name">
+            <label for="cNombre">Tu nombre</label>
+          </div>
+
+          <div class="campo">
+            <input type="text" id="cCorreo" placeholder=" " autocomplete="email" inputmode="email">
+            <label for="cCorreo">Correo electrónico</label>
+          </div>
+
+          <div class="campo">
+            <textarea id="cMensaje" rows="5" placeholder=" "></textarea>
+            <label for="cMensaje">Cuéntanos qué necesitas...</label>
+          </div>
+
+          <button type="submit" class="btn-gradiente contacto-enviar">Enviar mensaje</button>
+        </form>
+
+        <!-- pantalla de éxito: arranca oculta y se muestra al enviar -->
+        <div class="contacto-exito" id="contactoExito" hidden>
+          <div class="disco" aria-hidden="true"></div>
+          <h2>Mensaje enviado</h2>
+          <p>Gracias<span id="exitoNombre"></span>. En una tienda real te responderíamos en menos de 24 horas.</p>
+          <button type="button" class="contacto-otro" id="otroMensaje">Enviar otro mensaje</button>
+        </div>
+
       </div>
     </div>
-
-    <form class="contacto-form">
-      <input type="text" placeholder="Tu nombre">
-      <input type="text" placeholder="Correo electrónico">
-      <textarea placeholder="Cuéntanos qué necesitas..." rows="5"></textarea>
-      <button type="submit" class="btn-gradiente">Enviar mensaje</button>
-    </form>
-
   </section>
 
   <!-- ===== FOOTER ===== -->
@@ -97,13 +167,27 @@
   </footer>
 
   <script>
-    // Agarra el formulario de contacto
-    const formContacto = document.querySelector('.contacto-form');
+    const formContacto = document.getElementById('formContacto');
+    const contactoExito = document.getElementById('contactoExito');
+    const exitoNombre = document.getElementById('exitoNombre');
+    const otroMensaje = document.getElementById('otroMensaje');
 
     formContacto.addEventListener('submit', function (evento) {
       evento.preventDefault(); // solo simulación, no manda nada de verdad
 
-      formContacto.innerHTML = '<p class="contacto-gracias">Mensaje enviado 💌</p>';
+      // textContent (no innerHTML) para que nunca se interprete como HTML lo que escriba la persona
+      const nombre = document.getElementById('cNombre').value.trim();
+      exitoNombre.textContent = nombre ? ', ' + nombre : '';
+
+      formContacto.hidden = true;
+      contactoExito.hidden = false;
+    });
+
+    // "Enviar otro mensaje": limpia el formulario y regresa a él
+    otroMensaje.addEventListener('click', function () {
+      formContacto.reset();
+      contactoExito.hidden = true;
+      formContacto.hidden = false;
     });
   </script>
 

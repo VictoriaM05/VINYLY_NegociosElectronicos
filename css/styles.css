@@ -2426,162 +2426,503 @@ body.modal-abierto {
 
 /* CONTACTO */
 .contacto-hero {
-  text-align: center;
-  padding: 80px 40px 40px;
-  background: var(--crema);
+  position: relative;
+  overflow: hidden; /* recorta el disco que se sale por la derecha */
+  padding: 90px clamp(32px, 7vw, 100px) 170px;
+  color: var(--blanco);
+  background:
+    radial-gradient(circle at 12% 20%, rgba(224, 96, 158, 0.28), transparent 40%),
+    radial-gradient(circle at 88% 30%, rgba(124, 92, 214, 0.35), transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(242, 193, 78, 0.14), transparent 40%),
+    var(--oscuro);
+}
+
+/* textura de puntitos, igual que en el resto de los fondos oscuros */
+.contacto-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* reutiliza .disco (el que ya gira) pero lo acomoda a la derecha */
+.contacto-hero .disco {
+  position: absolute;
+  top: 50%;
+  right: clamp(-200px, -10vw, -80px);
+  width: 380px;
+  height: 380px;
+  margin: -190px 0 0; /* centra en vertical sin usar transform (el giro ya lo usa) */
+}
+
+.contacto-hero-texto {
+  position: relative;
+  z-index: 1; /* encima de la textura y del disco */
+  max-width: 560px;
+  animation: aparecer 0.7s ease both;
 }
 
 .contacto-eyebrow {
   font-family: 'Space Mono', monospace;
   font-size: 12px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--morado);
+  color: var(--dorado);
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
 
 .contacto-hero h1 {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 40px;
-  margin-bottom: 12px;
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  margin-bottom: 18px;
 }
 
 .contacto-sub {
-  color: var(--gris);
-  max-width: 480px;
-  margin: 0 auto;
+  max-width: 520px;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.contacto-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  padding: 10px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(4px);
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.contacto-punto {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--dorado);
+  box-shadow: 0 0 0 6px rgba(242, 193, 78, 0.18);
 }
 
 .contacto-contenido {
-  display: flex;
-  align-items: center;
-  gap: 60px;
-  flex-wrap: wrap;
-  padding: 60px 60px 90px;
+  position: relative;
+  padding: 60px clamp(24px, 4vw, 52px) 90px;
+  background: var(--crema);
+}
+
+.contacto-caja {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1.1fr);
+  gap: 28px;
+  max-width: 1180px;
+  margin: 0 auto;
+  border-radius: 28px;
+  overflow: hidden;
   background: var(--blanco);
+  box-shadow: 0 40px 80px rgba(20, 20, 26, 0.25);
 }
 
+/* ----- panel izquierdo: información ----- */
 .contacto-info {
-  flex: 1;
-  min-width: 260px;
+  position: relative;
+  overflow: hidden;
+  padding: 48px 40px;
+  color: var(--blanco);
+  background:
+    radial-gradient(circle at 85% 12%, rgba(242, 193, 78, 0.35), transparent 45%),
+    linear-gradient(150deg, var(--morado), var(--rosa));
 }
 
-.contacto-info h3 {
+.contacto-info::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* disco decorativo cortado en la esquina de abajo */
+.contacto-info::after {
+  content: '';
+  position: absolute;
+  right: -90px;
+  bottom: -90px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: repeating-radial-gradient(
+    circle at 50% 50%,
+    rgba(20, 20, 26, 0.35) 0px, rgba(20, 20, 26, 0.35) 3px,
+    rgba(20, 20, 26, 0.2) 3px, rgba(20, 20, 26, 0.2) 6px
+  );
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+/* el contenido va encima de la textura y del disco decorativo */
+.contacto-info > * {
+  position: relative;
+  z-index: 1;
+}
+
+.contacto-info h2 {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 24px;
-  color: var(--oscuro);
-  margin-bottom: 14px;
+  font-size: 30px;
+  margin-bottom: 8px;
 }
 
-.contacto-info h3:not(:first-child) {
-  margin-top: 48px;
+.contacto-info-sub {
+  margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
 }
 
-.contacto-info p {
+.contacto-datos {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 36px;
+  list-style: none;
+  padding: 0;
+}
+
+.contacto-dato {
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: var(--gris);
-  font-size: 16px;
-  margin-bottom: 14px;
-}
-
-.contacto-icono {
-  width: 38px;
-  height: 38px;
-  flex: 0 0 38px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: rgba(124, 92, 214, 0.12);
-  font-size: 17px;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  background: rgba(20, 20, 26, 0.22);
   transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.contacto-info p:nth-of-type(2) .contacto-icono {
-  background: rgba(224, 96, 158, 0.14);
+.contacto-dato:hover {
+  transform: translateX(4px);
+  background: rgba(20, 20, 26, 0.32);
 }
 
-.contacto-info p:nth-of-type(3) .contacto-icono {
-  background: rgba(63, 191, 176, 0.14);
+.contacto-icono {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 19px;
 }
 
-.contacto-info p:hover .contacto-icono {
-  transform: scale(1.08);
-  background: rgba(124, 92, 214, 0.22);
+.contacto-dato-label {
+  display: block;
+  margin-bottom: 3px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.contacto-dato-valor {
+  display: block;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.contacto-info h3 {
+  margin-bottom: 14px;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .contacto-redes {
   display: flex;
-  gap: 10px;
   flex-wrap: wrap;
+  gap: 10px;
 }
 
 .contacto-redes a {
   padding: 10px 16px;
-  border: 1px solid rgba(20, 20, 26, 0.15);
   border-radius: 999px;
+  background: var(--blanco);
   font-family: 'Space Mono', monospace;
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 700;
   color: var(--morado);
-  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  transition: transform 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .contacto-redes a:hover {
+  transform: translateY(-3px);
   color: var(--rosa);
-  border-color: var(--rosa);
-  background: rgba(224, 96, 158, 0.08);
-  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(20, 20, 26, 0.2);
+}
+
+/* ----- panel derecho: formulario ----- */
+.contacto-form-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 44px;
 }
 
 .contacto-form {
-  flex: 1;
-  min-width: 280px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 40px;
-  background: var(--blanco);
-  border-radius: 20px;
-  box-shadow: 0 25px 50px rgba(20, 20, 26, 0.08);
+  gap: 18px;
 }
 
-.contacto-form input,
-.contacto-form textarea {
-  padding: 14px 18px;
-  border-radius: 12px;
+/* .contacto-form tiene display:flex, así que hay que decirle que [hidden] sí oculta */
+.contacto-form[hidden] {
+  display: none;
+}
+
+.contacto-form h2,
+.contacto-exito h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px;
+}
+
+.contacto-form-sub {
+  margin-top: -8px;
+  color: var(--gris);
+}
+
+/* chips de asunto (son radios escondidos + un span que se pinta) */
+.contacto-asuntos {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.contacto-asuntos legend {
+  padding: 0;
+  margin-bottom: 10px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gris);
+}
+
+.contacto-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  position: relative;
+  cursor: pointer;
+}
+
+.chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip span {
+  display: inline-block;
+  padding: 9px 14px;
   border: 1px solid rgba(20, 20, 26, 0.15);
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  resize: none; /* que no se pueda estirar el textarea jalando la esquina */
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.contacto-form input:focus,
-.contacto-form textarea:focus {
+.chip:hover span {
+  border-color: var(--morado);
+  transform: translateY(-2px);
+}
+
+.chip input:checked + span {
+  border-color: transparent;
+  background: linear-gradient(90deg, var(--morado), var(--rosa));
+  color: var(--blanco);
+  box-shadow: 0 8px 18px rgba(124, 92, 214, 0.3);
+}
+
+.chip input:focus-visible + span {
+  outline: 2px solid var(--morado);
+  outline-offset: 2px;
+}
+
+/* campos con etiqueta flotante */
+.campo {
+  position: relative;
+}
+
+.campo input,
+.campo textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 22px 18px 8px;
+  border: 1px solid rgba(20, 20, 26, 0.15);
+  border-radius: 14px;
+  background: var(--blanco);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: var(--oscuro);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campo textarea {
+  min-height: 130px;
+  resize: none; /* que no se pueda estirar jalando la esquina */
+}
+
+.campo label {
+  position: absolute;
+  top: 17px;
+  left: 18px;
+  color: var(--gris);
+  font-size: 14px;
+  pointer-events: none; /* para que el clic pase al campo de abajo */
+  transform-origin: left top;
+  transition: transform 0.18s ease, color 0.18s ease;
+}
+
+/* la etiqueta sube cuando el campo tiene foco o ya tiene texto
+   (:placeholder-shown funciona porque cada campo trae placeholder=" ") */
+.campo input:focus + label,
+.campo input:not(:placeholder-shown) + label,
+.campo textarea:focus + label,
+.campo textarea:not(:placeholder-shown) + label {
+  transform: translateY(-10px) scale(0.78);
+}
+
+.campo input:focus,
+.campo textarea:focus {
   outline: none;
   border-color: var(--morado);
+  box-shadow: 0 0 0 4px rgba(124, 92, 214, 0.14);
 }
 
-.contacto-gracias {
-  min-height: 250px;
-  display: flex;
+.campo input:focus + label,
+.campo textarea:focus + label {
+  color: var(--morado);
+}
+
+.contacto-enviar {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 40px;
-  border: 1px solid rgba(124, 92, 214, 0.16);
-  border-radius: 16px;
-  background: rgba(246, 243, 238, 0.85);
-  font-family: 'Space Grotesk', sans-serif;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 16px 28px;
+  font-size: 16px;
+}
+
+.contacto-enviar::after {
+  content: '→';
+  transition: transform 0.2s ease;
+}
+
+.contacto-enviar:hover::after {
+  transform: translateX(4px);
+}
+
+/* ----- pantalla de éxito ----- */
+.contacto-exito {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 0;
+  text-align: center;
+  animation: aparecer 0.5s ease both;
+}
+
+.contacto-exito[hidden] {
+  display: none;
+}
+
+.contacto-exito .disco {
+  width: 110px;
+  height: 110px;
+  margin: 0 0 8px;
+}
+
+.contacto-exito p {
+  max-width: 340px;
+  margin-bottom: 10px;
+  color: var(--gris);
+  line-height: 1.6;
+}
+
+.contacto-otro {
+  padding: 12px 22px;
+  border: 1px solid rgba(124, 92, 214, 0.4);
+  border-radius: 999px;
+  background: transparent;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   font-weight: 700;
   color: var(--morado);
-  font-size: 24px;
-  line-height: 1.25;
-  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.contacto-otro:hover {
+  background: rgba(124, 92, 214, 0.08);
+  transform: translateY(-2px);
+}
+
+/* ----- responsive ----- */
+@media (max-width: 900px) {
+  .contacto-caja {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .contacto-hero {
+    padding: 70px 24px 150px;
+  }
+
+  .contacto-hero .disco {
+    right: -110px;
+    width: 240px;
+    height: 240px;
+    margin-top: -120px;
+    opacity: 0.35; /* de fondo, para que no tape el texto */
+  }
+
+  .contacto-info,
+  .contacto-form-panel {
+    padding: 36px 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contacto-hero .disco,
+  .contacto-exito .disco,
+  .contacto-punto,
+  .contacto-hero-texto,
+  .contacto-exito {
+    animation: none;
+  }
 }
 
 /* PERFIL */
@@ -2812,9 +3153,6 @@ body.modal-abierto {
   .hero-imagen::before {
     width: 260px;
     height: 260px;
-  }
-  .contacto-contenido {
-    padding: 40px 30px 60px;
   }
   .carrito-contenido {
     grid-template-columns: 1fr;
