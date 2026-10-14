@@ -22,6 +22,7 @@
     <ul class="nav-links">
       <li><a href="index.html">Inicio</a></li>
       <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="promociones.html">Promociones</a></li>
       <li><a href="index.html#nosotros">Nosotros</a></li>
       <li><a href="contacto.html">Contacto</a></li>
     </ul>
@@ -50,6 +51,13 @@
           <span>Subtotal</span>
           <strong id="carritoSubtotal">$0 MXN</strong>
         </p>
+        <p class="carrito-resumen-linea carrito-descuento" id="carritoDescuentoLinea" hidden>
+          <span id="carritoDescuentoEtiqueta"></span>
+          <strong id="carritoDescuento"></strong>
+        </p>
+        <button type="button" id="btnQuitarDescuento" class="carrito-quitar-descuento" hidden>Quitar descuento</button>
+        <p id="carritoPromoNota" class="carrito-promo-nota" hidden></p>
+        <a href="promociones.html" id="enlacePromos" class="carrito-promo-enlace">¿Tienes un código? Ver promociones</a>
         <p class="carrito-resumen-linea carrito-total">
           <span>Total</span>
           <strong id="carritoTotal">$0 MXN</strong>
@@ -110,11 +118,18 @@
   </footer>
 
   <script src="js/carrito.js"></script>
+  <script src="js/promociones.js"></script>
   <script>
     const carritoLista = document.getElementById('carritoLista');
     const carritoResumen = document.getElementById('carritoResumen');
     const carritoSubtotal = document.getElementById('carritoSubtotal');
     const carritoTotal = document.getElementById('carritoTotal');
+    const carritoDescuentoLinea = document.getElementById('carritoDescuentoLinea');
+    const carritoDescuentoEtiqueta = document.getElementById('carritoDescuentoEtiqueta');
+    const carritoDescuento = document.getElementById('carritoDescuento');
+    const btnQuitarDescuento = document.getElementById('btnQuitarDescuento');
+    const carritoPromoNota = document.getElementById('carritoPromoNota');
+    const enlacePromos = document.getElementById('enlacePromos');
     const btnPagar = document.getElementById('btnPagar');
     const mensajePago = document.getElementById('mensajePago');
     const modalTerminos = document.getElementById('modalTerminos');
@@ -228,9 +243,39 @@
         carritoLista.appendChild(fila);
       });
 
+      const subtotal = total;
+      const promocion = obtenerDescuentoAplicado();
+      const descuento = promocion ? Math.min(calcularDescuento(promocion, carrito), subtotal) : 0;
+
       carritoSubtotal.textContent = formatearPrecio(total);
-      carritoTotal.textContent = formatearPrecio(total);
+
+      if (promocion) {
+        carritoDescuentoEtiqueta.textContent = `Descuento (${promocion.codigo})`;
+        carritoDescuento.textContent = `−${formatearPrecio(descuento)}`;
+        carritoDescuentoLinea.hidden = promocion.tipo === 'dosPorUno' && descuento === 0;
+        btnQuitarDescuento.hidden = false;
+        enlacePromos.hidden = true;
+        carritoPromoNota.textContent = '';
+        carritoPromoNota.hidden = !(promocion.tipo === 'dosPorUno' && descuento === 0);
+
+        if (promocion.tipo === 'dosPorUno' && descuento === 0) {
+          carritoPromoNota.textContent = 'Agrega otro vinilo para aprovechar tu 2x1.';
+        }
+      } else {
+        carritoDescuentoLinea.hidden = true;
+        btnQuitarDescuento.hidden = true;
+        carritoPromoNota.textContent = '';
+        carritoPromoNota.hidden = true;
+        enlacePromos.hidden = false;
+      }
+
+      carritoTotal.textContent = formatearPrecio(Math.max(0, subtotal - descuento));
     }
+
+    btnQuitarDescuento.addEventListener('click', function () {
+      quitarDescuento();
+      renderizarCarrito();
+    });
 
     // Actualiza cantidades o elimina un producto sin recargar la página.
     carritoLista.addEventListener('click', function (evento) {

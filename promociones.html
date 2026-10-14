@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <title>VINYLY - Promociones</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ===== BARRA DE NAVEGACION ===== -->
+  <header class="navbar">
+
+    <a href="landing.html" class="logo">
+      <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="promociones.html" class="active">Promociones</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <a href="carrito.html">Carrito</a>
+      <a href="login.html">Iniciar sesión</a>
+      <a href="perfil.html" class="avatar">CV</a>
+    </div>
+
+  </header>
+
+  <!-- ===== ENCABEZADO DE PROMOCIONES ===== -->
+  <section class="promos-hero">
+
+    <div class="disco" aria-hidden="true"></div>
+    <span class="brillo brillo-1" aria-hidden="true"></span>
+    <span class="brillo brillo-2" aria-hidden="true"></span>
+
+    <div class="promos-hero-texto">
+      <p class="promos-eyebrow">Beneficios activos</p>
+      <h1><span class="acento">Promociones</span></h1>
+      <p class="promos-sub">Elige tu código, aplícalo y ahorra en tu próximo vinilo. Hay promos pop para todos los gustos.</p>
+    </div>
+
+  </section>
+
+  <!-- ===== PROMOS + CÓDIGO ===== -->
+  <main class="promos-contenido">
+
+    <div class="promos-grid" id="promosGrid"></div>
+
+    <section class="promos-codigo-caja">
+      <h2>¿Tienes un código de descuento?</h2>
+      <p class="promos-codigo-sub">Escríbelo aquí o toca el código de una promo para usarlo.</p>
+
+      <form class="promos-form" id="formCodigo">
+        <input type="text" id="inputCodigo" placeholder="Ingresa tu código" autocomplete="off" aria-label="Código de descuento">
+        <button type="submit" class="btn-gradiente">Aplicar</button>
+      </form>
+
+      <p class="promos-mensaje" id="promosMensaje" role="status" aria-live="polite" hidden></p>
+      <p class="promos-detalle" id="promosDetalle"></p>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+
+    <div class="footer-swirl-1"></div>
+    <div class="footer-swirl-2"></div>
+    <div class="footer-disco"></div>
+
+    <div class="footer-izquierda">
+      <div class="footer-columna">
+        <h4>Enlaces</h4>
+        <a href="landing.html">Inicio</a>
+        <a href="index.html#nosotros">Nosotros</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+
+      <div class="footer-columna">
+        <h4>Contacto</h4>
+        <p>******</p>
+        <p>www.vinyly.com</p>
+      </div>
+    </div>
+
+    <div class="footer-columna footer-marca">
+      <h4>VINYLY</h4>
+      <p>Premium Sound, Pop Edition</p>
+    </div>
+
+  </footer>
+
+  <script src="js/carrito.js"></script>
+  <script src="js/promociones.js"></script>
+  <script>
+    const promosGrid = document.getElementById('promosGrid');
+    const formCodigo = document.getElementById('formCodigo');
+    const inputCodigo = document.getElementById('inputCodigo');
+    const promosMensaje = document.getElementById('promosMensaje');
+    const promosDetalle = document.getElementById('promosDetalle');
+
+    function formatearPrecio(precio) {
+      return `$${Number(precio).toLocaleString('es-MX')} MXN`;
+    }
+
+    // Dibuja las tarjetas a partir del arreglo PROMOCIONES (una sola fuente de datos).
+    function renderizarPromos() {
+      const aplicada = obtenerDescuentoAplicado();
+
+      promosGrid.innerHTML = PROMOCIONES.map(function (promo) {
+        const esAplicada = aplicada && aplicada.codigo === promo.codigo;
+        return `
+          <article class="promo-card${esAplicada ? ' aplicada' : ''}">
+            <div class="promo-valor">
+              <span class="promo-icono" aria-hidden="true">${promo.icono}</span>
+              <strong>${promo.etiqueta}</strong>
+            </div>
+            <div class="promo-cuerpo">
+              <h2>${promo.titulo}</h2>
+              <p>${promo.descripcion}</p>
+              <button type="button" class="promo-codigo" data-codigo="${promo.codigo}">
+                <span>${promo.codigo}</span>
+                <small>${esAplicada ? 'Aplicado ✓' : 'Usar'}</small>
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function mostrarMensaje(texto, tipo) {
+      promosMensaje.textContent = texto;
+      promosMensaje.className = `promos-mensaje ${tipo}`;
+      promosMensaje.hidden = false;
+    }
+
+    // Explica cuánto se ahorra con el carrito que la persona tiene ahorita.
+    function mostrarDetalle(promocion) {
+      const carrito = obtenerCarrito();
+
+      if (carrito.length === 0) {
+        promosDetalle.innerHTML = `Código ${promocion.codigo} activo. Se aplicará cuando agregues vinilos a tu <a href="carrito.html">carrito</a>.`;
+        return;
+      }
+
+      const descuento = calcularDescuento(promocion, carrito);
+
+      if (descuento === 0) {
+        promosDetalle.innerHTML = `Código ${promocion.codigo} activo. Agrega otro vinilo a tu <a href="catalogo.html">catálogo</a> para aprovechar el descuento.`;
+        return;
+      }
+
+      const total = calcularSubtotal(carrito) - descuento;
+      promosDetalle.innerHTML = `Ahorras ${formatearPrecio(descuento)}: tu total sería ${formatearPrecio(total)}. <a href="carrito.html">Ver mi carrito</a>`;
+    }
+
+    formCodigo.addEventListener('submit', function (evento) {
+      evento.preventDefault();
+      promosDetalle.textContent = '';
+
+      const codigo = inputCodigo.value.trim();
+      if (!codigo) {
+        mostrarMensaje('Escribe un código para aplicarlo.', 'error');
+        return;
+      }
+
+      const promocion = buscarPromocion(codigo);
+      if (!promocion) {
+        mostrarMensaje('Código no válido (simulado)', 'error');
+        return;
+      }
+
+      aplicarDescuento(promocion);
+      mostrarMensaje('Descuento aplicado (simulado)', 'ok');
+      mostrarDetalle(promocion);
+      renderizarPromos();
+    });
+
+    // Tocar el código de una tarjeta lo pone en la caja de abajo.
+    promosGrid.addEventListener('click', function (evento) {
+      const boton = evento.target.closest('.promo-codigo');
+      if (!boton) {
+        return;
+      }
+
+      inputCodigo.value = boton.dataset.codigo;
+      inputCodigo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      inputCodigo.focus({ preventScroll: true });
+    });
+
+    renderizarPromos();
+
+    // Si ya había un código aplicado de antes, se vuelve a explicar.
+    const descuentoActivo = obtenerDescuentoAplicado();
+    if (descuentoActivo) {
+      mostrarDetalle(descuentoActivo);
+    }
+  </script>
+</body>
+</html>
