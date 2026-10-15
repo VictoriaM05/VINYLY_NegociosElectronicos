@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <title>VINYLY - Comunidad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ===== BARRA DE NAVEGACIÓN ===== -->
+  <header class="navbar">
+
+    <a href="landing.html" class="logo">
+      <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="campana.html">Campaña</a></li>
+      <li><a href="promociones.html">Promociones</a></li>
+      <li><a href="comunidad.html" class="active">Comunidad</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <a href="carrito.html">Carrito</a>
+      <a href="login.html">Iniciar sesión</a>
+      <a href="perfil.html" class="avatar">CV</a>
+    </div>
+
+  </header>
+
+  <!-- ===== HERO DE COMUNIDAD ===== -->
+  <section class="comunidad-hero">
+    <div class="disco" aria-hidden="true"></div>
+    <span class="brillo brillo-1" aria-hidden="true"></span>
+    <span class="brillo brillo-2" aria-hidden="true"></span>
+
+    <div class="comunidad-hero-texto">
+      <p class="comunidad-eyebrow">Tu opinión cuenta</p>
+      <h1><span class="acento">Comunidad</span></h1>
+      <p class="comunidad-hero-descripcion">Comparte tu experiencia con la comunidad VINYLY</p>
+      <p class="comunidad-contador" id="comunidadContador" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <main class="comunidad-contenido">
+    <section class="comunidad-formulario-caja" aria-labelledby="comunidadFormularioTitulo">
+      <h2 id="comunidadFormularioTitulo">Deja tu comentario</h2>
+      <p class="comunidad-formulario-intro">Nos encanta saber qué suena en tu colección.</p>
+
+      <form class="comunidad-formulario" id="formComunidad" novalidate>
+        <div class="campo">
+          <input type="text" id="comunidadNombre" placeholder=" " maxlength="30" autocomplete="name">
+          <label for="comunidadNombre">Tu nombre</label>
+        </div>
+
+        <div class="campo">
+          <textarea id="comunidadTexto" placeholder=" " maxlength="280" rows="5"></textarea>
+          <label for="comunidadTexto">Escribe tu comentario...</label>
+        </div>
+
+        <div class="comunidad-formulario-final">
+          <span class="comunidad-contador-caracteres" id="comunidadCaracteres">0/280</span>
+          <button type="submit" class="btn-gradiente">Publicar</button>
+        </div>
+        <p class="comunidad-mensaje" id="comunidadMensaje" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="comunidad-lista-seccion" aria-labelledby="comunidadListaTitulo">
+      <div class="comunidad-lista-encabezado">
+        <p class="comunidad-lista-eyebrow">La conversación</p>
+        <h2 id="comunidadListaTitulo">Voces de la comunidad</h2>
+      </div>
+      <div class="comunidad-lista" id="comunidadLista"></div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+
+    <div class="footer-swirl-1"></div>
+    <div class="footer-swirl-2"></div>
+    <div class="footer-disco"></div>
+
+    <div class="footer-izquierda">
+      <div class="footer-columna">
+        <h4>Enlaces</h4>
+        <a href="landing.html">Inicio</a>
+        <a href="index.html#nosotros">Nosotros</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+
+      <div class="footer-columna">
+        <h4>Contacto</h4>
+        <p>******</p>
+        <p>www.vinyly.com</p>
+      </div>
+    </div>
+
+    <div class="footer-columna footer-marca">
+      <h4>VINYLY</h4>
+      <p>Premium Sound, Pop Edition</p>
+    </div>
+
+  </footer>
+
+  <script>
+    const comentariosIniciales = [
+      {
+        nombre: 'Mariana López',
+        fecha: '12 oct 2026',
+        texto: 'Mi pedido llegó muy bien protegido y el vinilo suena increíble. Ya estoy pensando cuál será el siguiente.'
+      },
+      {
+        nombre: 'Jorge Ramírez',
+        fecha: '10 oct 2026',
+        texto: 'Me encanta escuchar mis álbumes favoritos en vinilo; la experiencia se siente mucho más especial.'
+      },
+      {
+        nombre: 'Sofía Torres',
+        fecha: '8 oct 2026',
+        texto: 'La portada está preciosa y el empaque llegó impecable. VINYLY ya es mi lugar favorito para buscar discos.'
+      },
+      {
+        nombre: 'Emilio Cruz',
+        fecha: '6 oct 2026',
+        texto: 'Encontré una edición que llevaba tiempo buscando. Todo el proceso fue sencillo y rápido.'
+      }
+    ];
+    const claveComentarios = 'comunidadVinyly';
+    const comentariosGuardados = [];
+    const idsComentarios = new Set();
+    const formulario = document.getElementById('formComunidad');
+    const campoNombre = document.getElementById('comunidadNombre');
+    const campoTexto = document.getElementById('comunidadTexto');
+    const contadorCaracteres = document.getElementById('comunidadCaracteres');
+    const mensaje = document.getElementById('comunidadMensaje');
+    const listaComentarios = document.getElementById('comunidadLista');
+    const contadorComentarios = document.getElementById('comunidadContador');
+    let temporizadorMensaje;
+
+    function crearIdComentario() {
+      let id;
+      do {
+        id = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+      } while (idsComentarios.has(id));
+      return id;
+    }
+
+    try {
+      const comentariosAlmacenados = JSON.parse(window.localStorage.getItem(claveComentarios) || '[]');
+      if (Array.isArray(comentariosAlmacenados)) {
+        let requiereMigracion = false;
+        comentariosAlmacenados.forEach(function (comentario) {
+          if (
+            comentario &&
+            typeof comentario.nombre === 'string' &&
+            typeof comentario.fecha === 'string' &&
+            typeof comentario.texto === 'string'
+          ) {
+            const comentarioNormalizado = {
+              nombre: comentario.nombre,
+              fecha: comentario.fecha,
+              texto: comentario.texto,
+              id: typeof comentario.id === 'string' && comentario.id
+                ? comentario.id
+                : crearIdComentario()
+            };
+
+            if (idsComentarios.has(comentarioNormalizado.id)) {
+              comentarioNormalizado.id = crearIdComentario();
+              requiereMigracion = true;
+            }
+            if (comentarioNormalizado.id !== comentario.id) {
+              requiereMigracion = true;
+            }
+
+            idsComentarios.add(comentarioNormalizado.id);
+            comentariosGuardados.push(comentarioNormalizado);
+          }
+        });
+
+        if (requiereMigracion) {
+          window.localStorage.setItem(claveComentarios, JSON.stringify(comentariosGuardados));
+        }
+      }
+    } catch (error) {
+      // El almacenamiento puede no estar disponible; la sesión sigue funcionando en memoria.
+    }
+
+    function obtenerIniciales(nombre) {
+      return nombre
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(function (parte) {
+          return parte.charAt(0).toLocaleUpperCase('es-MX');
+        })
+        .join('');
+    }
+
+    function obtenerColorAvatar(nombre) {
+      const sumaLetras = Array.from(nombre).reduce(function (suma, letra) {
+        return suma + (letra.codePointAt(0) || 0);
+      }, 0);
+      return ['morado', 'rosa', 'dorado', 'turquesa'][sumaLetras % 4];
+    }
+
+    function crearTarjetaComentario(comentario, propio, nuevo) {
+      const tarjeta = document.createElement('article');
+      tarjeta.className = `comunidad-comentario${nuevo ? ' comunidad-comentario-nuevo' : ''}`;
+      if (propio) {
+        tarjeta.dataset.id = comentario.id;
+      }
+
+      const avatar = document.createElement('span');
+      avatar.className = `comunidad-avatar comunidad-avatar-${obtenerColorAvatar(comentario.nombre)}`;
+      avatar.setAttribute('aria-hidden', 'true');
+      avatar.textContent = obtenerIniciales(comentario.nombre);
+
+      const cuerpo = document.createElement('div');
+      cuerpo.className = 'comunidad-comentario-cuerpo';
+
+      const encabezado = document.createElement('div');
+      encabezado.className = 'comunidad-comentario-encabezado';
+
+      const nombre = document.createElement('h3');
+      nombre.className = 'comunidad-comentario-nombre';
+      nombre.textContent = comentario.nombre;
+
+      const identidad = document.createElement('div');
+      identidad.className = 'comunidad-comentario-identidad';
+      identidad.appendChild(nombre);
+
+      if (propio) {
+        const etiquetaPropio = document.createElement('span');
+        etiquetaPropio.className = 'comunidad-etiqueta-tu';
+        etiquetaPropio.textContent = 'Tú';
+        identidad.appendChild(etiquetaPropio);
+      }
+
+      const fecha = document.createElement('time');
+      fecha.className = 'comunidad-comentario-fecha';
+      fecha.textContent = comentario.fecha;
+
+      const meta = document.createElement('div');
+      meta.className = 'comunidad-comentario-meta';
+      meta.appendChild(fecha);
+
+      if (propio) {
+        const botonEliminar = document.createElement('button');
+        botonEliminar.type = 'button';
+        botonEliminar.className = 'comunidad-eliminar';
+        botonEliminar.setAttribute('aria-label', 'Eliminar tu comentario');
+        botonEliminar.textContent = 'Eliminar';
+        meta.appendChild(botonEliminar);
+      }
+
+      const texto = document.createElement('p');
+      texto.className = 'comunidad-comentario-texto';
+      texto.textContent = comentario.texto;
+
+      encabezado.append(identidad, meta);
+      cuerpo.append(encabezado, texto);
+      tarjeta.append(avatar, cuerpo);
+      return tarjeta;
+    }
+
+    function actualizarContadorComentarios() {
+      const total = comentariosGuardados.length + comentariosIniciales.length;
+      contadorComentarios.textContent = `${total} ${total === 1 ? 'comentario' : 'comentarios'}`;
+    }
+
+    function renderizarComentarios() {
+      comentariosGuardados.slice().reverse().forEach(function (comentario) {
+        listaComentarios.appendChild(crearTarjetaComentario(comentario, true, false));
+      });
+      comentariosIniciales.forEach(function (comentario) {
+        listaComentarios.appendChild(crearTarjetaComentario(comentario, false, false));
+      });
+      actualizarContadorComentarios();
+    }
+
+    function mostrarMensaje(texto) {
+      window.clearTimeout(temporizadorMensaje);
+      mensaje.className = 'comunidad-mensaje';
+      mensaje.textContent = texto;
+      mensaje.classList.add('comunidad-mensaje-exito');
+      temporizadorMensaje = window.setTimeout(function () {
+        mensaje.textContent = '';
+        mensaje.className = 'comunidad-mensaje';
+      }, 3000);
+    }
+
+    campoTexto.addEventListener('input', function () {
+      contadorCaracteres.textContent = `${campoTexto.value.length}/280`;
+      if (mensaje.textContent) {
+        mensaje.textContent = '';
+        mensaje.className = 'comunidad-mensaje';
+        window.clearTimeout(temporizadorMensaje);
+      }
+    });
+
+    listaComentarios.addEventListener('click', function (evento) {
+      const botonEliminar = evento.target.closest('.comunidad-eliminar');
+      if (!botonEliminar) {
+        return;
+      }
+
+      const tarjeta = botonEliminar.closest('[data-id]');
+      if (!tarjeta) {
+        return;
+      }
+
+      const indiceComentario = comentariosGuardados.findIndex(function (comentario) {
+        return comentario.id === tarjeta.dataset.id;
+      });
+      if (indiceComentario === -1) {
+        return;
+      }
+
+      comentariosGuardados.splice(indiceComentario, 1);
+      idsComentarios.delete(tarjeta.dataset.id);
+      try {
+        window.localStorage.setItem(claveComentarios, JSON.stringify(comentariosGuardados));
+      } catch (error) {
+        // La lista se actualiza en memoria aunque el almacenamiento no esté disponible.
+      }
+
+      tarjeta.remove();
+      actualizarContadorComentarios();
+      mostrarMensaje('Comentario eliminado');
+    });
+
+    formulario.addEventListener('submit', function (evento) {
+      evento.preventDefault();
+      const textoComentario = campoTexto.value.trim();
+
+      if (textoComentario) {
+        const idComentario = crearIdComentario();
+        const comentario = {
+          id: idComentario,
+          nombre: campoNombre.value.trim() || 'Anónimo',
+          fecha: new Date().toLocaleDateString('es-MX', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+          }),
+          texto: textoComentario
+        };
+
+        comentariosGuardados.push(comentario);
+        idsComentarios.add(idComentario);
+        try {
+          window.localStorage.setItem(claveComentarios, JSON.stringify(comentariosGuardados));
+        } catch (error) {
+          // El comentario permanece visible durante esta sesión aunque no se pueda guardar.
+        }
+
+        listaComentarios.prepend(crearTarjetaComentario(comentario, true, true));
+        actualizarContadorComentarios();
+      }
+
+      campoNombre.value = '';
+      campoTexto.value = '';
+      contadorCaracteres.textContent = '0/280';
+      mostrarMensaje('Comentario publicado correctamente.');
+    });
+
+    renderizarComentarios();
+  </script>
+</body>
+</html>

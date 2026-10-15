@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <title>VINYLY - Campaña</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ===== BARRA DE NAVEGACIÓN ===== -->
+  <header class="navbar">
+
+    <a href="landing.html" class="logo">
+      <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="campana.html" class="active">Campaña</a></li>
+      <li><a href="promociones.html">Promociones</a></li>
+      <li><a href="comunidad.html">Comunidad</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <a href="carrito.html">Carrito</a>
+      <a href="login.html">Iniciar sesión</a>
+      <a href="perfil.html" class="avatar">CV</a>
+    </div>
+
+  </header>
+
+  <!-- ===== CAMPAÑA DESTACADA ===== -->
+  <section class="campana-hero">
+    <span class="brillo brillo-1" aria-hidden="true"></span>
+    <span class="brillo brillo-2" aria-hidden="true"></span>
+
+    <div class="campana-hero-contenido">
+      <div class="campana-producto" id="campanaProducto" hidden>
+        <div class="campana-texto">
+          <p class="campana-eyebrow">Campaña · Edición destacada</p>
+          <h1 class="campana-titulo" id="campanaNombre"></h1>
+          <p class="campana-artista" id="campanaArtista"></p>
+          <p class="campana-descripcion" id="campanaDescripcion"></p>
+          <p class="campana-precio acento" id="campanaPrecio"></p>
+
+          <div class="campana-badges">
+            <span class="campana-badge">Edición destacada</span>
+            <span class="campana-badge">Vinilo 180 g</span>
+          </div>
+
+          <div class="campana-acciones">
+            <button type="button" class="btn-gradiente" data-campana-comprar>Comprar ahora</button>
+            <a class="campana-detalle" id="campanaDetalle" href="#">Ver detalle</a>
+          </div>
+        </div>
+
+        <div class="campana-visual" aria-label="Portada del álbum destacado">
+          <div class="disco campana-disco" aria-hidden="true"></div>
+          <div class="campana-portada" id="campanaPortada" role="img"></div>
+        </div>
+      </div>
+
+      <div class="campana-error" id="campanaError" hidden>
+        <p class="campana-eyebrow">Una pequeña pausa en la música</p>
+        <h1>No encontramos el álbum destacado</h1>
+        <p>Explora el catálogo para descubrir tu próximo vinilo favorito.</p>
+        <a class="btn-gradiente" href="catalogo.html">Ver catálogo</a>
+      </div>
+    </div>
+  </section>
+
+  <main class="campana-contenido">
+    <section class="campana-beneficios" aria-label="Beneficios de la edición">
+      <article class="campana-beneficio">
+        <span class="campana-beneficio-icono" aria-hidden="true">🎧</span>
+        <div>
+          <h2>Audio que se siente</h2>
+          <p>Vinilo de 180 g para una escucha premium.</p>
+        </div>
+      </article>
+      <article class="campana-beneficio">
+        <span class="campana-beneficio-icono" aria-hidden="true">📦</span>
+        <div>
+          <h2>Llega impecable</h2>
+          <p>Empaque reforzado, listo para viajar.</p>
+        </div>
+      </article>
+      <article class="campana-beneficio">
+        <span class="campana-beneficio-icono" aria-hidden="true">✨</span>
+        <div>
+          <h2>Una edición especial</h2>
+          <p>Un favorito pop para sumar a tu colección.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="campana-testimonios">
+      <div class="campana-seccion-encabezado">
+        <p class="campana-seccion-eyebrow">Aguja abajo, volumen arriba</p>
+        <h2>Lo que dicen nuestros clientes</h2>
+      </div>
+
+      <div class="campana-testimonios-grid">
+        <article class="campana-testimonio">
+          <div class="campana-estrellas" aria-label="5 de 5 estrellas">★★★★★</div>
+          <blockquote>“El sonido tiene una calidez increíble; ahora sí escucho mis discos completos.”</blockquote>
+          <div class="campana-cliente">
+            <span class="campana-avatar campana-avatar-morado" aria-hidden="true">LM</span>
+            <div>
+              <p class="campana-cliente-nombre">Lucía M.</p>
+              <p class="campana-verificado">Cliente verificado (simulado)</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="campana-testimonio">
+          <div class="campana-estrellas" aria-label="5 de 5 estrellas">★★★★★</div>
+          <blockquote>“Llegó muy bien protegido y la portada se ve preciosa en mi colección.”</blockquote>
+          <div class="campana-cliente">
+            <span class="campana-avatar campana-avatar-rosa" aria-hidden="true">DR</span>
+            <div>
+              <p class="campana-cliente-nombre">Diego R.</p>
+              <p class="campana-verificado">Cliente verificado (simulado)</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="campana-testimonio">
+          <div class="campana-estrellas" aria-label="5 de 5 estrellas">★★★★★</div>
+          <blockquote>“Mi ritual favorito: poner la aguja y dejar que el lado A haga lo suyo.”</blockquote>
+          <div class="campana-cliente">
+            <span class="campana-avatar campana-avatar-turquesa" aria-hidden="true">AS</span>
+            <div>
+              <p class="campana-cliente-nombre">Ana S.</p>
+              <p class="campana-verificado">Cliente verificado (simulado)</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="campana-cierre">
+      <p class="campana-seccion-eyebrow">Tu próxima escucha empieza aquí</p>
+      <h2>¿Listo para escucharlo?</h2>
+      <div class="campana-cierre-acciones">
+        <button type="button" class="btn-gradiente" data-campana-comprar hidden>Comprar ahora</button>
+        <a href="promociones.html">Ver promociones</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+
+    <div class="footer-swirl-1"></div>
+    <div class="footer-swirl-2"></div>
+    <div class="footer-disco"></div>
+
+    <div class="footer-izquierda">
+      <div class="footer-columna">
+        <h4>Enlaces</h4>
+        <a href="landing.html">Inicio</a>
+        <a href="index.html#nosotros">Nosotros</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+
+      <div class="footer-columna">
+        <h4>Contacto</h4>
+        <p>******</p>
+        <p>www.vinyly.com</p>
+      </div>
+    </div>
+
+    <div class="footer-columna footer-marca">
+      <h4>VINYLY</h4>
+      <p>Premium Sound, Pop Edition</p>
+    </div>
+
+  </footer>
+
+  <script src="js/productos.js"></script>
+  <script src="js/carrito.js"></script>
+  <script>
+    const idProductoDestacado = 4;
+    const productoDestacado = productos.find(function (producto) {
+      return producto.id === idProductoDestacado;
+    });
+
+    const seccionProducto = document.getElementById('campanaProducto');
+    const mensajeError = document.getElementById('campanaError');
+    const botonesCompra = document.querySelectorAll('[data-campana-comprar]');
+
+    if (productoDestacado) {
+      const portada = document.getElementById('campanaPortada');
+
+      document.getElementById('campanaNombre').textContent = productoDestacado.nombre;
+      document.getElementById('campanaArtista').textContent = productoDestacado.artista;
+      document.getElementById('campanaPrecio').textContent = productoDestacado.precio;
+      document.getElementById('campanaDescripcion').textContent = productoDestacado.descripcion;
+      document.getElementById('campanaDetalle').href = `detalle.html?id=${productoDestacado.id}`;
+
+      if (productoDestacado.foto) {
+        portada.style.backgroundImage = `url('${productoDestacado.foto}')`;
+        portada.style.backgroundSize = 'cover';
+        portada.style.backgroundPosition = 'center';
+      } else if (productoDestacado.imagen) {
+        portada.classList.add(productoDestacado.imagen);
+      }
+
+      portada.setAttribute('aria-label', `Portada de ${productoDestacado.nombre}`);
+      seccionProducto.hidden = false;
+      botonesCompra.forEach(function (boton) {
+        boton.hidden = false;
+        boton.addEventListener('click', function () {
+          agregarAlCarrito(productoDestacado, 1);
+          window.location.href = 'carrito.html';
+        });
+      });
+    } else {
+      mensajeError.hidden = false;
+    }
+  </script>
+</body>
+</html>
