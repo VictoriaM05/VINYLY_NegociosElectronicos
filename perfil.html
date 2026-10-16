@@ -37,41 +37,128 @@
 
   </header>
 
-  <!-- ===== PERFIL ===== -->
-  <main class="perfil">
-    <div class="perfil-contenido">
-      <header class="perfil-header">
-        <div class="perfil-avatar">PE</div>
-        <div>
+  <!-- ===== HERO DEL PERFIL ===== -->
+  <section class="perfil-hero">
+    <div class="disco" aria-hidden="true"></div>
+    <span class="brillo brillo-1" aria-hidden="true"></span>
+    <span class="brillo brillo-2" aria-hidden="true"></span>
+
+    <div class="perfil-hero-contenido">
+      <div class="perfil-hero-identidad">
+        <div class="perfil-hero-avatar-anillo">
+          <div class="perfil-avatar">PV</div>
+        </div>
+        <div class="perfil-hero-texto">
           <p class="perfil-eyebrow">Mi perfil</p>
           <h1>Pedrito Vinilo</h1>
+          <p class="perfil-hero-correo">pedrito@vinyly.com</p>
+          <span class="perfil-hero-pill">Coleccionista pop ★</span>
         </div>
-      </header>
+      </div>
 
+      <div class="perfil-hero-contadores" aria-label="Resumen de actividad">
+        <div class="perfil-hero-contador">
+          <span class="perfil-hero-contador-numero" id="perfilHeroCompras">0</span>
+          <span class="perfil-hero-contador-etiqueta">Compras</span>
+        </div>
+        <div class="perfil-hero-contador">
+          <span class="perfil-hero-contador-numero" id="perfilHeroPublicaciones">0</span>
+          <span class="perfil-hero-contador-etiqueta">Publicaciones</span>
+        </div>
+        <div class="perfil-hero-contador">
+          <span class="perfil-hero-contador-numero" id="perfilHeroComentarios">0</span>
+          <span class="perfil-hero-contador-etiqueta">Comentarios</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DATOS Y ACTIVIDAD ===== -->
+  <main class="perfil">
+    <div class="perfil-contenido">
       <div class="perfil-grid">
-        <section class="perfil-card">
-          <h2>Mis datos</h2>
+        <section class="perfil-card perfil-datos-card" aria-labelledby="perfilDatosTitulo">
+          <p class="perfil-card-eyebrow">Tu espacio</p>
+          <h2 id="perfilDatosTitulo">Mis datos</h2>
           <div class="perfil-dato">
-            <span class="perfil-dato-label">Nombre</span>
-            <span class="perfil-dato-valor">Pedrito Vinilo</span>
+            <span class="perfil-dato-icono" aria-hidden="true">👤</span>
+            <div class="perfil-dato-contenido">
+              <span class="perfil-dato-label">Nombre</span>
+              <span class="perfil-dato-valor">Pedrito Vinilo</span>
+            </div>
           </div>
           <div class="perfil-dato">
-            <span class="perfil-dato-label">Correo</span>
-            <span class="perfil-dato-valor">pedrito@vinyly.com</span>
+            <span class="perfil-dato-icono" aria-hidden="true">✉️</span>
+            <div class="perfil-dato-contenido">
+              <span class="perfil-dato-label">Correo</span>
+              <span class="perfil-dato-valor">pedrito@vinyly.com</span>
+            </div>
           </div>
           <div class="perfil-dato">
-            <span class="perfil-dato-label">Miembro desde</span>
-            <span class="perfil-dato-valor">15 de septiembre de 2025</span>
+            <span class="perfil-dato-icono" aria-hidden="true">📅</span>
+            <div class="perfil-dato-contenido">
+              <span class="perfil-dato-label">Miembro desde</span>
+              <span class="perfil-dato-valor">15 de septiembre de 2025</span>
+            </div>
           </div>
         </section>
 
-        <section class="perfil-card perfil-compras">
-          <h2>Mis compras</h2>
-          <span class="perfil-badge">Próximamente</span>
+        <section class="perfil-card perfil-actividad-card" aria-labelledby="perfilActividadTitulo">
+          <p class="perfil-card-eyebrow">Tu recorrido VINYLY</p>
+          <h2 id="perfilActividadTitulo">Mi actividad</h2>
+
+          <div class="perfil-actividad-lista">
+            <details class="perfil-actividad-item" id="perfilActividadCompras" open>
+              <summary class="perfil-actividad-resumen">
+                <span class="perfil-actividad-icono" aria-hidden="true">🛍️</span>
+                <span class="perfil-actividad-descripcion">
+                  <span class="perfil-actividad-titulo">Mis compras</span>
+                  <span class="perfil-actividad-subtitulo">Historial de pedidos</span>
+                </span>
+                <span class="perfil-actividad-contador" id="perfilActividadComprasContador">0</span>
+                <span class="perfil-actividad-flecha" aria-hidden="true">⌄</span>
+              </summary>
+              <div class="perfil-actividad-panel">
+                <div class="perfil-actividad-pedidos" id="perfilActividadComprasLista"></div>
+              </div>
+            </details>
+
+            <details class="perfil-actividad-item" id="perfilActividadPublicaciones">
+              <summary class="perfil-actividad-resumen">
+                <span class="perfil-actividad-icono" aria-hidden="true">💿</span>
+                <span class="perfil-actividad-descripcion">
+                  <span class="perfil-actividad-titulo">Mis publicaciones</span>
+                  <span class="perfil-actividad-subtitulo">Vinilos que has publicado</span>
+                </span>
+                <span class="perfil-actividad-contador" id="perfilActividadPublicacionesContador">0</span>
+                <span class="perfil-actividad-flecha" aria-hidden="true">⌄</span>
+              </summary>
+              <div class="perfil-actividad-panel">
+                <div class="perfil-actividad-publicaciones" id="perfilActividadPublicacionesLista"></div>
+              </div>
+            </details>
+
+            <details class="perfil-actividad-item" id="perfilActividadComentarios">
+              <summary class="perfil-actividad-resumen">
+                <span class="perfil-actividad-icono" aria-hidden="true">💬</span>
+                <span class="perfil-actividad-descripcion">
+                  <span class="perfil-actividad-titulo">Mis comentarios</span>
+                  <span class="perfil-actividad-subtitulo">Lo que has dicho en la Comunidad</span>
+                </span>
+                <span class="perfil-actividad-contador" id="perfilActividadComentariosContador">0</span>
+                <span class="perfil-actividad-flecha" aria-hidden="true">⌄</span>
+              </summary>
+              <div class="perfil-actividad-panel">
+                <div class="perfil-actividad-comentarios" id="perfilActividadComentariosLista"></div>
+              </div>
+            </details>
+          </div>
         </section>
       </div>
 
-      <button type="button" class="btn-salir" id="btnSalir">Cerrar sesión</button>
+      <div class="perfil-salir">
+        <button type="button" class="btn-salir" id="btnSalir">Cerrar sesión</button>
+      </div>
     </div>
   </main>
 
@@ -104,6 +191,160 @@
 
   </footer>
 
+  <script src="js/productos.js"></script>
+  <script>
+    const idsProductosPublicados = [4, 6];
+    const claveComentariosPerfil = 'comunidadVinyly';
+    const pedidosPerfil = [
+      { numero: '#VNY-1042', fecha: '12 de octubre de 2026', cantidad: 2, total: '$1,420 MXN', estado: 'Entregado' },
+      { numero: '#VNY-1038', fecha: '28 de septiembre de 2026', cantidad: 1, total: '$780 MXN', estado: 'En camino' },
+      { numero: '#VNY-1029', fecha: '14 de septiembre de 2026', cantidad: 1, total: '$950 MXN', estado: 'Entregado' }
+    ];
+
+    const listaPedidosPerfil = document.getElementById('perfilActividadComprasLista');
+    const listaPublicacionesPerfil = document.getElementById('perfilActividadPublicacionesLista');
+    const listaComentariosPerfil = document.getElementById('perfilActividadComentariosLista');
+
+    function crearElementoPerfil(etiqueta, clase, texto) {
+      const elemento = document.createElement(etiqueta);
+      elemento.className = clase;
+      elemento.textContent = texto;
+      return elemento;
+    }
+
+    function renderizarPedidosPerfil() {
+      pedidosPerfil.forEach(function (pedido) {
+        const articulo = document.createElement('article');
+        articulo.className = 'perfil-actividad-pedido';
+
+        const encabezado = document.createElement('div');
+        encabezado.className = 'perfil-actividad-pedido-encabezado';
+        encabezado.appendChild(crearElementoPerfil('strong', 'perfil-actividad-pedido-numero', pedido.numero));
+        encabezado.appendChild(crearElementoPerfil(
+          'span',
+          `perfil-actividad-estado ${pedido.estado === 'Entregado' ? 'perfil-actividad-estado-entregado' : 'perfil-actividad-estado-camino'}`,
+          pedido.estado
+        ));
+
+        const detalle = crearElementoPerfil(
+          'p',
+          'perfil-actividad-pedido-detalle',
+          `${pedido.fecha} · ${pedido.cantidad} ${pedido.cantidad === 1 ? 'vinilo' : 'vinilos'}`
+        );
+        const total = crearElementoPerfil('span', 'perfil-actividad-pedido-total', pedido.total);
+        articulo.append(encabezado, detalle, total);
+        listaPedidosPerfil.appendChild(articulo);
+      });
+    }
+
+    function renderizarPublicacionesPerfil() {
+      const publicaciones = idsProductosPublicados
+        .map(function (id) {
+          return productos.find(function (producto) {
+            return producto.id === id;
+          });
+        })
+        .filter(Boolean);
+
+      publicaciones.forEach(function (producto) {
+        const articulo = document.createElement('article');
+        articulo.className = 'perfil-actividad-publicacion';
+
+        const portada = document.createElement('div');
+        portada.className = `perfil-actividad-portada ${producto.imagen || ''}`.trim();
+        portada.setAttribute('aria-hidden', 'true');
+        if (producto.foto) {
+          portada.style.backgroundImage = `url('${producto.foto}')`;
+          portada.style.backgroundSize = 'cover';
+          portada.style.backgroundPosition = 'center';
+        }
+
+        const informacion = document.createElement('div');
+        informacion.className = 'perfil-actividad-publicacion-info';
+        informacion.appendChild(crearElementoPerfil('strong', 'perfil-actividad-publicacion-nombre', producto.nombre));
+        informacion.appendChild(crearElementoPerfil('span', 'perfil-actividad-publicacion-artista', producto.artista));
+        informacion.appendChild(crearElementoPerfil('span', 'perfil-actividad-publicacion-precio', producto.precio));
+
+        const estado = crearElementoPerfil('span', 'perfil-actividad-estado perfil-actividad-estado-publicado', 'Publicado');
+        articulo.append(portada, informacion, estado);
+        listaPublicacionesPerfil.appendChild(articulo);
+      });
+      return publicaciones.length;
+    }
+
+    function leerComentariosPerfil() {
+      try {
+        const comentariosGuardados = JSON.parse(window.localStorage.getItem(claveComentariosPerfil) || '[]');
+        if (!Array.isArray(comentariosGuardados)) {
+          return [];
+        }
+        return comentariosGuardados.filter(function (comentario) {
+          return comentario !== null &&
+            typeof comentario === 'object' &&
+            !Array.isArray(comentario) &&
+            typeof comentario.texto === 'string';
+        }).reverse();
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function renderizarComentariosPerfil(comentarios) {
+      listaComentariosPerfil.replaceChildren();
+      if (comentarios.length === 0) {
+        const vacio = document.createElement('div');
+        vacio.className = 'perfil-actividad-vacio';
+        vacio.appendChild(crearElementoPerfil('p', '', 'Aún no has comentado'));
+        const enlace = crearElementoPerfil('a', 'perfil-actividad-enlace', 'Ir a la Comunidad');
+        enlace.href = 'comunidad.html';
+        vacio.appendChild(enlace);
+        listaComentariosPerfil.appendChild(vacio);
+        return;
+      }
+
+      comentarios.forEach(function (comentario) {
+        const articulo = document.createElement('article');
+        articulo.className = 'perfil-actividad-comentario';
+        articulo.appendChild(crearElementoPerfil(
+          'time',
+          'perfil-actividad-comentario-fecha',
+          typeof comentario.fecha === 'string' ? comentario.fecha : 'Fecha no disponible'
+        ));
+        articulo.appendChild(crearElementoPerfil('p', 'perfil-actividad-comentario-texto', comentario.texto));
+        listaComentariosPerfil.appendChild(articulo);
+      });
+
+      const enlace = crearElementoPerfil('a', 'perfil-actividad-enlace', 'Ir a la Comunidad');
+      enlace.href = 'comunidad.html';
+      listaComentariosPerfil.appendChild(enlace);
+    }
+
+    function actualizarContadoresPerfil(cantidadPublicaciones, comentarios) {
+      const cantidades = {
+        compras: pedidosPerfil.length,
+        publicaciones: cantidadPublicaciones,
+        comentarios: comentarios.length
+      };
+      document.getElementById('perfilHeroCompras').textContent = cantidades.compras;
+      document.getElementById('perfilActividadComprasContador').textContent = cantidades.compras;
+      document.getElementById('perfilHeroPublicaciones').textContent = cantidades.publicaciones;
+      document.getElementById('perfilActividadPublicacionesContador').textContent = cantidades.publicaciones;
+      document.getElementById('perfilHeroComentarios').textContent = cantidades.comentarios;
+      document.getElementById('perfilActividadComentariosContador').textContent = cantidades.comentarios;
+    }
+
+    renderizarPedidosPerfil();
+    const cantidadPublicacionesPerfil = renderizarPublicacionesPerfil();
+
+    function actualizarActividadPerfil() {
+      const comentarios = leerComentariosPerfil();
+      renderizarComentariosPerfil(comentarios);
+      actualizarContadoresPerfil(cantidadPublicacionesPerfil, comentarios);
+    }
+
+    actualizarActividadPerfil();
+    window.addEventListener('pageshow', actualizarActividadPerfil);
+  </script>
   <script>
     // Seleccionamos el botón para cerrar la sesión simulada.
     const btnSalir = document.getElementById('btnSalir');

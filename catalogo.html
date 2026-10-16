@@ -37,25 +37,54 @@
 
   </header>
 
-  <!-- ===== ENCABEZADO DEL CATÁLOGO ===== -->
+  <!-- ===== HERO DEL CATÁLOGO ===== -->
   <section class="catalogo-hero">
+    <div class="disco" aria-hidden="true"></div>
+    <span class="brillo brillo-1" aria-hidden="true"></span>
+    <span class="brillo brillo-2" aria-hidden="true"></span>
+
+    <div class="catalogo-hero-texto">
     <p class="catalogo-eyebrow">Explora la colección</p>
-    <h1>Catálogo</h1>
+    <h1><span class="acento">Catálogo</span></h1>
     <p class="catalogo-sub">Vinilos prensados en alta calidad de tus artistas pop favoritos.</p>
-    <label class="catalogo-busqueda" for="buscador-productos">
-      <span>Buscar álbum o artista</span>
-      <input type="search" id="buscador-productos" placeholder="Ej. Taylor Swift" autocomplete="off">
-    </label>
+    </div>
   </section>
 
-  <!-- ===== CUADRÍCULA DE PRODUCTOS ===== -->
-  <section class="catalogo-grid">
+  <!-- ===== HERRAMIENTAS Y CUADRÍCULA ===== -->
+  <main class="catalogo-contenido">
+    <section class="catalogo-herramientas" aria-label="Buscar y filtrar productos">
+      <label class="catalogo-busqueda" for="buscador-productos">
+        <span class="catalogo-busqueda-etiqueta">Buscar álbum o artista</span>
+        <span class="catalogo-busqueda-campo">
+          <span class="catalogo-busqueda-icono" aria-hidden="true">🔍</span>
+          <input type="search" id="buscador-productos" placeholder="Ej. Taylor Swift" autocomplete="off">
+        </span>
+      </label>
 
-    <p class="catalogo-sin-resultados" hidden>No encontramos ningún álbum con ese nombre.</p>
+      <div class="catalogo-filtros" role="group" aria-label="Filtrar por etiqueta">
+        <button type="button" class="catalogo-filtro activo" id="catalogoFiltroTodos" data-filtro="todos" aria-pressed="true">Todos</button>
+        <button type="button" class="catalogo-filtro" id="catalogoFiltroNuevos" data-filtro="nuevo" aria-pressed="false">Nuevos</button>
+        <button type="button" class="catalogo-filtro" id="catalogoFiltroOfertas" data-filtro="oferta" aria-pressed="false">Ofertas</button>
+      </div>
 
-    <div class="producto-card">
-      <span class="producto-badge badge-nuevo">Nuevo</span>
-      <img src="resources/1989.jpg" alt="1989 - Taylor Swift" class="producto-img">
+      <p class="catalogo-contador-resultados" id="catalogoContadorResultados" aria-live="polite">12 discos</p>
+    </section>
+
+    <section class="catalogo-grid" aria-label="Catálogo de vinilos">
+
+    <div class="catalogo-sin-resultados" hidden>
+      <div class="disco" aria-hidden="true"></div>
+      <p>No encontramos ningún álbum con ese nombre.</p>
+      <button type="button" class="catalogo-limpiar-filtros" id="catalogoLimpiarFiltros">Limpiar filtros</button>
+    </div>
+
+    <div class="producto-card" data-etiqueta="nuevo">
+      <div class="producto-portada">
+        <span class="producto-badge badge-nuevo">Nuevo</span>
+        <div class="producto-portada-marco">
+          <img src="resources/1989.jpg" alt="1989 - Taylor Swift" class="producto-img">
+        </div>
+      </div>
       <div class="producto-info">
         <h3>1989</h3>
         <p class="producto-artista">Taylor Swift</p>
@@ -67,9 +96,13 @@
       </div>
     </div>
 
-    <div class="producto-card">
-      <span class="producto-badge badge-nuevo">Nuevo</span>
-      <img src="resources/starboy.jpg" alt="Starboy - The Weeknd" class="producto-img">
+    <div class="producto-card" data-etiqueta="nuevo">
+      <div class="producto-portada">
+        <span class="producto-badge badge-nuevo">Nuevo</span>
+        <div class="producto-portada-marco">
+          <img src="resources/starboy.jpg" alt="Starboy - The Weeknd" class="producto-img">
+        </div>
+      </div>
       <div class="producto-info">
         <h3>Starboy</h3>
         <p class="producto-artista">The Weeknd</p>
@@ -81,140 +114,181 @@
       </div>
     </div>
 
-    <div class="producto-card">
-      <span class="producto-badge badge-oferta">Oferta</span>
-      <img src="resources/bornthisway.jpg" alt="Born This Way - Lady Gaga" class="producto-img">
+    <div class="producto-card" data-etiqueta="oferta">
+      <div class="producto-portada">
+        <span class="producto-badge badge-oferta">Oferta</span>
+        <div class="producto-portada-marco">
+          <img src="resources/bornthisway.jpg" alt="Born This Way - Lady Gaga" class="producto-img">
+        </div>
+      </div>
       <div class="producto-info">
         <h3>Born This Way</h3>
         <p class="producto-artista">Lady Gaga</p>
         <a href="detalle.html?id=3" class="producto-detalle">Ver detalle →</a>
         <div class="producto-footer">
-          <span class="producto-precio">$950</span>
+          <span class="producto-precio">$950 MXN</span>
           <button class="btn-agregar">Agregar</button>
         </div>
       </div>
     </div>
 
-    <div class="producto-card">
-      <span class="producto-badge badge-nuevo">Nuevo</span>
-      <img src="resources/shortnsweet.jpg" alt="Short n' Sweet - Sabrina Carpenter" class="producto-img">
+    <div class="producto-card" data-etiqueta="nuevo">
+      <div class="producto-portada">
+        <span class="producto-badge badge-nuevo">Nuevo</span>
+        <div class="producto-portada-marco">
+          <img src="resources/shortnsweet.jpg" alt="Short n' Sweet - Sabrina Carpenter" class="producto-img">
+        </div>
+      </div>
       <div class="producto-info">
         <h3>Short n' Sweet</h3>
         <p class="producto-artista">Sabrina Carpenter</p>
         <a href="detalle.html?id=4" class="producto-detalle">Ver detalle →</a>
         <div class="producto-footer">
-          <span class="producto-precio">$600</span>
+          <span class="producto-precio">$600 MXN</span>
           <button class="btn-agregar">Agregar</button>
         </div>
       </div>
     </div>
 
-    <div class="producto-card">
-      <img src="resources/oopsididitagain.jpg" alt="Oops!... I Did It Again - Britney Spears" class="producto-img">
+    <div class="producto-card" data-etiqueta="ninguna">
+      <div class="producto-portada">
+        <div class="producto-portada-marco">
+          <img src="resources/oopsididitagain.jpg" alt="Oops!... I Did It Again - Britney Spears" class="producto-img">
+        </div>
+      </div>
       <div class="producto-info">
         <h3>Oops!... I Did It Again</h3>
         <p class="producto-artista">Britney Spears</p>
         <a href="detalle.html?id=5" class="producto-detalle">Ver detalle →</a>
         <div class="producto-footer">
-          <span class="producto-precio">$980</span>
+          <span class="producto-precio">$980 MXN</span>
           <button class="btn-agregar">Agregar</button>
         </div>
       </div>
     </div>
 
-    <div class="producto-card">
-      <img src="resources/brat.jpg" alt="BRAT - Charli XCX" class="producto-img">
+    <div class="producto-card" data-etiqueta="ninguna">
+      <div class="producto-portada">
+        <div class="producto-portada-marco">
+          <img src="resources/brat.jpg" alt="BRAT - Charli XCX" class="producto-img">
+        </div>
+      </div>
       <div class="producto-info">
         <h3>BRAT</h3>
         <p class="producto-artista">Charli XCX</p>
         <a href="detalle.html?id=6" class="producto-detalle">Ver detalle →</a>
         <div class="producto-footer">
-          <span class="producto-precio">$620</span>
+          <span class="producto-precio">$620 MXN</span>
           <button class="btn-agregar">Agregar</button>
         </div>
       </div>
     </div>
 
-    <div class="producto-card">
-      <img src="resources/purpose.jpg" alt="Purpose (Deluxe) - Justin Bieber" class="producto-img">
+    <div class="producto-card" data-etiqueta="ninguna">
+      <div class="producto-portada">
+        <div class="producto-portada-marco">
+          <img src="resources/purpose.jpg" alt="Purpose (Deluxe) - Justin Bieber" class="producto-img">
+        </div>
+      </div>
       <div class="producto-info">
         <h3>Purpose (Deluxe)</h3>
         <p class="producto-artista">Justin Bieber</p>
         <a href="detalle.html?id=7" class="producto-detalle">Ver detalle →</a>
         <div class="producto-footer">
-          <span class="producto-precio">$760</span>
+          <span class="producto-precio">$760 MXN</span>
           <button class="btn-agregar">Agregar</button>
         </div>
       </div>
     </div>
 
-    <div class="producto-card">
-      <img src="resources/oneoftheboys.jpg" alt="One of the Boys - Katy Perry" class="producto-img">
+    <div class="producto-card" data-etiqueta="ninguna">
+      <div class="producto-portada">
+        <div class="producto-portada-marco">
+          <img src="resources/oneoftheboys.jpg" alt="One of the Boys - Katy Perry" class="producto-img">
+        </div>
+      </div>
       <div class="producto-info">
         <h3>One of the Boys</h3>
         <p class="producto-artista">Katy Perry</p>
         <a href="detalle.html?id=8" class="producto-detalle">Ver detalle →</a>
         <div class="producto-footer">
-          <span class="producto-precio">$800</span>
+          <span class="producto-precio">$800 MXN</span>
           <button class="btn-agregar">Agregar</button>
         </div>
       </div>
     </div>
 
-    <div class="producto-card">
-      <img src="resources/illuminate.jpg" alt="Illuminate - Shawn Mendes" class="producto-img">
+    <div class="producto-card" data-etiqueta="ninguna">
+      <div class="producto-portada">
+        <div class="producto-portada-marco">
+          <img src="resources/illuminate.jpg" alt="Illuminate - Shawn Mendes" class="producto-img">
+        </div>
+      </div>
       <div class="producto-info">
         <h3>Illuminate</h3>
         <p class="producto-artista">Shawn Mendes</p>
         <a href="detalle.html?id=9" class="producto-detalle">Ver detalle →</a>
         <div class="producto-footer">
-          <span class="producto-precio">$500</span>
+          <span class="producto-precio">$500 MXN</span>
           <button class="btn-agregar">Agregar</button>
         </div>
       </div>
     </div>
 
-    <div class="producto-card">
-      <img src="resources/thriller.jpg" alt="Thriller - Michael Jackson" class="producto-img">
+    <div class="producto-card" data-etiqueta="ninguna">
+      <div class="producto-portada">
+        <div class="producto-portada-marco">
+          <img src="resources/thriller.jpg" alt="Thriller - Michael Jackson" class="producto-img">
+        </div>
+      </div>
       <div class="producto-info">
         <h3>Thriller</h3>
         <p class="producto-artista">Michael Jackson</p>
         <a href="detalle.html?id=10" class="producto-detalle">Ver detalle →</a>
         <div class="producto-footer">
-          <span class="producto-precio">$900</span>
+          <span class="producto-precio">$900 MXN</span>
           <button class="btn-agregar">Agregar</button>
         </div>
       </div>
     </div>
 
-    <div class="producto-card">
-      <img src="resources/reflection.jpg" alt="Reflection - Fifth Harmony" class="producto-img">
+    <div class="producto-card" data-etiqueta="ninguna">
+      <div class="producto-portada">
+        <div class="producto-portada-marco">
+          <img src="resources/reflection.jpg" alt="Reflection - Fifth Harmony" class="producto-img">
+        </div>
+      </div>
       <div class="producto-info">
         <h3>Reflection</h3>
         <p class="producto-artista">Fifth Harmony</p>
         <a href="detalle.html?id=11" class="producto-detalle">Ver detalle →</a>
         <div class="producto-footer">
-          <span class="producto-precio">$710</span>
+          <span class="producto-precio">$710 MXN</span>
           <button class="btn-agregar">Agregar</button>
         </div>
       </div>
     </div>
 
-    <div class="producto-card">
-      <img src="resources/spice.jpg" alt="Spice - Spice Girls" class="producto-img">
+    <div class="producto-card" data-etiqueta="ninguna">
+      <div class="producto-portada">
+        <div class="producto-portada-marco">
+          <img src="resources/spice.jpg" alt="Spice - Spice Girls" class="producto-img">
+        </div>
+      </div>
       <div class="producto-info">
         <h3>Spice</h3>
         <p class="producto-artista">Spice Girls</p>
         <a href="detalle.html?id=12" class="producto-detalle">Ver detalle →</a>
         <div class="producto-footer">
-          <span class="producto-precio">$900</span>
+          <span class="producto-precio">$900 MXN</span>
           <button class="btn-agregar">Agregar</button>
         </div>
       </div>
     </div>
     
 
-  </section>
+    </section>
+  </main>
 
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
@@ -251,15 +325,22 @@
     const buscadorProductos = document.querySelector('#buscador-productos');
     const tarjetasProducto = document.querySelectorAll('.catalogo-grid .producto-card');
     const mensajeSinResultados = document.querySelector('.catalogo-sin-resultados');
+    const contadorResultadosCatalogo = document.querySelector('#catalogoContadorResultados');
+    const botonesFiltroCatalogo = document.querySelectorAll('.catalogo-filtro');
+    const botonLimpiarFiltros = document.querySelector('#catalogoLimpiarFiltros');
+    let filtroCatalogoActivo = 'todos';
 
-    buscadorProductos.addEventListener('input', function () {
+    function aplicarFiltrosCatalogo() {
       const consulta = buscadorProductos.value.trim().toLowerCase();
       let resultados = 0;
 
       tarjetasProducto.forEach(function (tarjeta) {
         const nombreAlbum = tarjeta.querySelector('h3').textContent.toLowerCase();
         const nombreArtista = tarjeta.querySelector('.producto-artista').textContent.toLowerCase();
-        const coincide = nombreAlbum.includes(consulta) || nombreArtista.includes(consulta);
+        const coincideBusqueda = nombreAlbum.includes(consulta) || nombreArtista.includes(consulta);
+        const coincideFiltro = filtroCatalogoActivo === 'todos' ||
+          tarjeta.dataset.etiqueta === filtroCatalogoActivo;
+        const coincide = coincideBusqueda && coincideFiltro;
 
         tarjeta.style.display = coincide ? '' : 'none';
         if (coincide) {
@@ -268,7 +349,36 @@
       });
 
       mensajeSinResultados.hidden = resultados > 0;
+      contadorResultadosCatalogo.textContent = `${resultados} ${resultados === 1 ? 'disco' : 'discos'}`;
+    }
+
+    buscadorProductos.addEventListener('input', aplicarFiltrosCatalogo);
+
+    botonesFiltroCatalogo.forEach(function (boton) {
+      boton.addEventListener('click', function () {
+        filtroCatalogoActivo = boton.dataset.filtro;
+        botonesFiltroCatalogo.forEach(function (otroBoton) {
+          const activo = otroBoton === boton;
+          otroBoton.classList.toggle('activo', activo);
+          otroBoton.setAttribute('aria-pressed', String(activo));
+        });
+        aplicarFiltrosCatalogo();
+      });
     });
+
+    botonLimpiarFiltros.addEventListener('click', function () {
+      buscadorProductos.value = '';
+      filtroCatalogoActivo = 'todos';
+      botonesFiltroCatalogo.forEach(function (boton) {
+        const activo = boton.dataset.filtro === 'todos';
+        boton.classList.toggle('activo', activo);
+        boton.setAttribute('aria-pressed', String(activo));
+      });
+      aplicarFiltrosCatalogo();
+      buscadorProductos.focus();
+    });
+
+    aplicarFiltrosCatalogo();
 
     // Agarra TODOS los botones "Agregar" del catálogo
     const botonesAgregar = document.querySelectorAll('.btn-agregar');
