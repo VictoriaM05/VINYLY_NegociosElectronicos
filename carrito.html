@@ -39,33 +39,59 @@
 
   <!-- ===== CARRITO ===== -->
   <main class="carrito-pagina">
-    <section class="carrito-encabezado">
-      <p class="catalogo-eyebrow">Tu selección</p>
-      <h1>Carrito</h1>
-      <p>Revisa tus vinilos antes de continuar.</p>
+    <section class="carrito-hero">
+      <div class="disco" aria-hidden="true"></div>
+      <span class="brillo brillo-1" aria-hidden="true"></span>
+      <span class="brillo brillo-2" aria-hidden="true"></span>
+
+      <div class="carrito-hero-texto">
+        <p class="catalogo-eyebrow">Tu selección</p>
+        <h1><span class="acento">Carrito</span></h1>
+        <p>Revisa tus vinilos antes de continuar.</p>
+
+        <ol class="carrito-pasos" aria-label="Pasos de compra">
+          <li class="carrito-paso activo"><span>1</span> Carrito</li>
+          <li class="carrito-paso"><span>2</span> Pago</li>
+          <li class="carrito-paso"><span>3</span> Confirmación</li>
+        </ol>
+
+        <span class="carrito-chip-cantidad" id="carritoCantidadHero" aria-live="polite">Carrito vacío</span>
+      </div>
     </section>
 
     <section class="carrito-contenido">
       <div class="carrito-lista" id="carritoLista"></div>
 
       <section class="carrito-resumen" id="carritoResumen" hidden>
-        <p class="carrito-resumen-linea">
-          <span>Subtotal</span>
-          <strong id="carritoSubtotal">$0 MXN</strong>
-        </p>
-        <p class="carrito-resumen-linea carrito-descuento" id="carritoDescuentoLinea" hidden>
-          <span id="carritoDescuentoEtiqueta"></span>
-          <strong id="carritoDescuento"></strong>
-        </p>
-        <button type="button" id="btnQuitarDescuento" class="carrito-quitar-descuento" hidden>Quitar descuento</button>
-        <p id="carritoPromoNota" class="carrito-promo-nota" hidden></p>
-        <a href="promociones.html" id="enlacePromos" class="carrito-promo-enlace">¿Tienes un código? Ver promociones</a>
-        <p class="carrito-resumen-linea carrito-total">
-          <span>Total</span>
-          <strong id="carritoTotal">$0 MXN</strong>
-        </p>
-        <button class="btn-gradiente" id="btnPagar">Ir a pagar</button>
+        <header class="carrito-resumen-cabecera">
+          <h2>Resumen del pedido</h2>
+          <p id="carritoCantidadResumen">0 vinilos</p>
+        </header>
+        <div class="carrito-totales" aria-live="polite">
+          <p class="carrito-resumen-linea">
+            <span>Subtotal</span>
+            <strong id="carritoSubtotal">$0 MXN</strong>
+          </p>
+          <p class="carrito-resumen-linea carrito-descuento" id="carritoDescuentoLinea" hidden>
+            <span id="carritoDescuentoEtiqueta"></span>
+            <strong id="carritoDescuento"></strong>
+          </p>
+          <button type="button" id="btnQuitarDescuento" class="carrito-quitar-descuento" hidden>Quitar descuento</button>
+          <p id="carritoPromoNota" class="carrito-promo-nota" hidden></p>
+          <a href="promociones.html" id="enlacePromos" class="carrito-promo-enlace">¿Tienes un código? Ver promociones</a>
+          <p class="carrito-resumen-linea carrito-total">
+            <span>Total</span>
+            <strong id="carritoTotal">$0 MXN</strong>
+          </p>
+        </div>
+        <button type="button" class="btn-gradiente" id="btnPagar">Ir a pagar</button>
         <p class="carrito-mensaje" id="mensajePago" hidden>Próximamente: este es el siguiente paso de tu compra.</p>
+        <p class="carrito-pago-nota">Pago simulado · Tus datos no se guardan</p>
+        <ul class="carrito-detalles" aria-hidden="true">
+          <li>💿 Vinilos nuevos</li>
+          <li>📦 Empaque protegido</li>
+          <li>✨ Edición pop</li>
+        </ul>
       </section>
     </section>
   </main>
@@ -129,6 +155,10 @@
     const carritoDescuentoLinea = document.getElementById('carritoDescuentoLinea');
     const carritoDescuentoEtiqueta = document.getElementById('carritoDescuentoEtiqueta');
     const carritoDescuento = document.getElementById('carritoDescuento');
+    const carritoCantidadHero = document.getElementById('carritoCantidadHero');
+    const carritoCantidadResumen = document.getElementById('carritoCantidadResumen');
+    const carritoContenido = document.querySelector('.carrito-contenido');
+    const navbar = document.querySelector('.navbar');
     const btnQuitarDescuento = document.getElementById('btnQuitarDescuento');
     const carritoPromoNota = document.getElementById('carritoPromoNota');
     const enlacePromos = document.getElementById('enlacePromos');
@@ -137,6 +167,14 @@
     const modalTerminos = document.getElementById('modalTerminos');
     const aceptarTerminos = document.getElementById('aceptarTerminos');
     const continuarTerminos = document.getElementById('continuarTerminos');
+    let primeraRenderizacion = true;
+
+    function actualizarAlturaNavbar() {
+      carritoContenido.style.setProperty('--carrito-navbar-altura', `${navbar.getBoundingClientRect().height}px`);
+    }
+
+    actualizarAlturaNavbar();
+    window.addEventListener('resize', actualizarAlturaNavbar);
 
     function cerrarModalTerminos() {
       modalTerminos.hidden = true;
@@ -186,70 +224,41 @@
 
     // Crea la imagen usando primero la foto real y después la clase de color.
     function configurarImagenCarrito(elementoImagen, producto) {
-      elementoImagen.className = `producto-img ${producto.imagen || ''}`;
+      elementoImagen.classList.add('producto-img');
 
       if (producto.foto) {
         elementoImagen.style.backgroundImage = `url('${producto.foto}')`;
         elementoImagen.style.backgroundSize = 'cover';
         elementoImagen.style.backgroundPosition = 'center';
+      } else if (producto.imagen) {
+        elementoImagen.classList.add(producto.imagen);
+        elementoImagen.style.backgroundImage = '';
+        elementoImagen.style.backgroundSize = '';
+        elementoImagen.style.backgroundPosition = '';
       }
     }
 
     // Muestra el estado vacío o las filas actuales del carrito.
     function renderizarCarrito() {
       const carrito = obtenerCarrito();
-      carritoLista.innerHTML = '';
-      mensajePago.hidden = true;
-
-      if (carrito.length === 0) {
-        carritoResumen.hidden = true;
-        carritoLista.innerHTML = `
-          <div class="carrito-vacio">
-            <h2>Tu carrito está vacío</h2>
-            <p>Aún no has elegido ningún vinilo para tu colección.</p>
-            <a href="catalogo.html" class="btn-gradiente">Ir al catálogo</a>
-          </div>
-        `;
-        return;
-      }
-
-      carritoResumen.hidden = false;
-      let total = 0;
-
-      carrito.forEach(function (producto) {
-        const subtotalProducto = producto.precio * producto.cantidad;
-        total += subtotalProducto;
-
-        const fila = document.createElement('article');
-        fila.className = 'carrito-item';
-        fila.dataset.id = producto.id;
-        fila.innerHTML = `
-          <div class="carrito-producto">
-            <div class="carrito-imagen"></div>
-            <div>
-              <h2>${producto.nombre}</h2>
-              <p class="producto-artista">${producto.artista}</p>
-              <p class="carrito-precio-unitario">${formatearPrecio(producto.precio)} c/u</p>
-            </div>
-          </div>
-          <div class="carrito-cantidad">
-            <button type="button" class="btn-cantidad" data-accion="disminuir" aria-label="Disminuir cantidad">-</button>
-            <span>${producto.cantidad}</span>
-            <button type="button" class="btn-cantidad" data-accion="aumentar" aria-label="Aumentar cantidad">+</button>
-          </div>
-          <strong class="carrito-subtotal">${formatearPrecio(subtotalProducto)}</strong>
-          <button type="button" class="carrito-eliminar" data-accion="eliminar">Eliminar</button>
-        `;
-
-        configurarImagenCarrito(fila.querySelector('.carrito-imagen'), producto);
-        carritoLista.appendChild(fila);
-      });
-
-      const subtotal = total;
+      const animarEntrada = primeraRenderizacion;
+      primeraRenderizacion = false;
+      const subtotal = carrito.reduce(function (acumulado, producto) {
+        return acumulado + producto.precio * producto.cantidad;
+      }, 0);
       const promocion = obtenerDescuentoAplicado();
       const descuento = promocion ? Math.min(calcularDescuento(promocion, carrito), subtotal) : 0;
+      const cantidadVinilos = carrito.reduce(function (acumulado, producto) {
+        return acumulado + producto.cantidad;
+      }, 0);
 
-      carritoSubtotal.textContent = formatearPrecio(total);
+      carritoLista.innerHTML = '';
+      mensajePago.hidden = true;
+      carritoCantidadHero.textContent = cantidadVinilos === 0
+        ? 'Carrito vacío'
+        : `${cantidadVinilos} vinilo${cantidadVinilos === 1 ? '' : 's'}`;
+      carritoCantidadResumen.textContent = `${cantidadVinilos} vinilo${cantidadVinilos === 1 ? '' : 's'}`;
+      carritoSubtotal.textContent = formatearPrecio(subtotal);
 
       if (promocion) {
         carritoDescuentoEtiqueta.textContent = `Descuento (${promocion.codigo})`;
@@ -272,6 +281,61 @@
       }
 
       carritoTotal.textContent = formatearPrecio(Math.max(0, subtotal - descuento));
+
+      if (carrito.length === 0) {
+        carritoContenido.classList.add('carrito-contenido--vacio');
+        carritoResumen.hidden = true;
+        carritoLista.innerHTML = `
+          <div class="carrito-vacio">
+            <div class="disco" aria-hidden="true"></div>
+            <h2>Tu carrito está vacío</h2>
+            <p>Aún no has elegido ningún vinilo para tu colección.</p>
+            <a href="catalogo.html" class="btn-gradiente">Ir al catálogo</a>
+          </div>
+        `;
+        return;
+      }
+
+      carritoContenido.classList.remove('carrito-contenido--vacio');
+      carritoResumen.hidden = false;
+
+      carrito.forEach(function (producto) {
+        const subtotalProducto = producto.precio * producto.cantidad;
+
+        const fila = document.createElement('article');
+        fila.className = 'carrito-item';
+        fila.dataset.id = producto.id;
+        if (animarEntrada) {
+          fila.classList.add('carrito-item--entrada');
+        }
+        fila.innerHTML = `
+          <div class="carrito-producto">
+            <div class="carrito-imagen"></div>
+            <div>
+              <h2>${producto.nombre}</h2>
+              <p class="producto-artista">${producto.artista}</p>
+              <p class="carrito-precio-unitario">${formatearPrecio(producto.precio)} c/u</p>
+            </div>
+          </div>
+          <div class="carrito-item-acciones">
+            <div class="carrito-cantidad">
+              <button type="button" class="btn-cantidad${producto.cantidad === 1 ? ' btn-cantidad--atenuado' : ''}" data-accion="disminuir" aria-label="Disminuir cantidad">−</button>
+              <span>${producto.cantidad}</span>
+              <button type="button" class="btn-cantidad" data-accion="aumentar" aria-label="Aumentar cantidad">+</button>
+            </div>
+            <strong class="carrito-subtotal">${formatearPrecio(subtotalProducto)}</strong>
+            <button type="button" class="carrito-eliminar" data-accion="eliminar">Eliminar</button>
+          </div>
+        `;
+
+        const imagen = fila.querySelector('.carrito-imagen');
+        configurarImagenCarrito(imagen, producto);
+        fila.querySelector('.carrito-eliminar').setAttribute(
+          'aria-label',
+          `Eliminar ${producto.nombre} del carrito`
+        );
+        carritoLista.appendChild(fila);
+      });
     }
 
     btnQuitarDescuento.addEventListener('click', function () {
