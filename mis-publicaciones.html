@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/styles.css" />
+  <title>VINYLY - Mis publicaciones</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="navbar">
+    <a href="landing.html" class="logo">
+      <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="campana.html">Campaña</a></li>
+      <li><a href="promociones.html">Promociones</a></li>
+      <li><a href="comunidad.html">Comunidad</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <div class="nav-icons">
+      <a href="carrito.html">Carrito</a>
+      <a href="login.html">Iniciar sesión</a>
+      <a href="perfil.html" class="avatar">CV</a>
+    </div>
+  </header>
+
+  <section class="mispub-hero">
+    <div class="disco" aria-hidden="true"></div>
+    <span class="brillo brillo-1" aria-hidden="true"></span>
+    <span class="brillo brillo-2" aria-hidden="true"></span>
+    <div class="mispub-hero-texto">
+      <p class="mispub-eyebrow">Tu colección en venta</p>
+      <h1><span class="acento">Mis publicaciones</span></h1>
+      <p class="mispub-hero-descripcion">Los vinilos que has publicado</p>
+      <div class="mispub-hero-acciones">
+        <span id="mispubContador" class="mispub-contador" aria-live="polite">0 publicaciones</span>
+        <a class="btn-gradiente mispub-publicar" href="publicar.html">+ Publicar</a>
+      </div>
+    </div>
+  </section>
+
+  <main class="mispub-contenido">
+    <p id="mispubMensaje" class="mispub-mensaje" role="status" aria-live="polite" hidden></p>
+    <section id="mispubLista" class="mispub-lista" aria-label="Mis publicaciones"></section>
+    <section id="mispubVacio" class="mispub-vacio" aria-labelledby="mispubVacioTitulo" hidden>
+      <div class="disco" aria-hidden="true"></div>
+      <p class="mispub-vacio-eyebrow">Lado A: por comenzar</p>
+      <h2 id="mispubVacioTitulo">Aún no has publicado nada</h2>
+      <p>Ese vinilo que tienes en mente merece encontrar una nueva colección.</p>
+      <a href="publicar.html" class="btn-gradiente">+ Publicar mi primer vinilo</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-swirl-1"></div>
+    <div class="footer-swirl-2"></div>
+    <div class="footer-disco"></div>
+    <div class="footer-izquierda">
+      <div class="footer-columna">
+        <h4>Enlaces</h4>
+        <a href="landing.html">Inicio</a>
+        <a href="index.html#nosotros">Nosotros</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+      <div class="footer-columna">
+        <h4>Contacto</h4>
+        <p>******</p>
+        <p>www.vinyly.com</p>
+      </div>
+    </div>
+    <div class="footer-columna footer-marca">
+      <h4>VINYLY</h4>
+      <p>Premium Sound, Pop Edition</p>
+    </div>
+  </footer>
+
+  <script src="js/publicaciones.js"></script>
+  <script>
+    (function () {
+      const modulo = window.PublicacionesVinyly;
+      const contador = document.getElementById('mispubContador');
+      const lista = document.getElementById('mispubLista');
+      const vacio = document.getElementById('mispubVacio');
+      const mensaje = document.getElementById('mispubMensaje');
+      let publicaciones = [];
+      let temporizadorMensaje;
+
+      function crearPortada(publicacion, clase) {
+        const portada = document.createElement('div');
+        portada.className = clase;
+        if (publicacion.foto.indexOf('data:image/') === 0) {
+          const imagen = document.createElement('img');
+          imagen.src = publicacion.foto;
+          imagen.alt = `Portada de ${publicacion.nombre}`;
+          portada.appendChild(imagen);
+        } else {
+          const disco = document.createElement('div');
+          disco.className = 'disco';
+          disco.setAttribute('aria-hidden', 'true');
+          portada.appendChild(disco);
+          const marca = document.createElement('span');
+          marca.className = 'mispub-portada-marca';
+          marca.textContent = 'VINYLY';
+          portada.appendChild(marca);
+        }
+        return portada;
+      }
+
+      function crearTarjeta(publicacion, indice) {
+        const tarjeta = document.createElement('article');
+        tarjeta.className = 'mispub-tarjeta';
+        tarjeta.dataset.id = publicacion.id;
+        tarjeta.style.animationDelay = `${Math.min(indice * 70, 350)}ms`;
+
+        const portada = crearPortada(publicacion, 'mispub-portada');
+        const datos = document.createElement('div');
+        datos.className = 'mispub-datos';
+        const nombre = document.createElement('h2');
+        nombre.className = 'mispub-nombre';
+        nombre.textContent = publicacion.nombre;
+        const artista = document.createElement('p');
+        artista.className = 'mispub-artista';
+        artista.textContent = publicacion.artista || 'Artista no especificado';
+        const descripcion = document.createElement('p');
+        descripcion.className = 'mispub-descripcion';
+        descripcion.textContent = publicacion.descripcion;
+        const fecha = document.createElement('time');
+        fecha.className = 'mispub-fecha';
+        fecha.dateTime = publicacion.fecha;
+        fecha.textContent = `Publicado el ${modulo.formatearFecha(publicacion.fecha)}`;
+        datos.append(nombre, artista, descripcion, fecha);
+
+        const pie = document.createElement('div');
+        pie.className = 'mispub-pie';
+        const precio = document.createElement('strong');
+        precio.className = 'mispub-precio';
+        precio.textContent = modulo.formatearPrecio(publicacion.precio);
+        const estadoPublicado = document.createElement('span');
+        estadoPublicado.className = 'mispub-etiqueta';
+        estadoPublicado.textContent = 'Publicado ✓';
+        const eliminar = document.createElement('button');
+        eliminar.type = 'button';
+        eliminar.className = 'mispub-eliminar';
+        eliminar.dataset.id = publicacion.id;
+        eliminar.setAttribute('aria-label', `Eliminar la publicación ${publicacion.nombre}`);
+        eliminar.textContent = 'Eliminar';
+        pie.append(precio, estadoPublicado, eliminar);
+        tarjeta.append(portada, datos, pie);
+        return tarjeta;
+      }
+
+      function actualizarContador() {
+        const total = publicaciones.length;
+        contador.textContent = `${total} ${total === 1 ? 'publicación' : 'publicaciones'}`;
+      }
+
+      function dibujarPublicaciones() {
+        publicaciones = modulo.leerPublicaciones();
+        while (lista.firstChild) {
+          lista.removeChild(lista.firstChild);
+        }
+
+        const recientesPrimero = publicaciones.slice().reverse();
+        recientesPrimero.forEach(function (publicacion, indice) {
+          lista.appendChild(crearTarjeta(publicacion, indice));
+        });
+        lista.hidden = recientesPrimero.length === 0;
+        vacio.hidden = recientesPrimero.length !== 0;
+        actualizarContador();
+      }
+
+      function mostrarMensaje(texto) {
+        window.clearTimeout(temporizadorMensaje);
+        mensaje.textContent = texto;
+        mensaje.hidden = false;
+        mensaje.classList.remove('mispub-mensaje-animado');
+        void mensaje.offsetWidth;
+        mensaje.classList.add('mispub-mensaje-animado');
+        temporizadorMensaje = window.setTimeout(function () {
+          mensaje.hidden = true;
+          mensaje.textContent = '';
+          mensaje.classList.remove('mispub-mensaje-animado');
+        }, 3000);
+      }
+
+      lista.addEventListener('click', function (evento) {
+        const botonEliminar = evento.target.closest('.mispub-eliminar');
+        if (!botonEliminar || !lista.contains(botonEliminar)) {
+          return;
+        }
+
+        const id = botonEliminar.dataset.id;
+        const resultado = modulo.eliminarPublicacion(id, publicaciones);
+        if (!resultado.eliminada) {
+          return;
+        }
+
+        publicaciones = resultado.publicaciones;
+        const tarjeta = botonEliminar.closest('.mispub-tarjeta');
+        if (tarjeta) {
+          tarjeta.remove();
+        }
+        lista.hidden = publicaciones.length === 0;
+        vacio.hidden = publicaciones.length !== 0;
+        actualizarContador();
+        mostrarMensaje('Publicación eliminada (simulado)');
+      });
+
+      window.addEventListener('pageshow', dibujarPublicaciones);
+    }());
+  </script>
+</body>
+</html>

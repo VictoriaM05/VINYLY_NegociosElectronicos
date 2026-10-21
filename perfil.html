@@ -191,9 +191,8 @@
 
   </footer>
 
-  <script src="js/productos.js"></script>
+  <script src="js/publicaciones.js"></script>
   <script>
-    const idsProductosPublicados = [4, 6];
     const claveComentariosPerfil = 'comunidadVinyly';
     const pedidosPerfil = [
       { numero: '#VNY-1042', fecha: '12 de octubre de 2026', cantidad: 2, total: '$1,420 MXN', estado: 'Entregado' },
@@ -237,39 +236,65 @@
       });
     }
 
-    function renderizarPublicacionesPerfil() {
-      const publicaciones = idsProductosPublicados
-        .map(function (id) {
-          return productos.find(function (producto) {
-            return producto.id === id;
-          });
-        })
-        .filter(Boolean);
+    function mostrarPublicacionesPerfil(publicaciones) {
+      listaPublicacionesPerfil.replaceChildren();
+      if (publicaciones.length === 0) {
+        const vacio = document.createElement('div');
+        vacio.className = 'perfil-actividad-vacio';
+        vacio.appendChild(crearElementoPerfil('p', '', 'Aún no has publicado nada'));
+        const enlace = crearElementoPerfil('a', 'perfil-actividad-enlace', '+ Publicar mi primer vinilo');
+        enlace.href = 'publicar.html';
+        vacio.appendChild(enlace);
+        listaPublicacionesPerfil.appendChild(vacio);
+        return;
+      }
 
-      publicaciones.forEach(function (producto) {
+      publicaciones.slice(-3).reverse().forEach(function (publicacion) {
         const articulo = document.createElement('article');
         articulo.className = 'perfil-actividad-publicacion';
 
         const portada = document.createElement('div');
-        portada.className = `perfil-actividad-portada ${producto.imagen || ''}`.trim();
-        portada.setAttribute('aria-hidden', 'true');
-        if (producto.foto) {
-          portada.style.backgroundImage = `url('${producto.foto}')`;
-          portada.style.backgroundSize = 'cover';
-          portada.style.backgroundPosition = 'center';
+        portada.className = 'perfil-actividad-portada';
+        if (typeof publicacion.foto === 'string' && publicacion.foto.indexOf('data:image/') === 0) {
+          const imagen = document.createElement('img');
+          imagen.src = publicacion.foto;
+          imagen.alt = `Portada de ${publicacion.nombre}`;
+          portada.appendChild(imagen);
+        } else {
+          const portadaDecorativa = document.createElement('div');
+          portadaDecorativa.className = 'mispub-portada';
+          portadaDecorativa.setAttribute('aria-hidden', 'true');
+          const disco = document.createElement('div');
+          disco.className = 'disco';
+          const marca = document.createElement('span');
+          marca.className = 'mispub-portada-marca';
+          marca.textContent = 'VINYLY';
+          portadaDecorativa.append(disco, marca);
+          portada.appendChild(portadaDecorativa);
         }
 
         const informacion = document.createElement('div');
         informacion.className = 'perfil-actividad-publicacion-info';
-        informacion.appendChild(crearElementoPerfil('strong', 'perfil-actividad-publicacion-nombre', producto.nombre));
-        informacion.appendChild(crearElementoPerfil('span', 'perfil-actividad-publicacion-artista', producto.artista));
-        informacion.appendChild(crearElementoPerfil('span', 'perfil-actividad-publicacion-precio', producto.precio));
+        informacion.appendChild(crearElementoPerfil('strong', 'perfil-actividad-publicacion-nombre', publicacion.nombre));
+        informacion.appendChild(crearElementoPerfil(
+          'span',
+          'perfil-actividad-publicacion-precio',
+          window.PublicacionesVinyly.formatearPrecio(publicacion.precio)
+        ));
 
         const estado = crearElementoPerfil('span', 'perfil-actividad-estado perfil-actividad-estado-publicado', 'Publicado');
         articulo.append(portada, informacion, estado);
         listaPublicacionesPerfil.appendChild(articulo);
       });
-      return publicaciones.length;
+
+      const acciones = document.createElement('div');
+      acciones.className = 'perfil-actividad-publicaciones-acciones';
+      const enlaceTodas = crearElementoPerfil('a', 'perfil-actividad-enlace', 'Ver todas');
+      enlaceTodas.href = 'mis-publicaciones.html';
+      const enlacePublicar = crearElementoPerfil('a', 'perfil-actividad-enlace', '+ Publicar');
+      enlacePublicar.href = 'publicar.html';
+      acciones.append(enlaceTodas, enlacePublicar);
+      listaPublicacionesPerfil.appendChild(acciones);
     }
 
     function leerComentariosPerfil() {
@@ -334,12 +359,19 @@
     }
 
     renderizarPedidosPerfil();
-    const cantidadPublicacionesPerfil = renderizarPublicacionesPerfil();
 
     function actualizarActividadPerfil() {
+      const moduloPublicaciones = window.PublicacionesVinyly;
+      const publicaciones = moduloPublicaciones &&
+        typeof moduloPublicaciones.leerPublicaciones === 'function' &&
+        typeof moduloPublicaciones.formatearPrecio === 'function'
+        ? moduloPublicaciones.leerPublicaciones()
+        : [];
+      const publicacionesValidas = Array.isArray(publicaciones) ? publicaciones : [];
       const comentarios = leerComentariosPerfil();
+      mostrarPublicacionesPerfil(publicacionesValidas);
       renderizarComentariosPerfil(comentarios);
-      actualizarContadoresPerfil(cantidadPublicacionesPerfil, comentarios);
+      actualizarContadoresPerfil(publicacionesValidas.length, comentarios);
     }
 
     actualizarActividadPerfil();

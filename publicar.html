@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/styles.css" />
+  <title>VINYLY - Publica tu producto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="navbar">
+    <a href="landing.html" class="logo">
+      <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="campana.html">Campaña</a></li>
+      <li><a href="promociones.html">Promociones</a></li>
+      <li><a href="comunidad.html">Comunidad</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <div class="nav-icons">
+      <a href="carrito.html">Carrito</a>
+      <a href="login.html">Iniciar sesión</a>
+      <a href="perfil.html" class="avatar">CV</a>
+    </div>
+  </header>
+
+  <section class="publicar-hero">
+    <div class="disco" aria-hidden="true"></div>
+    <span class="brillo brillo-1" aria-hidden="true"></span>
+    <span class="brillo brillo-2" aria-hidden="true"></span>
+    <div class="publicar-hero-texto">
+      <p class="publicar-eyebrow">Vende tu vinilo</p>
+      <h1><span class="acento">Publica tu producto</span></h1>
+      <p class="publicar-hero-descripcion">Comparte un vinilo con la comunidad VINYLY. Es una simulación: nada se envía de verdad.</p>
+    </div>
+  </section>
+
+  <main class="publicar-contenido">
+    <div class="publicar-grid">
+      <section class="publicar-formulario-caja" aria-labelledby="publicarFormularioTitulo">
+        <p class="publicar-seccion-eyebrow">Tu próximo hallazgo</p>
+        <h2 id="publicarFormularioTitulo">Dale otra vuelta al mundo</h2>
+        <p class="publicar-intro">Cuéntale a la comunidad qué disco podría sonar en otra colección.</p>
+
+        <form id="formPublicar" class="publicar-formulario" novalidate>
+          <div class="campo">
+            <input type="text" id="publicarNombre" placeholder=" " maxlength="60" autocomplete="off">
+            <label for="publicarNombre">Nombre del producto</label>
+          </div>
+
+          <div class="campo">
+            <input type="text" id="publicarArtista" placeholder=" " maxlength="40" autocomplete="off">
+            <label for="publicarArtista">Artista (opcional)</label>
+          </div>
+
+          <div class="publicar-precio-campo">
+            <label for="publicarPrecio">Precio</label>
+            <span class="publicar-precio-prefijo" aria-hidden="true">$</span>
+            <input type="text" id="publicarPrecio" inputmode="decimal" maxlength="9" autocomplete="off" aria-describedby="publicarPrecioAyuda">
+            <span class="publicar-precio-sufijo" aria-hidden="true">MXN</span>
+          </div>
+          <span id="publicarPrecioAyuda" class="publicar-ayuda">Déjalo vacío si es a convenir.</span>
+
+          <div class="campo">
+            <textarea id="publicarDescripcion" placeholder=" " maxlength="300" rows="5"></textarea>
+            <label for="publicarDescripcion">Descripción</label>
+          </div>
+          <div class="publicar-contador-linea">
+            <span>Una nota para quien lo encuentre</span>
+            <span id="publicarCaracteres" class="publicar-contador">0/300</span>
+          </div>
+
+          <div class="publicar-foto-campo">
+            <p class="publicar-foto-titulo">Foto de portada <span>(opcional)</span></p>
+            <div class="publicar-foto-fila">
+              <div id="publicarFotoZona" class="publicar-foto-zona" role="button" tabindex="0" aria-label="Elegir una imagen de portada o arrastrarla aquí">
+                <input type="file" id="publicarFotoArchivo" accept="image/*" hidden>
+                <span class="publicar-foto-icono" aria-hidden="true">＋</span>
+                <span class="publicar-foto-copy">Arrastra una portada o <u>elige un archivo</u></span>
+                <span class="publicar-foto-formatos">JPG, PNG o cualquier imagen</span>
+                <img id="publicarFotoMiniatura" class="publicar-foto-miniatura" alt="">
+              </div>
+              <button type="button" id="publicarQuitarFoto" class="publicar-quitar-foto" hidden>Quitar foto</button>
+            </div>
+            <p id="publicarFotoNota" class="publicar-foto-nota" role="status" aria-live="polite" hidden>No pudimos leer esa imagen</p>
+          </div>
+
+          <button type="submit" class="btn-gradiente publicar-boton">Publicar</button>
+          <div id="publicarEstado" class="publicar-estado" role="status" aria-live="polite" hidden>
+            <p id="publicarMensaje" class="publicar-mensaje">Publicado (simulado)</p>
+            <div class="publicar-estado-acciones">
+              <a href="mis-publicaciones.html">Ver mis publicaciones</a>
+              <button type="button" id="publicarOtro">Publicar otro</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <aside class="publicar-vista-panel" aria-labelledby="publicarVistaTitulo">
+        <div class="publicar-vista-encabezado">
+          <p class="publicar-seccion-eyebrow">Una primera impresión</p>
+          <h2 id="publicarVistaTitulo">Así se verá tu publicación</h2>
+        </div>
+        <article class="publicar-vista-tarjeta">
+          <div class="publicar-vista-portada">
+            <div id="publicarVistaDisco" class="disco" aria-hidden="true"></div>
+            <img id="publicarVistaFoto" class="publicar-vista-imagen" alt="" hidden>
+            <span class="publicar-vista-edicion" aria-hidden="true">VINYLY / C2C</span>
+          </div>
+          <div class="publicar-vista-info">
+            <div class="publicar-vista-linea">
+              <span class="publicar-vista-pill">Tu publicación</span>
+              <span class="publicar-vista-destello" aria-hidden="true">✳</span>
+            </div>
+            <h3 id="publicarVistaNombre" class="publicar-placeholder">Nombre de tu vinilo</h3>
+            <p id="publicarVistaArtista" class="publicar-placeholder">Artista</p>
+            <p id="publicarVistaDescripcion" class="publicar-vista-descripcion"></p>
+            <div class="publicar-vista-pie">
+              <span id="publicarVistaPrecio" class="publicar-placeholder">$0 MXN</span>
+              <span aria-hidden="true">↗</span>
+            </div>
+          </div>
+        </article>
+        <p class="publicar-vista-nota">Vista previa de un intercambio hecho por fans, para fans.</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-swirl-1"></div>
+    <div class="footer-swirl-2"></div>
+    <div class="footer-disco"></div>
+    <div class="footer-izquierda">
+      <div class="footer-columna">
+        <h4>Enlaces</h4>
+        <a href="landing.html">Inicio</a>
+        <a href="index.html#nosotros">Nosotros</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+      <div class="footer-columna">
+        <h4>Contacto</h4>
+        <p>******</p>
+        <p>www.vinyly.com</p>
+      </div>
+    </div>
+    <div class="footer-columna footer-marca">
+      <h4>VINYLY</h4>
+      <p>Premium Sound, Pop Edition</p>
+    </div>
+  </footer>
+
+  <script src="js/publicaciones.js"></script>
+  <script>
+    (function () {
+      const modulo = window.PublicacionesVinyly;
+      const formulario = document.getElementById('formPublicar');
+      const campoNombre = document.getElementById('publicarNombre');
+      const campoArtista = document.getElementById('publicarArtista');
+      const campoPrecio = document.getElementById('publicarPrecio');
+      const campoPrecioContenedor = campoPrecio.closest('.publicar-precio-campo');
+      const campoDescripcion = document.getElementById('publicarDescripcion');
+      const contadorCaracteres = document.getElementById('publicarCaracteres');
+      const zonaFoto = document.getElementById('publicarFotoZona');
+      const selectorFoto = document.getElementById('publicarFotoArchivo');
+      const miniaturaFoto = document.getElementById('publicarFotoMiniatura');
+      const botonQuitarFoto = document.getElementById('publicarQuitarFoto');
+      const notaFoto = document.getElementById('publicarFotoNota');
+      const estado = document.getElementById('publicarEstado');
+      const mensaje = document.getElementById('publicarMensaje');
+      const botonPublicarOtro = document.getElementById('publicarOtro');
+      const vistaFoto = document.getElementById('publicarVistaFoto');
+      const vistaDisco = document.getElementById('publicarVistaDisco');
+      const vistaNombre = document.getElementById('publicarVistaNombre');
+      const vistaArtista = document.getElementById('publicarVistaArtista');
+      const vistaPrecio = document.getElementById('publicarVistaPrecio');
+      const vistaDescripcion = document.getElementById('publicarVistaDescripcion');
+      let fotoDataUrl = '';
+      let promesaFotoPendiente = null;
+      let tokenFoto = 0;
+
+      function establecerTextoVista(elemento, texto, ejemplo) {
+        elemento.textContent = texto || ejemplo;
+        elemento.classList.toggle('publicar-placeholder', !texto);
+      }
+
+      function actualizarVista() {
+        establecerTextoVista(vistaNombre, campoNombre.value.trim(), 'Nombre de tu vinilo');
+        establecerTextoVista(vistaArtista, campoArtista.value.trim(), 'Artista');
+        establecerTextoVista(
+          vistaPrecio,
+          campoPrecio.value.trim() ? modulo.formatearPrecio(Number(campoPrecio.value)) : '',
+          '$0 MXN'
+        );
+        vistaDescripcion.textContent = campoDescripcion.value.trim();
+        if (fotoDataUrl.indexOf('data:image/') === 0) {
+          vistaFoto.src = fotoDataUrl;
+          vistaFoto.alt = `Portada de ${campoNombre.value.trim() || 'tu vinilo'}`;
+          vistaFoto.hidden = false;
+          vistaDisco.hidden = true;
+        } else {
+          vistaFoto.removeAttribute('src');
+          vistaFoto.alt = '';
+          vistaFoto.hidden = true;
+          vistaDisco.hidden = false;
+        }
+      }
+
+      function actualizarEstadoPrecio() {
+        const flotando = document.activeElement === campoPrecio || campoPrecio.value.length > 0;
+        campoPrecioContenedor.classList.toggle('publicar-precio-activo', flotando);
+      }
+
+      function limpiarFoto() {
+        tokenFoto += 1;
+        promesaFotoPendiente = null;
+        fotoDataUrl = '';
+        selectorFoto.value = '';
+        miniaturaFoto.removeAttribute('src');
+        miniaturaFoto.alt = '';
+        miniaturaFoto.hidden = true;
+        zonaFoto.classList.remove('publicar-foto-tiene-imagen');
+        botonQuitarFoto.hidden = true;
+        notaFoto.hidden = true;
+        actualizarVista();
+      }
+
+      function seleccionarFoto(archivo) {
+        if (!archivo) {
+          return;
+        }
+
+        tokenFoto += 1;
+        const tokenActual = tokenFoto;
+        fotoDataUrl = '';
+        miniaturaFoto.removeAttribute('src');
+        miniaturaFoto.alt = '';
+        miniaturaFoto.hidden = true;
+        zonaFoto.classList.remove('publicar-foto-tiene-imagen');
+        botonQuitarFoto.hidden = true;
+        notaFoto.hidden = true;
+        actualizarVista();
+        promesaFotoPendiente = modulo.procesarFoto(archivo)
+          .then(function (dataUrl) {
+            if (tokenActual !== tokenFoto) {
+              return '';
+            }
+            fotoDataUrl = dataUrl;
+            miniaturaFoto.src = dataUrl;
+            miniaturaFoto.alt = `Portada de ${campoNombre.value.trim() || 'tu vinilo'}`;
+            miniaturaFoto.hidden = false;
+            zonaFoto.classList.add('publicar-foto-tiene-imagen');
+            botonQuitarFoto.hidden = false;
+            actualizarVista();
+            return dataUrl;
+          })
+          .catch(function () {
+            if (tokenActual === tokenFoto) {
+              fotoDataUrl = '';
+              miniaturaFoto.removeAttribute('src');
+              miniaturaFoto.alt = '';
+              miniaturaFoto.hidden = true;
+              zonaFoto.classList.remove('publicar-foto-tiene-imagen');
+              botonQuitarFoto.hidden = true;
+              notaFoto.hidden = false;
+              actualizarVista();
+            }
+            return '';
+          })
+          .finally(function () {
+            if (tokenActual === tokenFoto) {
+              promesaFotoPendiente = null;
+            }
+          });
+      }
+
+      async function esperarFotoVigente() {
+        while (promesaFotoPendiente) {
+          const promesaEsperada = promesaFotoPendiente;
+          await promesaEsperada;
+          if (promesaEsperada === promesaFotoPendiente) {
+            break;
+          }
+        }
+      }
+
+      function limpiarFormulario() {
+        formulario.reset();
+        contadorCaracteres.textContent = '0/300';
+        campoPrecioContenedor.classList.remove('publicar-precio-activo');
+        limpiarFoto();
+        actualizarVista();
+      }
+
+      function mostrarMensajeExito() {
+        estado.hidden = false;
+        mensaje.classList.remove('publicar-mensaje-animado');
+        void mensaje.offsetWidth;
+        mensaje.classList.add('publicar-mensaje-animado');
+      }
+
+      campoPrecio.addEventListener('input', function () {
+        let valor = campoPrecio.value.replace(/[^\d.]/g, '');
+        const punto = valor.indexOf('.');
+        if (punto !== -1) {
+          valor = valor.slice(0, punto + 1) + valor.slice(punto + 1).replace(/\./g, '');
+        }
+        campoPrecio.value = valor.slice(0, 9);
+        actualizarEstadoPrecio();
+        actualizarVista();
+      });
+      campoPrecio.addEventListener('focus', actualizarEstadoPrecio);
+      campoPrecio.addEventListener('blur', actualizarEstadoPrecio);
+
+      [campoNombre, campoArtista, campoDescripcion].forEach(function (campo) {
+        campo.addEventListener('input', function () {
+          if (campo === campoDescripcion) {
+            contadorCaracteres.textContent = `${campoDescripcion.value.length}/300`;
+          }
+          actualizarVista();
+          if (!miniaturaFoto.hidden) {
+            miniaturaFoto.alt = `Portada de ${campoNombre.value.trim() || 'tu vinilo'}`;
+          }
+        });
+      });
+
+      zonaFoto.addEventListener('click', function () {
+        selectorFoto.click();
+      });
+      zonaFoto.addEventListener('keydown', function (evento) {
+        if (evento.key === 'Enter' || evento.key === ' ') {
+          evento.preventDefault();
+          selectorFoto.click();
+        }
+      });
+      zonaFoto.addEventListener('dragover', function (evento) {
+        evento.preventDefault();
+        zonaFoto.classList.add('publicar-foto-arrastrando');
+      });
+      zonaFoto.addEventListener('dragleave', function (evento) {
+        if (!zonaFoto.contains(evento.relatedTarget)) {
+          zonaFoto.classList.remove('publicar-foto-arrastrando');
+        }
+      });
+      zonaFoto.addEventListener('drop', function (evento) {
+        evento.preventDefault();
+        zonaFoto.classList.remove('publicar-foto-arrastrando');
+        seleccionarFoto(evento.dataTransfer.files[0]);
+      });
+      selectorFoto.addEventListener('change', function () {
+        seleccionarFoto(selectorFoto.files[0]);
+      });
+      botonQuitarFoto.addEventListener('click', limpiarFoto);
+
+      formulario.addEventListener('submit', async function (evento) {
+        evento.preventDefault();
+        await esperarFotoVigente();
+
+        const nombre = campoNombre.value.trim();
+        if (nombre) {
+          const valorPrecio = campoPrecio.value.trim();
+          const precio = valorPrecio && Number.isFinite(Number(valorPrecio)) && Number(valorPrecio) > 0
+            ? Number(valorPrecio)
+            : null;
+          modulo.agregarPublicacion({
+            nombre: nombre,
+            artista: campoArtista.value.trim(),
+            precio: precio,
+            descripcion: campoDescripcion.value.trim(),
+            foto: fotoDataUrl
+          });
+        }
+
+        limpiarFormulario();
+        mostrarMensajeExito();
+      });
+
+      botonPublicarOtro.addEventListener('click', function () {
+        estado.hidden = true;
+        limpiarFormulario();
+        campoNombre.focus();
+      });
+
+      actualizarVista();
+    }());
+  </script>
+</body>
+</html>
