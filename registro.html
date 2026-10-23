@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,61 +38,184 @@
   </header>
  
   <!-- ===== REGISTRO ===== -->
-  <section class="auth">
-    <div class="auth-card">
-      <p class="auth-eyebrow">Únete a VINYLY</p>
-      <h1>Crea tu cuenta</h1>
- 
-      <form class="registro-form">
-        <input type="text" placeholder="Nombre">
-        <input type="text" placeholder="Correo electrónico">
-        <input type="password" placeholder="Contraseña">
-        <input type="password" placeholder="Confirmar contraseña">
-        <button type="submit" class="btn-gradiente">Crear cuenta</button>
-      </form>
- 
-      <p class="auth-alt">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+  <section class="auth auth--login auth--registro">
+    <div class="login-visual">
+      <div class="disco" aria-hidden="true"></div>
+      <span class="brillo brillo-1" aria-hidden="true"></span>
+      <span class="brillo brillo-2" aria-hidden="true"></span>
+
+      <div class="login-visual-contenido">
+        <p class="login-eyebrow">Premium Sound, Pop Edition</p>
+        <h2>Empieza tu<br><span class="acento">colección.</span></h2>
+        <div class="login-pills" aria-label="Beneficios de ser parte de VINYLY">
+          <span class="login-pill">🏷️ Promos solo para miembros</span>
+          <span class="login-pill">💬 Comenta en la Comunidad</span>
+          <span class="login-pill">✨ Publica tus propios discos</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-panel">
+      <div class="auth-card">
+        <p class="auth-eyebrow">Únete a VINYLY</p>
+        <h1>Crea tu cuenta</h1>
+
+        <form class="registro-form" id="formRegistro" novalidate>
+          <div class="campo">
+            <input type="text" id="registroNombre" placeholder=" " autocomplete="name">
+            <label for="registroNombre">Nombre</label>
+          </div>
+
+          <div class="campo">
+            <input type="text" id="registroCorreo" placeholder=" " inputmode="email" autocomplete="username">
+            <label for="registroCorreo">Correo electrónico</label>
+          </div>
+
+          <div class="campo registro-campo-password">
+            <input type="password" id="registroContrasena" placeholder=" " autocomplete="new-password">
+            <label for="registroContrasena">Contraseña</label>
+            <button class="login-toggle-password" id="registroTogglePassword" type="button" aria-label="Mostrar contraseña" aria-pressed="false">
+              <span aria-hidden="true">👁</span>
+            </button>
+            <div class="registro-fuerza" id="registroFuerza" data-nivel="vacio">
+              <div class="registro-fuerza-segmentos">
+                <span class="registro-fuerza-segmento" aria-hidden="true"></span>
+                <span class="registro-fuerza-segmento" aria-hidden="true"></span>
+                <span class="registro-fuerza-segmento" aria-hidden="true"></span>
+                <span class="registro-fuerza-segmento" aria-hidden="true"></span>
+              </div>
+              <span class="registro-fuerza-etiqueta" id="registroFuerzaEtiqueta" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <div class="campo registro-campo-password">
+            <input type="password" id="registroConfirmar" placeholder=" " autocomplete="new-password">
+            <label for="registroConfirmar">Confirmar contraseña</label>
+            <button class="login-toggle-password" id="registroToggleConfirmar" type="button" aria-label="Mostrar contraseña" aria-pressed="false">
+              <span aria-hidden="true">👁</span>
+            </button>
+            <p class="registro-coincidencia" id="registroCoincidencia" aria-live="polite" hidden></p>
+          </div>
+
+          <button type="submit" class="btn-gradiente login-submit">
+            <span>Crear cuenta</span>
+            <span class="login-submit-flecha" aria-hidden="true">→</span>
+          </button>
+        </form>
+
+        <p class="auth-alt">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+
+        <div class="login-exito" id="registroExito" role="status" aria-live="polite" tabindex="-1" hidden>
+          <span class="login-exito-icono" aria-hidden="true"><span class="login-exito-check"></span></span>
+          <p class="auth-gracias" id="registroGracias"></p>
+          <p class="auth-bienvenida" id="registroBienvenida"></p>
+          <div class="login-progreso" aria-hidden="true"><span></span></div>
+          <p class="login-progreso-leyenda">Llevándote a iniciar sesión...</p>
+        </div>
+      </div>
     </div>
   </section>
- 
-  <!-- ===== FOOTER ===== -->
-  <footer class="footer">
- 
-    <div class="footer-swirl-1"></div>
-    <div class="footer-swirl-2"></div>
-    <div class="footer-disco"></div>
- 
-    <div class="footer-izquierda">
-      <div class="footer-columna">
-        <h4>Enlaces</h4>
-        <a href="landing.html">Inicio</a>
-        <a href="index.html#nosotros">Nosotros</a>
-        <a href="contacto.html">Contacto</a>
-      </div>
- 
-      <div class="footer-columna">
-        <h4>Contacto</h4>
-        <p>******</p>
-        <p>www.vinyly.com</p>
-      </div>
-    </div>
- 
-    <div class="footer-columna footer-marca">
-      <h4>VINYLY</h4>
-      <p>Premium Sound, Pop Edition</p>
-    </div>
- 
-  </footer>
+
  
   <script>
-    // Agarra el formulario de registro
-    const formRegistro = document.querySelector('.registro-form');
- 
+    const formRegistro = document.getElementById('formRegistro');
+    const registroNombre = document.getElementById('registroNombre');
+    const registroContrasena = document.getElementById('registroContrasena');
+    const registroConfirmar = document.getElementById('registroConfirmar');
+    const registroFuerza = document.getElementById('registroFuerza');
+    const registroFuerzaEtiqueta = document.getElementById('registroFuerzaEtiqueta');
+    const registroCoincidencia = document.getElementById('registroCoincidencia');
+    const registroExito = document.getElementById('registroExito');
+    const registroGracias = document.getElementById('registroGracias');
+    const registroBienvenida = document.getElementById('registroBienvenida');
+    let redireccionProgramada = false;
+
+    function configurarBotonOjo(botonId, campo) {
+      const boton = document.getElementById(botonId);
+
+      boton.addEventListener('click', function () {
+        const mostrar = campo.type === 'password';
+        campo.type = mostrar ? 'text' : 'password';
+        boton.setAttribute('aria-label', mostrar ? 'Ocultar contraseña' : 'Mostrar contraseña');
+        boton.setAttribute('aria-pressed', String(mostrar));
+      });
+    }
+
+    configurarBotonOjo('registroTogglePassword', registroContrasena);
+    configurarBotonOjo('registroToggleConfirmar', registroConfirmar);
+
+    function actualizarFuerza() {
+      const contrasena = registroContrasena.value;
+      const criterios = [
+        contrasena.length >= 8,
+        /[A-Z]/.test(contrasena),
+        /[a-z]/.test(contrasena),
+        /\d/.test(contrasena),
+        /[^A-Za-z0-9]/.test(contrasena)
+      ];
+      const puntuacion = criterios.filter(Boolean).length;
+      let nivel = 'vacio';
+      let etiqueta = '';
+      let segmentosActivos = 0;
+
+      if (puntuacion > 0) {
+        if (puntuacion <= 2) {
+          nivel = 'debil';
+          etiqueta = 'Débil';
+          segmentosActivos = puntuacion;
+        } else if (puntuacion <= 4) {
+          nivel = 'media';
+          etiqueta = 'Media';
+          segmentosActivos = 3;
+        } else {
+          nivel = 'fuerte';
+          etiqueta = 'Fuerte';
+          segmentosActivos = 4;
+        }
+      }
+
+      registroFuerza.dataset.nivel = nivel;
+      registroFuerzaEtiqueta.textContent = etiqueta;
+      registroFuerza.querySelectorAll('.registro-fuerza-segmento').forEach(function (segmento, indice) {
+        segmento.classList.toggle('activo', indice < segmentosActivos);
+      });
+    }
+
+    function actualizarCoincidencia() {
+      const confirmar = registroConfirmar.value;
+      registroCoincidencia.hidden = confirmar.length === 0;
+
+      if (confirmar.length === 0) return;
+
+      const coincide = confirmar === registroContrasena.value;
+      registroCoincidencia.textContent = coincide
+        ? '✓ Las contraseñas coinciden'
+        : 'Aún no coinciden';
+      registroCoincidencia.classList.toggle('coincide', coincide);
+    }
+
+    registroContrasena.addEventListener('input', function () {
+      actualizarFuerza();
+      actualizarCoincidencia();
+    });
+    registroConfirmar.addEventListener('input', actualizarCoincidencia);
+
     formRegistro.addEventListener('submit', function (evento) {
-      evento.preventDefault(); // solo simulación, no crea ninguna cuenta real
- 
-      // Mostramos el resultado de registro y esperamos antes de cambiar de página.
-      formRegistro.innerHTML = '<p class="auth-gracias">Registro exitoso</p>';
+      evento.preventDefault();
+      if (redireccionProgramada) return;
+      redireccionProgramada = true;
+
+      const nombre = registroNombre.value.trim();
+      const nombreBienvenida = nombre
+        ? nombre.charAt(0).toUpperCase() + nombre.slice(1)
+        : '';
+      registroGracias.textContent = 'Registro exitoso (simulado)';
+      registroBienvenida.textContent = nombreBienvenida
+        ? 'Bienvenido a VINYLY, ' + nombreBienvenida
+        : 'Bienvenido a VINYLY';
+      formRegistro.hidden = true;
+      registroExito.hidden = false;
+      registroExito.focus();
 
       setTimeout(function () {
         window.location.href = 'login.html';

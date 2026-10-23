@@ -6465,6 +6465,98 @@ body.modal-abierto {
   }
 }
 
+/* REGISTRO */
+.auth--registro {
+  overflow: visible;
+}
+
+.auth--registro .registro-form {
+  gap: 18px;
+}
+
+.auth--registro .registro-campo-password input {
+  padding-right: 58px;
+}
+
+.auth--registro .registro-fuerza {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  opacity: 1;
+}
+
+.auth--registro .registro-fuerza-segmentos {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.auth--registro .registro-fuerza-segmento {
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(20, 20, 26, 0.1);
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.auth--registro .registro-fuerza-etiqueta {
+  min-width: 64px;
+  color: var(--gris);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  text-align: right;
+}
+
+.auth--registro .registro-fuerza[data-nivel="vacio"] {
+  opacity: 0.48;
+}
+
+.auth--registro .registro-fuerza[data-nivel="debil"] .registro-fuerza-segmento.activo {
+  background: #B93A78;
+}
+
+.auth--registro .registro-fuerza[data-nivel="debil"] .registro-fuerza-etiqueta {
+  color: #B93A78;
+}
+
+.auth--registro .registro-fuerza[data-nivel="media"] .registro-fuerza-segmento.activo {
+  background: var(--dorado);
+}
+
+.auth--registro .registro-fuerza[data-nivel="media"] .registro-fuerza-etiqueta {
+  color: var(--oscuro);
+}
+
+.auth--registro .registro-fuerza[data-nivel="fuerte"] .registro-fuerza-segmento.activo {
+  background: #1F8F83;
+}
+
+.auth--registro .registro-fuerza[data-nivel="fuerte"] .registro-fuerza-etiqueta {
+  color: #1F8F83;
+}
+
+.auth--registro .registro-coincidencia {
+  margin: 12px 0 0;
+  color: #B93A78;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.auth--registro .registro-coincidencia.coincide {
+  color: #1F8F83;
+}
+
+.auth--registro [hidden] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth--registro .registro-fuerza-segmento {
+    transition: none;
+  }
+}
+
 /* PERFIL */
 .perfil {
   background: var(--crema);
