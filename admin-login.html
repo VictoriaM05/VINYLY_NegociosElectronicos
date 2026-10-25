@@ -10,33 +10,87 @@
 </head>
 <body class="admin-auth-page">
   <main class="admin-auth-shell">
-    <a class="admin-auth-brand" href="landing.html" aria-label="VINYLY, volver a la tienda">
-      <img src="resources/icono_vinyly.jpg" alt="VINYLY">
-      <span>VINYLY <small>ADMIN</small></span>
-    </a>
+    <div class="admin-auth-fondo" aria-hidden="true">
+      <div class="disco admin-auth-disco"></div>
+      <span class="admin-auth-ring admin-auth-ring-1"></span>
+      <span class="admin-auth-ring admin-auth-ring-2"></span>
+      <span class="admin-auth-ring admin-auth-ring-3"></span>
+      <span class="brillo brillo-1"></span>
+      <span class="brillo brillo-2"></span>
+    </div>
+
+    <header class="admin-auth-header">
+      <a class="admin-auth-brand" href="landing.html" aria-label="VINYLY, volver a la tienda">
+        <img src="resources/icono_vinyly.jpg" alt="VINYLY">
+        <span class="admin-auth-brand-nombre">VINYLY <small>ADMIN</small></span>
+      </a>
+      <span class="admin-auth-status"><span aria-hidden="true">●</span> Sistema en línea</span>
+    </header>
 
     <section class="auth-card admin-login-card">
+      <div class="admin-auth-identidad" aria-hidden="true">
+        <span class="admin-auth-candado">🔒</span>
+        <span class="admin-auth-chip">Acceso restringido</span>
+      </div>
       <p class="auth-eyebrow">Área privada</p>
       <h1>Acceso de administrador</h1>
-      <form class="login-form" id="admin-login-form">
-        <input type="text" name="correo" placeholder="Correo electrónico" inputmode="email" autocomplete="username">
-        <input type="password" name="contrasena" placeholder="Contraseña" autocomplete="current-password">
-        <button type="submit" class="btn-gradiente">Iniciar sesión</button>
+      <p class="admin-auth-descripcion">Solo para el equipo de VINYLY.</p>
+
+      <form class="login-form" id="admin-login-form" novalidate>
+        <div class="campo admin-auth-campo">
+          <input type="text" id="adminCorreo" name="correo" inputmode="email" autocomplete="username" placeholder=" ">
+          <label for="adminCorreo">Correo electrónico</label>
+        </div>
+
+        <div class="campo admin-auth-campo admin-auth-campo-password">
+          <input type="password" id="adminContrasena" name="contrasena" autocomplete="current-password" placeholder=" ">
+          <label for="adminContrasena">Contraseña</label>
+          <button class="admin-auth-toggle-password" id="adminTogglePassword" type="button" aria-label="Mostrar contraseña" aria-pressed="false">
+            <span aria-hidden="true">👁</span>
+          </button>
+        </div>
+
+        <button type="submit" class="btn-gradiente admin-auth-submit">
+          <span>Iniciar sesión</span>
+          <span class="admin-auth-submit-flecha" aria-hidden="true">→</span>
+        </button>
       </form>
-      <p class="auth-alt"><a href="landing.html">Volver a la tienda</a></p>
-      <p class="auth-gracias" id="admin-login-message" role="status" aria-live="polite" hidden></p>
+
+      <p class="auth-alt admin-auth-volver"><a href="landing.html">Volver a la tienda</a></p>
+      <p class="admin-auth-nota">Acceso solo para personal autorizado</p>
+
+      <div class="admin-auth-exito" id="admin-login-message" role="status" aria-live="polite" tabindex="-1" hidden>
+        <span class="admin-auth-exito-icono" aria-hidden="true"><span class="admin-auth-exito-check"></span></span>
+        <p class="admin-auth-exito-texto"></p>
+        <div class="admin-auth-progreso" aria-hidden="true"><span></span></div>
+      </div>
     </section>
   </main>
 
   <script>
     const adminLoginForm = document.getElementById('admin-login-form');
     const adminLoginMessage = document.getElementById('admin-login-message');
+    const adminLoginMessageText = adminLoginMessage.querySelector('.admin-auth-exito-texto');
+    const adminContrasena = document.getElementById('adminContrasena');
+    const adminTogglePassword = document.getElementById('adminTogglePassword');
+    let inicioAdminProgramado = false;
+
+    adminTogglePassword.addEventListener('click', function () {
+      const mostrar = adminContrasena.type === 'password';
+      adminContrasena.type = mostrar ? 'text' : 'password';
+      adminTogglePassword.setAttribute('aria-label', mostrar ? 'Ocultar contraseña' : 'Mostrar contraseña');
+      adminTogglePassword.setAttribute('aria-pressed', String(mostrar));
+    });
 
     adminLoginForm.addEventListener('submit', function (event) {
       event.preventDefault();
-      adminLoginMessage.textContent = 'Acceso simulado. Abriendo el panel...';
+      if (inicioAdminProgramado) return;
+      inicioAdminProgramado = true;
+
+      adminLoginMessageText.textContent = 'Acceso correcto. Abriendo el panel...';
       adminLoginMessage.hidden = false;
       adminLoginForm.hidden = true;
+      adminLoginMessage.focus();
 
       setTimeout(function () {
         window.location.href = 'admin-dashboard.html';

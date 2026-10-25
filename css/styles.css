@@ -6557,6 +6557,548 @@ body.modal-abierto {
   }
 }
 
+/* ADMIN LOGIN */
+.admin-auth-page {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow-x: hidden;
+  background: var(--oscuro);
+  color: var(--blanco);
+}
+
+.admin-auth-page .admin-auth-shell {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(22px, 4vh, 36px);
+  overflow: hidden;
+  padding: 32px 20px;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(224, 96, 158, 0.26), transparent 38%),
+    radial-gradient(circle at 88% 28%, rgba(124, 92, 214, 0.32), transparent 43%),
+    radial-gradient(circle at 50% 96%, rgba(242, 193, 78, 0.13), transparent 40%),
+    var(--oscuro);
+}
+
+.admin-auth-page .admin-auth-shell::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 26px 26px;
+  content: '';
+  pointer-events: none;
+}
+
+.admin-auth-page .admin-auth-fondo {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.admin-auth-page .admin-auth-disco {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: 560px;
+  height: 560px;
+  margin: -280px 0 0 -280px;
+  opacity: 0.24;
+}
+
+.admin-auth-page .admin-auth-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  animation: admin-auth-anillos 7s ease-in-out infinite;
+}
+
+.admin-auth-page .admin-auth-ring-1 {
+  width: 660px;
+  height: 660px;
+  margin: -330px 0 0 -330px;
+}
+
+.admin-auth-page .admin-auth-ring-2 {
+  width: 770px;
+  height: 770px;
+  margin: -385px 0 0 -385px;
+  border-color: rgba(224, 96, 158, 0.13);
+  animation-delay: 0.8s;
+}
+
+.admin-auth-page .admin-auth-ring-3 {
+  width: 880px;
+  height: 880px;
+  margin: -440px 0 0 -440px;
+  border-color: rgba(242, 193, 78, 0.1);
+  animation-delay: 1.6s;
+}
+
+.admin-auth-page .admin-auth-fondo .brillo-1 {
+  top: 19%;
+  left: 15%;
+}
+
+.admin-auth-page .admin-auth-fondo .brillo-2 {
+  right: 14%;
+  bottom: 18%;
+}
+
+.admin-auth-page .admin-auth-header,
+.admin-auth-page .admin-login-card {
+  position: relative;
+  z-index: 1;
+}
+
+.admin-auth-page .admin-auth-header {
+  display: flex;
+  width: min(100%, 960px);
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.admin-auth-page .admin-auth-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--blanco);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.admin-auth-page .admin-auth-brand img {
+  width: 46px;
+  height: 46px;
+  border: 2px solid rgba(255, 255, 255, 0.58);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.admin-auth-page .admin-auth-brand-nombre {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  letter-spacing: 0.02em;
+}
+
+.admin-auth-page .admin-auth-brand-nombre small {
+  color: var(--dorado);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+.admin-auth-page .admin-auth-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.09);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+  backdrop-filter: blur(12px);
+}
+
+.admin-auth-page .admin-auth-status > span {
+  color: var(--turquesa);
+  font-size: 10px;
+  animation: admin-auth-latido 2s ease-in-out infinite;
+}
+
+.admin-auth-page .admin-login-card {
+  isolation: isolate;
+  width: min(100%, 440px);
+  max-width: 440px;
+  padding: clamp(28px, 5vw, 42px);
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 28px;
+  background: rgba(20, 20, 26, 0.92);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.48);
+  color: var(--blanco);
+  text-align: left;
+  animation: aparecer 0.65s ease 0.08s backwards;
+}
+
+.admin-auth-page .admin-login-card::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--morado), var(--rosa) 55%, var(--dorado));
+  content: '';
+  pointer-events: none;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .admin-auth-page .admin-login-card {
+    background: rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+  }
+
+  .admin-auth-page .admin-auth-status {
+    background: rgba(255, 255, 255, 0.09);
+  }
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .admin-auth-page .admin-login-card {
+    background: rgba(20, 20, 26, 0.97);
+  }
+}
+
+@supports not (mask-composite: exclude) {
+  .admin-auth-page .admin-login-card {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .admin-auth-page .admin-login-card::before {
+    display: none;
+  }
+}
+
+.admin-auth-page .admin-auth-identidad {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.admin-auth-page .admin-auth-candado {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  border-radius: 17px;
+  background: linear-gradient(135deg, var(--morado), var(--rosa));
+  box-shadow: 0 12px 30px rgba(124, 92, 214, 0.28);
+  font-size: 25px;
+}
+
+.admin-auth-page .admin-auth-chip {
+  padding: 7px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.88);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-auth-page .auth-eyebrow {
+  margin-bottom: 9px;
+  color: var(--dorado);
+}
+
+.admin-auth-page .admin-login-card h1 {
+  margin-bottom: 10px;
+  color: var(--blanco);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px, 5vw, 34px);
+  line-height: 1.12;
+  letter-spacing: -0.04em;
+}
+
+.admin-auth-page .admin-auth-descripcion {
+  margin-bottom: 26px;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.admin-auth-page .login-form {
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.admin-auth-page .admin-auth-campo {
+  width: 100%;
+}
+
+.admin-auth-page .admin-auth-campo input {
+  width: 100%;
+  min-height: 58px;
+  padding: 22px 18px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  background: rgba(20, 20, 26, 0.42);
+  color: var(--blanco);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.admin-auth-page .admin-auth-campo input::placeholder {
+  color: transparent;
+}
+
+.admin-auth-page .admin-auth-campo label {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.admin-auth-page .admin-auth-campo input:focus,
+.admin-auth-page .admin-auth-campo input:focus-visible {
+  border-color: var(--turquesa);
+  background: rgba(20, 20, 26, 0.58);
+  box-shadow: 0 0 0 4px rgba(63, 191, 176, 0.2);
+  outline: 2px solid var(--turquesa);
+  outline-offset: 2px;
+}
+
+.admin-auth-page .admin-auth-campo input:focus + label {
+  color: #72e0d2;
+}
+
+.admin-auth-page .admin-auth-campo-password input {
+  padding-right: 60px;
+}
+
+.admin-auth-page .admin-auth-toggle-password {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 9px;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 18px;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.admin-auth-page .admin-auth-submit {
+  display: flex;
+  min-height: 54px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 2px;
+}
+
+.admin-auth-page .admin-auth-submit-flecha {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.admin-auth-page .admin-auth-submit:hover .admin-auth-submit-flecha {
+  transform: translateX(5px);
+}
+
+.admin-auth-page .admin-auth-volver {
+  margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 14px;
+}
+
+.admin-auth-page .admin-auth-volver a {
+  color: var(--blanco);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.admin-auth-page .admin-auth-volver a:hover {
+  color: var(--dorado);
+  text-decoration-color: currentColor;
+}
+
+.admin-auth-page .admin-auth-nota {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.admin-auth-page .admin-auth-exito {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  width: 100%;
+  padding-top: 8px;
+  text-align: center;
+  animation: aparecer 0.45s ease backwards;
+}
+
+.admin-auth-page .admin-auth-exito[hidden],
+.admin-auth-page .login-form[hidden] {
+  display: none;
+}
+
+.admin-auth-page .admin-auth-exito:focus {
+  outline: none;
+}
+
+.admin-auth-page .admin-auth-exito-icono {
+  display: grid;
+  width: 76px;
+  height: 76px;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--morado), var(--rosa));
+  box-shadow: 0 12px 28px rgba(124, 92, 214, 0.3);
+}
+
+.admin-auth-page .admin-auth-exito-check {
+  width: 24px;
+  height: 13px;
+  border-right: 3px solid var(--blanco);
+  border-bottom: 3px solid var(--blanco);
+  clip-path: inset(0 100% 0 0);
+  transform: rotate(45deg);
+  animation: admin-auth-trazar-check 0.45s ease 0.12s forwards;
+}
+
+.admin-auth-page .admin-auth-exito-texto {
+  margin: 0;
+  color: var(--blanco);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.admin-auth-page .admin-auth-progreso {
+  width: 100%;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.admin-auth-page .admin-auth-progreso span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--morado), var(--rosa), var(--dorado));
+  animation: admin-auth-progreso-llenar 1.2s linear forwards;
+}
+
+.admin-auth-page a:focus-visible,
+.admin-auth-page button:focus-visible {
+  outline: 3px solid var(--turquesa);
+  outline-offset: 4px;
+}
+
+@keyframes admin-auth-latido {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(63, 191, 176, 0.5); }
+  50% { box-shadow: 0 0 0 5px rgba(63, 191, 176, 0); }
+}
+
+@keyframes admin-auth-anillos {
+  0%, 100% { opacity: 0.28; }
+  50% { opacity: 0.72; }
+}
+
+@keyframes admin-auth-trazar-check {
+  to { clip-path: inset(0); }
+}
+
+@keyframes admin-auth-progreso-llenar {
+  to { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .admin-auth-page .admin-auth-shell {
+    gap: 24px;
+    padding: 24px 16px;
+  }
+
+  .admin-auth-page .admin-auth-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .admin-auth-page .admin-auth-status {
+    padding: 8px 12px;
+  }
+
+  .admin-auth-page .admin-login-card {
+    padding: 28px 22px;
+  }
+
+  .admin-auth-page .admin-auth-disco {
+    width: 360px;
+    height: 360px;
+    margin: -180px 0 0 -180px;
+  }
+
+  .admin-auth-page .admin-auth-ring-1 {
+    width: 440px;
+    height: 440px;
+    margin: -220px 0 0 -220px;
+  }
+
+  .admin-auth-page .admin-auth-ring-2 {
+    width: 520px;
+    height: 520px;
+    margin: -260px 0 0 -260px;
+  }
+
+  .admin-auth-page .admin-auth-ring-3 {
+    width: 600px;
+    height: 600px;
+    margin: -300px 0 0 -300px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-auth-page .admin-login-card,
+  .admin-auth-page .admin-auth-exito,
+  .admin-auth-page .admin-auth-status > span,
+  .admin-auth-page .admin-auth-ring,
+  .admin-auth-page .admin-auth-disco {
+    animation: none;
+  }
+
+  .admin-auth-page .admin-auth-exito-check {
+    animation: none;
+    clip-path: inset(0);
+  }
+
+  .admin-auth-page .admin-auth-progreso span {
+    width: 100%;
+    animation: none;
+  }
+
+  .admin-auth-page .admin-auth-submit-flecha,
+  .admin-auth-page .admin-auth-volver a {
+    transition: none;
+  }
+}
+
 /* PERFIL */
 .perfil {
   background: var(--crema);
