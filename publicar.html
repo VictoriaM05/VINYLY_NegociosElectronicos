@@ -16,6 +16,7 @@
     <ul class="nav-links">
       <li><a href="index.html">Inicio</a></li>
       <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
       <li><a href="campana.html">Campaña</a></li>
       <li><a href="promociones.html">Promociones</a></li>
       <li><a href="comunidad.html">Comunidad</a></li>
@@ -36,7 +37,7 @@
     <div class="publicar-hero-texto">
       <p class="publicar-eyebrow">Vende tu vinilo</p>
       <h1><span class="acento">Publica tu producto</span></h1>
-      <p class="publicar-hero-descripcion">Comparte un vinilo con la comunidad VINYLY. Es una simulación: nada se envía de verdad.</p>
+      <p class="publicar-hero-descripcion">Comparte un vinilo con la comunidad VINYLY.</p>
     </div>
   </section>
 
@@ -57,6 +58,12 @@
             <input type="text" id="publicarArtista" placeholder=" " maxlength="40" autocomplete="off">
             <label for="publicarArtista">Artista (opcional)</label>
           </div>
+
+          <div class="campo">
+            <input type="text" id="publicarAutor" placeholder=" " maxlength="40" autocomplete="name" aria-describedby="publicarAutorAyuda">
+            <label for="publicarAutor">Publicar como</label>
+          </div>
+          <span id="publicarAutorAyuda" class="publicar-ayuda">Si lo dejas vacío, se publicará como Anónimo.</span>
 
           <div class="publicar-precio-campo">
             <label for="publicarPrecio">Precio</label>
@@ -92,9 +99,10 @@
 
           <button type="submit" class="btn-gradiente publicar-boton">Publicar</button>
           <div id="publicarEstado" class="publicar-estado" role="status" aria-live="polite" hidden>
-            <p id="publicarMensaje" class="publicar-mensaje">Publicado (simulado)</p>
+            <p id="publicarMensaje" class="publicar-mensaje">Publicado correctamente</p>
             <div class="publicar-estado-acciones">
               <a href="mis-publicaciones.html">Ver mis publicaciones</a>
+              <a href="marketplace.html">Ver en el marketplace</a>
               <button type="button" id="publicarOtro">Publicar otro</button>
             </div>
           </div>
@@ -119,6 +127,10 @@
             </div>
             <h3 id="publicarVistaNombre" class="publicar-placeholder">Nombre de tu vinilo</h3>
             <p id="publicarVistaArtista" class="publicar-placeholder">Artista</p>
+            <div class="publicar-vista-autor">
+              <span id="publicarVistaAvatar" class="pub-avatar" aria-hidden="true"></span>
+              <span>Publicado por <span id="publicarVistaAutor" class="publicar-placeholder"></span></span>
+            </div>
             <p id="publicarVistaDescripcion" class="publicar-vista-descripcion"></p>
             <div class="publicar-vista-pie">
               <span id="publicarVistaPrecio" class="publicar-placeholder">$0 MXN</span>
@@ -161,6 +173,7 @@
       const formulario = document.getElementById('formPublicar');
       const campoNombre = document.getElementById('publicarNombre');
       const campoArtista = document.getElementById('publicarArtista');
+      const campoAutor = document.getElementById('publicarAutor');
       const campoPrecio = document.getElementById('publicarPrecio');
       const campoPrecioContenedor = campoPrecio.closest('.publicar-precio-campo');
       const campoDescripcion = document.getElementById('publicarDescripcion');
@@ -177,11 +190,34 @@
       const vistaDisco = document.getElementById('publicarVistaDisco');
       const vistaNombre = document.getElementById('publicarVistaNombre');
       const vistaArtista = document.getElementById('publicarVistaArtista');
+      const vistaAutor = document.getElementById('publicarVistaAutor');
+      const vistaAvatar = document.getElementById('publicarVistaAvatar');
       const vistaPrecio = document.getElementById('publicarVistaPrecio');
       const vistaDescripcion = document.getElementById('publicarVistaDescripcion');
       let fotoDataUrl = '';
       let promesaFotoPendiente = null;
       let tokenFoto = 0;
+      let autorRecordado = '';
+
+      try {
+        autorRecordado = window.localStorage.getItem('autorPublicacionesVinyly') || '';
+      } catch (error) {
+        autorRecordado = '';
+      }
+      campoAutor.value = autorRecordado.slice(0, 40);
+
+      function recordarAutor(autor) {
+        autorRecordado = autor;
+        try {
+          if (autor) {
+            window.localStorage.setItem('autorPublicacionesVinyly', autor);
+          } else {
+            window.localStorage.removeItem('autorPublicacionesVinyly');
+          }
+        } catch (error) {
+          autorRecordado = autor;
+        }
+      }
 
       function establecerTextoVista(elemento, texto, ejemplo) {
         elemento.textContent = texto || ejemplo;
@@ -191,6 +227,18 @@
       function actualizarVista() {
         establecerTextoVista(vistaNombre, campoNombre.value.trim(), 'Nombre de tu vinilo');
         establecerTextoVista(vistaArtista, campoArtista.value.trim(), 'Artista');
+        const autor = campoAutor.value.trim();
+        const autorVisible = modulo.resolverAutor(autor);
+        vistaAutor.textContent = autorVisible;
+        vistaAutor.classList.toggle('publicar-placeholder', !autor);
+        vistaAvatar.textContent = modulo.obtenerIniciales(autorVisible);
+        vistaAvatar.classList.remove(
+          'pub-avatar--morado',
+          'pub-avatar--rosa',
+          'pub-avatar--dorado',
+          'pub-avatar--turquesa'
+        );
+        vistaAvatar.classList.add(`pub-avatar--${modulo.obtenerColorAvatar(autorVisible)}`);
         establecerTextoVista(
           vistaPrecio,
           campoPrecio.value.trim() ? modulo.formatearPrecio(Number(campoPrecio.value)) : '',
@@ -290,6 +338,7 @@
 
       function limpiarFormulario() {
         formulario.reset();
+        campoAutor.value = autorRecordado;
         contadorCaracteres.textContent = '0/300';
         campoPrecioContenedor.classList.remove('publicar-precio-activo');
         limpiarFoto();
@@ -316,7 +365,7 @@
       campoPrecio.addEventListener('focus', actualizarEstadoPrecio);
       campoPrecio.addEventListener('blur', actualizarEstadoPrecio);
 
-      [campoNombre, campoArtista, campoDescripcion].forEach(function (campo) {
+      [campoNombre, campoArtista, campoAutor, campoDescripcion].forEach(function (campo) {
         campo.addEventListener('input', function () {
           if (campo === campoDescripcion) {
             contadorCaracteres.textContent = `${campoDescripcion.value.length}/300`;
@@ -361,6 +410,8 @@
         await esperarFotoVigente();
 
         const nombre = campoNombre.value.trim();
+        const autor = campoAutor.value.trim().slice(0, 40);
+        recordarAutor(autor);
         if (nombre) {
           const valorPrecio = campoPrecio.value.trim();
           const precio = valorPrecio && Number.isFinite(Number(valorPrecio)) && Number(valorPrecio) > 0
@@ -369,6 +420,7 @@
           modulo.agregarPublicacion({
             nombre: nombre,
             artista: campoArtista.value.trim(),
+            autor: autor,
             precio: precio,
             descripcion: campoDescripcion.value.trim(),
             foto: fotoDataUrl

@@ -3,6 +3,88 @@
 
   const clavePublicaciones = 'publicacionesVinyly';
   const prefijoImagenValido = 'data:image/';
+  const publicacionesEjemplo = Object.freeze([
+    Object.freeze({
+      id: 'demo-1',
+      nombre: '1989 (usado, en excelente estado)',
+      artista: 'Taylor Swift',
+      precio: 820,
+      descripcion: 'Una edición muy bien conservada, con portada y disco en excelente estado. Lista para encontrar otra colección.',
+      autor: 'Valeria R.',
+      fecha: '2026-10-15T12:00:00.000Z',
+      foto: 'resources/1989_disco.jpg'
+    }),
+    Object.freeze({
+      id: 'demo-2',
+      nombre: 'Starboy (edición sellada)',
+      artista: 'The Weeknd',
+      precio: 780,
+      descripcion: 'Edición sellada, ideal para quien busca sumar este álbum a su colección.',
+      autor: 'Diego M.',
+      fecha: '2026-10-14T12:00:00.000Z',
+      foto: 'resources/starboy_disco.jpg'
+    }),
+    Object.freeze({
+      id: 'demo-3',
+      nombre: 'Born This Way (usado, muy bien cuidado)',
+      artista: 'Lady Gaga',
+      precio: 950,
+      descripcion: 'Vinilo usado y bien cuidado, con gran sonido. La portada está en muy buen estado.',
+      autor: 'Fernanda C.',
+      fecha: '2026-10-13T12:00:00.000Z',
+      foto: 'resources/bornthisway_disco.jpg'
+    }),
+    Object.freeze({
+      id: 'demo-4',
+      nombre: "Short n' Sweet (edición sellada)",
+      artista: 'Sabrina Carpenter',
+      precio: 600,
+      descripcion: 'Edición sellada para disfrutar este álbum en vinilo o sumar a una colección pop.',
+      autor: 'Luis A.',
+      fecha: '2026-10-12T12:00:00.000Z',
+      foto: 'resources/shortnsweet_disco.jpg'
+    }),
+    Object.freeze({
+      id: 'demo-5',
+      nombre: 'BRAT (usado, en excelente estado)',
+      artista: 'Charli XCX',
+      precio: 620,
+      descripcion: 'Disco usado, limpio y en excelente estado. Se entrega con su funda original.',
+      autor: 'Mariana G.',
+      fecha: '2026-10-11T12:00:00.000Z',
+      foto: 'resources/brat_disco.jpg'
+    }),
+    Object.freeze({
+      id: 'demo-6',
+      nombre: 'Purpose (Deluxe, usado)',
+      artista: 'Justin Bieber',
+      precio: 760,
+      descripcion: 'Edición Deluxe usada y bien conservada. Una buena oportunidad para fans del pop.',
+      autor: 'José R.',
+      fecha: '2026-10-10T12:00:00.000Z',
+      foto: 'resources/purpose_disco.jpg'
+    }),
+    Object.freeze({
+      id: 'demo-7',
+      nombre: 'Romance (usado, cuidado)',
+      artista: 'Camila Cabello',
+      precio: 700,
+      descripcion: 'Vinilo usado y cuidado, con portada en buen estado. Perfecto para escuchar de principio a fin.',
+      autor: 'Andrea L.',
+      fecha: '2026-10-09T12:00:00.000Z',
+      foto: 'resources/romance_disco.jpg'
+    }),
+    Object.freeze({
+      id: 'demo-8',
+      nombre: 'ANTI (Deluxe, edición sellada)',
+      artista: 'Rihanna',
+      precio: 650,
+      descripcion: 'Edición Deluxe sellada para quienes buscan este álbum en su colección.',
+      autor: 'Miguel T.',
+      fecha: '2026-10-08T12:00:00.000Z',
+      foto: 'resources/anti(deluxe)_disco.jpg'
+    })
+  ]);
 
   function esObjeto(valor) {
     return valor !== null && typeof valor === 'object' && !Array.isArray(valor);
@@ -21,6 +103,7 @@
       id: publicacion.id,
       nombre: publicacion.nombre,
       artista: typeof publicacion.artista === 'string' ? publicacion.artista : '',
+      autor: typeof publicacion.autor === 'string' ? publicacion.autor.trim().slice(0, 40) : '',
       precio: typeof publicacion.precio === 'number' &&
         Number.isFinite(publicacion.precio) &&
         publicacion.precio > 0
@@ -67,6 +150,7 @@
       id: crearIdPublicacion(),
       nombre: datos.nombre,
       artista: datos.artista || '',
+      autor: typeof datos.autor === 'string' ? datos.autor.trim().slice(0, 40) : '',
       precio: typeof datos.precio === 'number' && Number.isFinite(datos.precio) && datos.precio > 0
         ? datos.precio
         : null,
@@ -91,6 +175,14 @@
     const publicaciones = Array.isArray(publicacionesActuales)
       ? publicacionesActuales.slice()
       : leerPublicaciones();
+    if (typeof id === 'string' && id.indexOf('demo-') === 0) {
+      return {
+        eliminada: false,
+        publicaciones: publicaciones,
+        persistido: true
+      };
+    }
+
     const filtradas = publicaciones.filter(function (publicacion) {
       return publicacion.id !== id;
     });
@@ -104,6 +196,63 @@
       publicaciones: filtradas,
       persistido: resultado.persistido
     };
+  }
+
+  function resolverAutor(nombre) {
+    const autor = typeof nombre === 'string' ? nombre.trim() : '';
+    return autor || 'Anónimo';
+  }
+
+  function obtenerIniciales(nombre) {
+    return (typeof nombre === 'string' ? nombre : '')
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map(function (parte) {
+        return parte.charAt(0).toLocaleUpperCase('es-MX');
+      })
+      .join('');
+  }
+
+  function obtenerColorAvatar(nombre) {
+    const sumaLetras = Array.from(typeof nombre === 'string' ? nombre : '').reduce(function (suma, letra) {
+      return suma + (letra.codePointAt(0) || 0);
+    }, 0);
+    return ['morado', 'rosa', 'dorado', 'turquesa'][sumaLetras % 4];
+  }
+
+  function leerMarketplace() {
+    const ejemplos = publicacionesEjemplo.map(function (publicacion) {
+      return {
+        id: publicacion.id,
+        nombre: publicacion.nombre,
+        artista: publicacion.artista,
+        precio: publicacion.precio,
+        descripcion: publicacion.descripcion,
+        autor: resolverAutor(publicacion.autor),
+        fecha: publicacion.fecha,
+        foto: publicacion.foto,
+        esMia: false
+      };
+    });
+    const propias = leerPublicaciones().map(function (publicacion) {
+      return {
+        id: publicacion.id,
+        nombre: publicacion.nombre,
+        artista: publicacion.artista,
+        precio: publicacion.precio,
+        descripcion: publicacion.descripcion,
+        autor: resolverAutor(publicacion.autor),
+        fecha: publicacion.fecha,
+        foto: publicacion.foto,
+        esMia: true
+      };
+    });
+
+    return ejemplos.concat(propias).sort(function (a, b) {
+      return new Date(b.fecha).getTime() - new Date(a.fecha).getTime();
+    });
   }
 
   function formatearPrecio(precio) {
@@ -178,6 +327,10 @@
 
   window.PublicacionesVinyly = {
     leerPublicaciones: leerPublicaciones,
+    resolverAutor: resolverAutor,
+    obtenerIniciales: obtenerIniciales,
+    obtenerColorAvatar: obtenerColorAvatar,
+    leerMarketplace: leerMarketplace,
     guardarPublicaciones: guardarPublicaciones,
     agregarPublicacion: agregarPublicacion,
     eliminarPublicacion: eliminarPublicacion,

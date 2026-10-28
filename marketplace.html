@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <title>VINYLY - Marketplace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ===== BARRA DE NAVEGACION ===== -->
+  <header class="navbar">
+
+    <a href="landing.html" class="logo">
+      <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY" loading="lazy" decoding="async">
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="marketplace.html" class="active">Marketplace</a></li>
+      <li><a href="campana.html">Campaña</a></li>
+      <li><a href="promociones.html">Promociones</a></li>
+      <li><a href="comunidad.html">Comunidad</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <a href="carrito.html">Carrito</a>
+      <a href="login.html">Iniciar sesión</a>
+      <a href="perfil.html" class="avatar">CV</a>
+    </div>
+
+  </header>
+
+  <!-- ===== HERO DEL MARKETPLACE ===== -->
+  <section class="marketplace-hero">
+    <div class="disco" aria-hidden="true"></div>
+    <span class="brillo brillo-1" aria-hidden="true"></span>
+    <span class="brillo brillo-2" aria-hidden="true"></span>
+
+    <div class="marketplace-hero-texto">
+      <p class="marketplace-eyebrow">De la comunidad, para la comunidad</p>
+      <h1><span class="acento">Marketplace</span></h1>
+      <p class="marketplace-hero-descripcion">Vinilos que otros coleccionistas publicaron. Descubre, compara y publica el tuyo.</p>
+      <a class="btn-gradiente marketplace-publicar" href="publicar.html">+ Publicar</a>
+    </div>
+  </section>
+
+  <main class="marketplace-contenido">
+    <section class="marketplace-herramientas" aria-label="Buscar, filtrar y ordenar publicaciones">
+      <label class="marketplace-busqueda" for="marketplaceBuscador">
+        <span class="marketplace-busqueda-etiqueta">Busca un vinilo o vendedor</span>
+        <span class="marketplace-busqueda-campo">
+          <span class="marketplace-busqueda-icono" aria-hidden="true">⌕</span>
+          <input type="search" id="marketplaceBuscador" placeholder="Ej. Taylor Swift o José" autocomplete="off">
+        </span>
+      </label>
+
+      <div class="marketplace-controles">
+        <div class="marketplace-filtros" role="group" aria-label="Filtrar publicaciones">
+          <button type="button" class="marketplace-filtro activo" id="marketplaceFiltroTodas" aria-pressed="true">Todas</button>
+          <button type="button" class="marketplace-filtro" id="marketplaceFiltroMias" aria-pressed="false">Mis publicaciones</button>
+        </div>
+        <label class="marketplace-orden-etiqueta" for="marketplaceOrden">Ordenar por</label>
+        <select class="marketplace-orden" id="marketplaceOrden">
+          <option value="recientes">Más recientes</option>
+          <option value="precio-menor">Precio: menor a mayor</option>
+          <option value="precio-mayor">Precio: mayor a menor</option>
+        </select>
+      </div>
+
+      <p class="marketplace-contador" id="marketplaceContador" aria-live="polite">0 publicaciones</p>
+    </section>
+
+    <section class="marketplace-grid" id="marketplaceGrid" aria-label="Publicaciones de la comunidad"></section>
+
+    <section class="marketplace-vacio marketplace-vacio-resultados" id="marketplaceVacioResultados" aria-labelledby="marketplaceVacioResultadosTitulo" hidden>
+      <div class="disco" aria-hidden="true"></div>
+      <h2 id="marketplaceVacioResultadosTitulo">No encontramos publicaciones con esos filtros</h2>
+      <button type="button" class="marketplace-limpiar" id="marketplaceLimpiarFiltros">Limpiar filtros</button>
+    </section>
+
+    <section class="marketplace-vacio marketplace-vacio-mias" id="marketplaceVacioMias" aria-labelledby="marketplaceVacioMiasTitulo" hidden>
+      <div class="disco" aria-hidden="true"></div>
+      <h2 id="marketplaceVacioMiasTitulo">Aún no has publicado nada</h2>
+      <a class="btn-gradiente" href="publicar.html">+ Publicar mi primer vinilo</a>
+    </section>
+  </main>
+
+  <div class="modal-overlay marketplace-modal-overlay" id="marketplaceModal" hidden>
+    <section class="modal-caja marketplace-modal-caja" role="dialog" aria-modal="true" aria-labelledby="marketplaceModalTitulo" aria-describedby="marketplaceModalDescripcion">
+      <button class="modal-cerrar" id="marketplaceModalCerrar" type="button" aria-label="Cerrar detalle">×</button>
+      <p class="modal-etiqueta">Detalle de la publicación</p>
+      <div class="marketplace-modal-portada">
+        <div class="disco marketplace-disco-estatico" id="marketplaceModalDisco" aria-hidden="true"></div>
+      </div>
+      <h2 id="marketplaceModalTitulo"></h2>
+      <p class="marketplace-modal-artista" id="marketplaceModalArtista"></p>
+      <p class="marketplace-modal-precio" id="marketplaceModalPrecio"></p>
+      <p class="marketplace-modal-fecha" id="marketplaceModalFecha"></p>
+      <p class="marketplace-modal-descripcion" id="marketplaceModalDescripcion"></p>
+      <div class="marketplace-modal-vendedor">
+        <span class="pub-avatar" id="marketplaceModalAvatar" aria-hidden="true"></span>
+        <div class="marketplace-modal-vendedor-texto">
+          <p id="marketplaceModalAutor"></p>
+          <time id="marketplaceModalFechaVendedor"></time>
+        </div>
+      </div>
+      <div class="marketplace-modal-acciones">
+        <button class="btn-gradiente marketplace-modal-contactar" id="marketplaceModalContactar" type="button">Contactar al vendedor</button>
+        <div class="marketplace-modal-propia" id="marketplaceModalPropia" hidden>
+          <p>Esta es tu publicación</p>
+          <a href="mis-publicaciones.html">Administrar en Mis publicaciones</a>
+        </div>
+      </div>
+      <p class="marketplace-modal-estado" id="marketplaceModalEstado" role="status" aria-live="polite" hidden></p>
+    </section>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+
+    <div class="footer-swirl-1"></div>
+    <div class="footer-swirl-2"></div>
+    <div class="footer-disco"></div>
+
+    <div class="footer-izquierda">
+      <div class="footer-columna">
+        <h4>Enlaces</h4>
+        <a href="landing.html">Inicio</a>
+        <a href="index.html#nosotros">Nosotros</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+
+      <div class="footer-columna">
+        <h4>Contacto</h4>
+        <p>******</p>
+        <p>www.vinyly.com</p>
+      </div>
+    </div>
+
+    <div class="footer-columna footer-marca">
+      <h4>VINYLY</h4>
+      <p>Premium Sound, Pop Edition</p>
+    </div>
+
+  </footer>
+
+  <script src="js/publicaciones.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      const modulo = window.PublicacionesVinyly;
+      const buscador = document.getElementById('marketplaceBuscador');
+      const filtroTodas = document.getElementById('marketplaceFiltroTodas');
+      const filtroMias = document.getElementById('marketplaceFiltroMias');
+      const selectorOrden = document.getElementById('marketplaceOrden');
+      const contador = document.getElementById('marketplaceContador');
+      const grid = document.getElementById('marketplaceGrid');
+      const vacioResultados = document.getElementById('marketplaceVacioResultados');
+      const vacioMias = document.getElementById('marketplaceVacioMias');
+      const limpiarFiltros = document.getElementById('marketplaceLimpiarFiltros');
+      const modal = document.getElementById('marketplaceModal');
+      const modalCaja = modal.querySelector('.marketplace-modal-caja');
+      const modalCerrar = document.getElementById('marketplaceModalCerrar');
+      const modalDisco = document.getElementById('marketplaceModalDisco');
+      const modalTitulo = document.getElementById('marketplaceModalTitulo');
+      const modalArtista = document.getElementById('marketplaceModalArtista');
+      const modalPrecio = document.getElementById('marketplaceModalPrecio');
+      const modalFecha = document.getElementById('marketplaceModalFecha');
+      const modalDescripcion = document.getElementById('marketplaceModalDescripcion');
+      const modalAvatar = document.getElementById('marketplaceModalAvatar');
+      const modalAutor = document.getElementById('marketplaceModalAutor');
+      const modalFechaVendedor = document.getElementById('marketplaceModalFechaVendedor');
+      const modalContactar = document.getElementById('marketplaceModalContactar');
+      const modalPropia = document.getElementById('marketplaceModalPropia');
+      const modalEstado = document.getElementById('marketplaceModalEstado');
+      const fotosEjemplo = [
+        'resources/1989_disco.jpg',
+        'resources/starboy_disco.jpg',
+        'resources/bornthisway_disco.jpg',
+        'resources/shortnsweet_disco.jpg',
+        'resources/brat_disco.jpg',
+        'resources/purpose_disco.jpg',
+        'resources/romance_disco.jpg',
+        'resources/anti(deluxe)_disco.jpg'
+      ];
+      let filtroActivo = 'todas';
+      let primeraRenderizacion = true;
+      let botonActivador = null;
+      let publicacionesActuales = [];
+
+      function normalizarTexto(texto) {
+        return String(texto || '')
+          .trim()
+          .toLocaleLowerCase('es-MX')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '');
+      }
+
+      function obtenerTiempo(fecha) {
+        const tiempo = new Date(fecha).getTime();
+        return Number.isFinite(tiempo) ? tiempo : 0;
+      }
+
+      function compararFechaReciente(a, b) {
+        return obtenerTiempo(b.fecha) - obtenerTiempo(a.fecha);
+      }
+
+      function obtenerFuenteFoto(publicacion) {
+        if (typeof publicacion.foto !== 'string') {
+          return '';
+        }
+        if (publicacion.foto.indexOf('data:image/') === 0) {
+          return publicacion.foto;
+        }
+        if (
+          publicacion.esMia === false &&
+          typeof publicacion.id === 'string' &&
+          publicacion.id.indexOf('demo-') === 0 &&
+          fotosEjemplo.indexOf(publicacion.foto) !== -1
+        ) {
+          return publicacion.foto;
+        }
+        return '';
+      }
+
+      function aplicarAvatar(avatar, nombre) {
+        const colores = ['morado', 'rosa', 'dorado', 'turquesa'];
+        avatar.textContent = modulo.obtenerIniciales(nombre);
+        colores.forEach(function (color) {
+          avatar.classList.remove(`pub-avatar--${color}`);
+        });
+        avatar.classList.add(`pub-avatar--${modulo.obtenerColorAvatar(nombre)}`);
+      }
+
+      function crearPortada(publicacion) {
+        const portada = document.createElement('div');
+        portada.className = 'marketplace-tarjeta-portada';
+        const disco = document.createElement('div');
+        disco.className = 'disco marketplace-disco-estatico';
+        disco.setAttribute('aria-hidden', 'true');
+        portada.appendChild(disco);
+
+        const fuente = obtenerFuenteFoto(publicacion);
+        if (fuente) {
+          const imagen = document.createElement('img');
+          imagen.className = 'marketplace-tarjeta-imagen';
+          imagen.loading = 'lazy';
+          imagen.decoding = 'async';
+          imagen.alt = `Portada de ${publicacion.nombre}`;
+          imagen.addEventListener('load', function () {
+            disco.hidden = true;
+          }, { once: true });
+          imagen.addEventListener('error', function () {
+            imagen.remove();
+            disco.hidden = false;
+          }, { once: true });
+          imagen.src = fuente;
+          portada.appendChild(imagen);
+        }
+        return portada;
+      }
+
+      function crearTarjeta(publicacion, indice, animar) {
+        const tarjeta = document.createElement('article');
+        tarjeta.className = `marketplace-tarjeta${publicacion.esMia ? ' marketplace-tarjeta-propia' : ''}`;
+        if (animar) {
+          tarjeta.classList.add('marketplace-tarjeta-entrada');
+          tarjeta.style.animationDelay = `${Math.min(indice, 10) * 25}ms`;
+        }
+
+        const portada = crearPortada(publicacion);
+        const contenido = document.createElement('div');
+        contenido.className = 'marketplace-tarjeta-contenido';
+        const encabezado = document.createElement('div');
+        encabezado.className = 'marketplace-tarjeta-encabezado';
+        const nombre = document.createElement('h2');
+        nombre.className = 'marketplace-tarjeta-nombre';
+        nombre.textContent = publicacion.nombre;
+        encabezado.appendChild(nombre);
+        if (publicacion.esMia) {
+          const etiquetaPropia = document.createElement('span');
+          etiquetaPropia.className = 'marketplace-tarjeta-etiqueta';
+          etiquetaPropia.textContent = 'Tú';
+          encabezado.appendChild(etiquetaPropia);
+        }
+
+        const artista = document.createElement('p');
+        artista.className = 'marketplace-tarjeta-artista';
+        artista.textContent = publicacion.artista || 'Artista no especificado';
+
+        const vendedor = document.createElement('div');
+        vendedor.className = 'marketplace-tarjeta-vendedor';
+        const avatar = document.createElement('span');
+        avatar.className = 'pub-avatar';
+        avatar.setAttribute('aria-hidden', 'true');
+        aplicarAvatar(avatar, publicacion.autor);
+        const vendedorTexto = document.createElement('span');
+        vendedorTexto.className = 'marketplace-tarjeta-vendedor-texto';
+        const vendedorEtiqueta = document.createElement('span');
+        vendedorEtiqueta.className = 'marketplace-tarjeta-vendedor-etiqueta';
+        vendedorEtiqueta.textContent = 'Publicado por';
+        const vendedorNombre = document.createElement('span');
+        vendedorNombre.className = 'marketplace-tarjeta-vendedor-nombre';
+        vendedorNombre.textContent = publicacion.autor;
+        vendedorTexto.append(vendedorEtiqueta, vendedorNombre);
+        vendedor.append(avatar, vendedorTexto);
+
+        const descripcion = document.createElement('p');
+        descripcion.className = 'marketplace-tarjeta-descripcion';
+        descripcion.textContent = publicacion.descripcion || 'Sin descripción.';
+
+        const pie = document.createElement('div');
+        pie.className = 'marketplace-tarjeta-pie';
+        const precio = document.createElement('p');
+        precio.className = 'marketplace-tarjeta-precio';
+        precio.textContent = modulo.formatearPrecio(publicacion.precio);
+        const fecha = document.createElement('time');
+        fecha.className = 'marketplace-tarjeta-fecha';
+        fecha.dateTime = publicacion.fecha || '';
+        fecha.textContent = modulo.formatearFecha(publicacion.fecha);
+        pie.append(precio, fecha);
+
+        const detalle = document.createElement('button');
+        detalle.type = 'button';
+        detalle.className = 'marketplace-tarjeta-detalle';
+        detalle.textContent = 'Ver detalle';
+        detalle.setAttribute('aria-label', `Ver detalle de ${publicacion.nombre}`);
+        detalle.dataset.publicacionId = publicacion.id;
+
+        contenido.append(encabezado, artista, vendedor, descripcion, pie, detalle);
+        tarjeta.append(portada, contenido);
+        return tarjeta;
+      }
+
+      function actualizarEstadosVacios(cantidad) {
+        const esFiltroMiasVacio = filtroActivo === 'mias' && publicacionesActuales.every(function (publicacion) {
+          return !publicacion.esMia;
+        }) && !buscador.value.trim();
+        grid.hidden = cantidad === 0;
+        vacioMias.hidden = !esFiltroMiasVacio;
+        vacioResultados.hidden = cantidad !== 0 || esFiltroMiasVacio;
+      }
+
+      function renderizarMarketplace() {
+        publicacionesActuales = modulo.leerMarketplace();
+        const consulta = normalizarTexto(buscador.value);
+        let resultados = publicacionesActuales.filter(function (publicacion) {
+          const coincideTexto = !consulta || [
+            publicacion.nombre,
+            publicacion.artista,
+            publicacion.autor
+          ].some(function (campo) {
+            return normalizarTexto(campo).includes(consulta);
+          });
+          const coincideFiltro = filtroActivo === 'todas' || publicacion.esMia;
+          return coincideTexto && coincideFiltro;
+        });
+
+        if (selectorOrden.value === 'precio-menor' || selectorOrden.value === 'precio-mayor') {
+          const direccion = selectorOrden.value === 'precio-menor' ? 1 : -1;
+          resultados = resultados.map(function (publicacion, indice) {
+            return { publicacion: publicacion, indice: indice };
+          }).sort(function (a, b) {
+            const precioA = a.publicacion.precio;
+            const precioB = b.publicacion.precio;
+            if (precioA === null && precioB !== null) {
+              return 1;
+            }
+            if (precioB === null && precioA !== null) {
+              return -1;
+            }
+            if (precioA !== precioB) {
+              return (precioA - precioB) * direccion;
+            }
+            return compararFechaReciente(a.publicacion, b.publicacion) || a.indice - b.indice;
+          }).map(function (item) {
+            return item.publicacion;
+          });
+        } else {
+          resultados = resultados.map(function (publicacion, indice) {
+            return { publicacion: publicacion, indice: indice };
+          }).sort(function (a, b) {
+            return compararFechaReciente(a.publicacion, b.publicacion) || a.indice - b.indice;
+          }).map(function (item) {
+            return item.publicacion;
+          });
+        }
+
+        const fragmento = document.createDocumentFragment();
+        resultados.forEach(function (publicacion, indice) {
+          fragmento.appendChild(crearTarjeta(publicacion, indice, primeraRenderizacion));
+        });
+        grid.replaceChildren(fragmento);
+        primeraRenderizacion = false;
+        contador.textContent = `${resultados.length} ${resultados.length === 1 ? 'publicación' : 'publicaciones'}`;
+        actualizarEstadosVacios(resultados.length);
+      }
+
+      function actualizarBotonesFiltro() {
+        const mostrarTodas = filtroActivo === 'todas';
+        filtroTodas.classList.toggle('activo', mostrarTodas);
+        filtroTodas.setAttribute('aria-pressed', String(mostrarTodas));
+        filtroMias.classList.toggle('activo', !mostrarTodas);
+        filtroMias.setAttribute('aria-pressed', String(!mostrarTodas));
+      }
+
+      function limpiarEstadoContacto() {
+        modalEstado.textContent = '';
+        modalEstado.hidden = true;
+        modalContactar.textContent = 'Contactar al vendedor';
+        modalContactar.disabled = false;
+      }
+
+      function cerrarModal() {
+        if (modal.hidden) {
+          return;
+        }
+        modal.hidden = true;
+        document.body.classList.remove('modal-abierto');
+        document.removeEventListener('keydown', manejarTecladoModal);
+        limpiarEstadoContacto();
+        if (botonActivador && botonActivador.isConnected) {
+          botonActivador.focus();
+        }
+        botonActivador = null;
+      }
+
+      function obtenerElementosEnfocables() {
+        return Array.from(modalCaja.querySelectorAll(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )).filter(function (elemento) {
+          return !elemento.closest('[hidden]') && elemento.getAttribute('aria-hidden') !== 'true';
+        });
+      }
+
+      function manejarTecladoModal(evento) {
+        if (evento.key === 'Escape') {
+          evento.preventDefault();
+          cerrarModal();
+          return;
+        }
+        if (evento.key !== 'Tab') {
+          return;
+        }
+        const elementos = obtenerElementosEnfocables();
+        if (!elementos.length) {
+          evento.preventDefault();
+          modalCerrar.focus();
+          return;
+        }
+        const primero = elementos[0];
+        const ultimo = elementos[elementos.length - 1];
+        if (evento.shiftKey && (document.activeElement === primero || !modalCaja.contains(document.activeElement))) {
+          evento.preventDefault();
+          ultimo.focus();
+        } else if (!evento.shiftKey && (document.activeElement === ultimo || !modalCaja.contains(document.activeElement))) {
+          evento.preventDefault();
+          primero.focus();
+        }
+      }
+
+      function abrirModal(publicacion, boton) {
+        limpiarEstadoContacto();
+        modalTitulo.textContent = publicacion.nombre;
+        modalArtista.textContent = publicacion.artista || 'Artista no especificado';
+        modalPrecio.textContent = modulo.formatearPrecio(publicacion.precio);
+        modalFecha.textContent = modulo.formatearFecha(publicacion.fecha);
+        modalDescripcion.textContent = publicacion.descripcion || 'Sin descripción.';
+        modalFechaVendedor.textContent = modulo.formatearFecha(publicacion.fecha);
+        modalFechaVendedor.dateTime = publicacion.fecha || '';
+        modalAutor.textContent = `Publicado por ${publicacion.autor}`;
+        aplicarAvatar(modalAvatar, publicacion.autor);
+
+        const fuente = obtenerFuenteFoto(publicacion);
+        const portadaModal = modal.querySelector('.marketplace-modal-portada');
+        const imagenAnterior = portadaModal.querySelector('.marketplace-modal-imagen');
+        if (imagenAnterior) {
+          imagenAnterior.remove();
+        }
+        modalDisco.hidden = false;
+        if (fuente) {
+          const imagenModalActual = document.createElement('img');
+          imagenModalActual.className = 'marketplace-modal-imagen marketplace-imagen-cargando';
+          imagenModalActual.id = 'marketplaceModalImagen';
+          imagenModalActual.loading = 'lazy';
+          imagenModalActual.decoding = 'async';
+          imagenModalActual.alt = `Portada de ${publicacion.nombre}`;
+          imagenModalActual.addEventListener('load', function () {
+            imagenModalActual.classList.remove('marketplace-imagen-cargando');
+            modalDisco.hidden = true;
+          }, { once: true });
+          imagenModalActual.addEventListener('error', function () {
+            imagenModalActual.remove();
+            modalDisco.hidden = false;
+          }, { once: true });
+          portadaModal.appendChild(imagenModalActual);
+          imagenModalActual.src = fuente;
+        }
+
+        modalContactar.hidden = publicacion.esMia;
+        modalPropia.hidden = !publicacion.esMia;
+        botonActivador = boton;
+        modal.hidden = false;
+        document.body.classList.add('modal-abierto');
+        document.addEventListener('keydown', manejarTecladoModal);
+        modalCerrar.focus();
+      }
+
+      buscador.addEventListener('input', renderizarMarketplace);
+      filtroTodas.addEventListener('click', function () {
+        filtroActivo = 'todas';
+        actualizarBotonesFiltro();
+        renderizarMarketplace();
+      });
+      filtroMias.addEventListener('click', function () {
+        filtroActivo = 'mias';
+        actualizarBotonesFiltro();
+        renderizarMarketplace();
+      });
+      selectorOrden.addEventListener('change', renderizarMarketplace);
+      limpiarFiltros.addEventListener('click', function () {
+        buscador.value = '';
+        filtroActivo = 'todas';
+        selectorOrden.value = 'recientes';
+        actualizarBotonesFiltro();
+        renderizarMarketplace();
+        buscador.focus();
+      });
+      grid.addEventListener('click', function (evento) {
+        const boton = evento.target.closest('.marketplace-tarjeta-detalle');
+        if (!boton || !grid.contains(boton)) {
+          return;
+        }
+        const publicacion = publicacionesActuales.find(function (item) {
+          return item.id === boton.dataset.publicacionId;
+        });
+        if (publicacion) {
+          abrirModal(publicacion, boton);
+        }
+      });
+      modalCerrar.addEventListener('click', cerrarModal);
+      modal.addEventListener('click', function (evento) {
+        if (evento.target === modal) {
+          cerrarModal();
+        }
+      });
+      modalContactar.addEventListener('click', function () {
+        modalEstado.textContent = 'Mensaje enviado al vendedor (simulado)';
+        modalEstado.hidden = false;
+      });
+
+      window.addEventListener('pageshow', function () {
+        const modalEstabaAbierto = !modal.hidden;
+        if (modalEstabaAbierto) {
+          cerrarModal();
+        }
+        renderizarMarketplace();
+        if (modalEstabaAbierto) {
+          buscador.focus();
+        }
+      });
+
+      actualizarBotonesFiltro();
+    }());
+  </script>
+</body>
+</html>
