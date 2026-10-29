@@ -30,6 +30,7 @@ function obtenerCarrito() {
 // Guarda el arreglo actual del carrito en el navegador.
 function guardarCarrito(carrito) {
   localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+  window.dispatchEvent(new CustomEvent('carrito:actualizado'));
 }
 
 // Crea la versión mínima del producto que se conservará en el carrito.

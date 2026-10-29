@@ -7949,6 +7949,102 @@ body.modal-abierto {
   }
 }
 
+/* NAVBAR */
+.nav-icons a[href="carrito.html"] {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.nav-icons a[href="carrito.html"]:hover,
+.nav-icons a[href="carrito.html"].active {
+  border-color: var(--morado);
+  color: var(--morado);
+}
+
+.nav-icons a[href="carrito.html"]:focus-visible,
+.nav-icons a[href="login.html"]:focus-visible {
+  outline: 2px solid var(--morado);
+  outline-offset: 3px;
+}
+
+.nav-carrito-contador {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  min-width: 17px;
+  max-width: 25px;
+  height: 17px;
+  padding: 0 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--morado), var(--rosa));
+  color: var(--blanco);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.nav-carrito-contador[hidden] {
+  display: none;
+}
+
+.nav-carrito-contador--pop {
+  animation: nav-carrito-pop 0.24s ease-out;
+}
+
+@media (min-width: 1000px) {
+  .navbar {
+    flex-wrap: nowrap;
+    padding-right: clamp(12px, 1.5vw, 30px);
+    padding-left: clamp(12px, 1.5vw, 30px);
+  }
+
+  .nav-links {
+    flex: 0 0 auto;
+    gap: clamp(18px, 1.6vw, 32px);
+    margin-left: clamp(12px, 1.5vw, 24px);
+  }
+
+  .nav-links a {
+    font-size: clamp(11px, 0.75vw, 12px);
+    letter-spacing: 0.07em;
+    white-space: nowrap;
+  }
+
+  .nav-icons {
+    flex: 0 0 auto;
+    gap: clamp(8px, 1vw, 14px);
+  }
+
+  .nav-icons a[href="login.html"] {
+    padding-right: clamp(14px, 1.6667vw, 20px);
+    padding-left: clamp(14px, 1.6667vw, 20px);
+    white-space: nowrap;
+  }
+}
+
+@keyframes nav-carrito-pop {
+  0% { transform: scale(0.75); }
+  65% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-carrito-contador--pop {
+    animation: none;
+  }
+}
+
 /* PERFIL */
 .perfil {
   background: var(--crema);
