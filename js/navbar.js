@@ -1,6 +1,7 @@
 (function () {
   const CLAVE_CARRITO = 'carritoVinyly';
   const CLASE_ANIMACION = 'nav-carrito-contador--pop';
+  const BREAKPOINT_MENU = 1140;
 
   function inicializarNavbar() {
     const navbar = document.querySelector('.navbar');
@@ -14,6 +15,9 @@
     }
 
     navbar.dataset.carritoInicializado = 'true';
+    const navLinks = navbar.querySelector('.nav-links');
+    const navIcons = navbar.querySelector('.nav-icons');
+    const enlaceLogin = navIcons.querySelector('a[href="login.html"]');
 
     const espacioNombresSvg = 'http://www.w3.org/2000/svg';
     const icono = document.createElementNS(espacioNombresSvg, 'svg');
@@ -46,6 +50,98 @@
     enlaceCarrito.replaceChildren(icono, contador);
     enlaceCarrito.setAttribute('aria-label', 'Carrito');
     enlaceCarrito.setAttribute('title', 'Carrito');
+
+    let botonMenu = null;
+
+    if (navLinks && navIcons && enlaceLogin) {
+      if (!navLinks.id) {
+        navLinks.id = 'nav-panel';
+      }
+
+      const elementoPanelAcceso = document.createElement('li');
+      elementoPanelAcceso.className = 'nav-panel-acceso';
+      const enlacePanelAcceso = document.createElement('a');
+      enlacePanelAcceso.href = enlaceLogin.href;
+      enlacePanelAcceso.className = 'btn-gradiente';
+      enlacePanelAcceso.textContent = 'Iniciar sesión';
+      elementoPanelAcceso.appendChild(enlacePanelAcceso);
+      navLinks.appendChild(elementoPanelAcceso);
+
+      botonMenu = document.createElement('button');
+      botonMenu.type = 'button';
+      botonMenu.className = 'nav-toggle';
+      botonMenu.setAttribute('aria-label', 'Abrir menú');
+      botonMenu.setAttribute('aria-expanded', 'false');
+      botonMenu.setAttribute('aria-controls', navLinks.id);
+
+      for (let indice = 0; indice < 3; indice += 1) {
+        const linea = document.createElement('span');
+        linea.className = 'nav-toggle-line';
+        linea.setAttribute('aria-hidden', 'true');
+        botonMenu.appendChild(linea);
+      }
+
+      navbar.appendChild(botonMenu);
+
+      function cerrarMenu(devolverFoco) {
+        navbar.classList.remove('navbar--abierto');
+        document.body.classList.remove('nav-abierto');
+        botonMenu.setAttribute('aria-expanded', 'false');
+        botonMenu.setAttribute('aria-label', 'Abrir menú');
+
+        if (devolverFoco) {
+          botonMenu.focus();
+        }
+      }
+
+      botonMenu.addEventListener('click', function (evento) {
+        const estaAbierto = navbar.classList.toggle('navbar--abierto');
+        botonMenu.setAttribute('aria-expanded', String(estaAbierto));
+        botonMenu.setAttribute('aria-label', estaAbierto ? 'Cerrar menú' : 'Abrir menú');
+        document.body.classList.toggle('nav-abierto', estaAbierto);
+
+        if (estaAbierto && evento.detail === 0) {
+          const primerEnlace = navLinks.querySelector('a');
+          if (primerEnlace) {
+            primerEnlace.focus();
+          }
+        }
+      });
+
+      navLinks.addEventListener('click', function (evento) {
+        if (evento.target.closest('a')) {
+          cerrarMenu(false);
+        }
+      });
+
+      document.addEventListener('keydown', function (evento) {
+        if (evento.key === 'Escape' && navbar.classList.contains('navbar--abierto')) {
+          cerrarMenu(true);
+        }
+      });
+
+      document.addEventListener('click', function (evento) {
+        if (
+          navbar.classList.contains('navbar--abierto') &&
+          !navbar.contains(evento.target)
+        ) {
+          cerrarMenu(false);
+        }
+      });
+
+      const mediaMenu = window.matchMedia('(max-width: ' + BREAKPOINT_MENU + 'px)');
+      function cerrarAlAmpliar(evento) {
+        if (!evento.matches) {
+          cerrarMenu(false);
+        }
+      }
+
+      if (typeof mediaMenu.addEventListener === 'function') {
+        mediaMenu.addEventListener('change', cerrarAlAmpliar);
+      } else {
+        mediaMenu.addListener(cerrarAlAmpliar);
+      }
+    }
 
     let totalAnterior = null;
 
