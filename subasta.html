@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/styles.css" />
+  <title>VINYLY - Subasta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="navbar">
+    <a href="landing.html" class="logo">
+      <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
+      <li><a href="campana.html">Campaña</a></li>
+      <li><a href="promociones.html">Promociones</a></li>
+      <li><a href="comunidad.html">Comunidad</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <div class="nav-icons">
+      <a href="carrito.html">Carrito</a>
+      <a href="login.html">Iniciar sesión</a>
+      <a href="perfil.html" class="avatar">CV</a>
+    </div>
+  </header>
+
+  <section class="subasta-hero">
+    <div class="disco subasta-hero-disco" aria-hidden="true"></div>
+    <span class="brillo brillo-1" aria-hidden="true"></span>
+    <span class="brillo brillo-2" aria-hidden="true"></span>
+    <div class="subasta-hero-texto">
+      <p class="subasta-eyebrow">Subasta en vivo (simulada)</p>
+      <h1><span class="acento">Subasta</span></h1>
+      <p class="subasta-hero-descripcion">Puja por un vinilo de coleccionista. Gana quien ofrezca más.</p>
+    </div>
+  </section>
+
+  <main class="subasta-contenido">
+    <div class="subasta-columnas">
+      <section class="subasta-visual" aria-label="Producto en subasta">
+        <div class="subasta-portada-contenedor">
+          <div class="subasta-disco-estatico" aria-hidden="true"></div>
+          <div id="subastaPortada" class="subasta-portada" role="img"></div>
+          <span class="subasta-pill">🔨 En subasta</span>
+        </div>
+      </section>
+
+      <section class="subasta-panel" aria-labelledby="subastaNombre">
+        <div class="subasta-producto">
+          <p class="subasta-producto-etiqueta">Pieza de colección</p>
+          <h2 id="subastaNombre"></h2>
+          <p id="subastaArtista" class="subasta-artista"></p>
+          <p id="subastaDescripcion" class="subasta-descripcion"></p>
+        </div>
+
+        <section class="subasta-temporizador" aria-label="Tiempo restante">
+          <div class="subasta-temporizador-encabezado">
+            <span class="subasta-seccion-etiqueta">La ronda termina en</span>
+            <span class="subasta-restante">restante</span>
+          </div>
+          <div class="subasta-reloj" aria-label="Tiempo restante">
+            <div class="subasta-reloj-bloque">
+              <span id="subastaHoras" class="subasta-reloj-numero">00</span>
+              <span class="subasta-reloj-unidad">HH</span>
+            </div>
+            <span class="subasta-reloj-separador" aria-hidden="true">:</span>
+            <div class="subasta-reloj-bloque">
+              <span id="subastaMinutos" class="subasta-reloj-numero">59</span>
+              <span class="subasta-reloj-unidad">MM</span>
+            </div>
+            <span class="subasta-reloj-separador" aria-hidden="true">:</span>
+            <div class="subasta-reloj-bloque">
+              <span id="subastaSegundos" class="subasta-reloj-numero">59</span>
+              <span class="subasta-reloj-unidad">SS</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="subasta-puja" aria-label="Oferta actual">
+          <p class="subasta-seccion-etiqueta">Oferta más alta</p>
+          <p id="subastaOfertaMasAlta" class="subasta-monto-alto acento" aria-live="polite"></p>
+          <p id="subastaUsuarioMasAlta" class="subasta-usuario-alto" aria-live="polite"></p>
+
+          <form id="formOferta" class="subasta-formulario" novalidate>
+            <label for="subastaOferta">Tu oferta</label>
+            <div class="subasta-campo">
+              <span class="subasta-prefijo" aria-hidden="true">$</span>
+              <input type="text" id="subastaOferta" inputmode="decimal" maxlength="9" placeholder="Mayor a $1,200" autocomplete="off" aria-describedby="subastaOfertaAyuda">
+              <span class="subasta-sufijo" aria-hidden="true">MXN</span>
+            </div>
+            <span id="subastaOfertaAyuda" class="subasta-ayuda">Tu monto debe superar la oferta más alta.</span>
+            <button type="submit" class="btn-gradiente subasta-ofertar">Ofertar</button>
+          </form>
+
+          <div class="subasta-chips" aria-label="Sumar a la oferta más alta">
+            <button type="button" class="subasta-chip" data-increment="50">+$50</button>
+            <button type="button" class="subasta-chip" data-increment="100">+$100</button>
+            <button type="button" class="subasta-chip" data-increment="200">+$200</button>
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <section class="subasta-historial" aria-labelledby="subastaHistorialTitulo">
+      <div class="subasta-historial-encabezado">
+        <div>
+          <p class="subasta-historial-eyebrow">Cada puja cuenta</p>
+          <h2 id="subastaHistorialTitulo">Historial de ofertas</h2>
+        </div>
+        <span class="subasta-historial-pill">En tiempo real · simulado</span>
+      </div>
+      <div class="subasta-tabla-contenedor">
+        <table class="subasta-tabla">
+          <thead>
+            <tr>
+              <th scope="col">Usuario</th>
+              <th scope="col">Oferta</th>
+              <th scope="col">Hora</th>
+            </tr>
+          </thead>
+          <tbody id="subastaOfertasBody"></tbody>
+        </table>
+      </div>
+      <button type="button" id="subastaReiniciar" class="subasta-reiniciar">Reiniciar subasta (simulado)</button>
+    </section>
+  </main>
+
+  <div id="subastaToast" class="subasta-toast" hidden>
+    <p id="subastaToastError" role="alert" hidden></p>
+    <p id="subastaToastEstado" role="status" hidden></p>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-swirl-1"></div>
+    <div class="footer-swirl-2"></div>
+    <div class="footer-disco"></div>
+    <div class="footer-izquierda">
+      <div class="footer-columna">
+        <h4>Enlaces</h4>
+        <a href="landing.html">Inicio</a>
+        <a href="index.html#nosotros">Nosotros</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="subasta.html">Subasta</a>
+      </div>
+      <div class="footer-columna">
+        <h4>Contacto</h4>
+        <p>******</p>
+        <p>www.vinyly.com</p>
+      </div>
+    </div>
+    <div class="footer-columna footer-marca">
+      <h4>VINYLY</h4>
+      <p>Premium Sound, Pop Edition</p>
+    </div>
+  </footer>
+
+  <script src="js/productos.js"></script>
+  <script src="js/publicaciones.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      const claveSubasta = 'subastaVinyly';
+      const duracionRondaInicial = 59 * 60 * 1000 + 59 * 1000;
+      const maximoOfertas = 30;
+      const ofertasIniciales = [
+        { usuario: 'Valeria R.', monto: 1200, hora: '15:10', mia: false },
+        { usuario: 'Diego M.', monto: 1050, hora: '14:45', mia: false },
+        { usuario: 'Camila S.', monto: 900, hora: '14:30', mia: false }
+      ];
+      const productoSubasta = productos.find(function (producto) {
+        return producto.nombre === 'Thriller';
+      }) || productos.find(function (producto) {
+        return producto.id === 4;
+      });
+
+      const portada = document.getElementById('subastaPortada');
+      const nombre = document.getElementById('subastaNombre');
+      const artista = document.getElementById('subastaArtista');
+      const descripcion = document.getElementById('subastaDescripcion');
+      const horas = document.getElementById('subastaHoras');
+      const minutos = document.getElementById('subastaMinutos');
+      const segundos = document.getElementById('subastaSegundos');
+      const montoAlto = document.getElementById('subastaOfertaMasAlta');
+      const usuarioAlto = document.getElementById('subastaUsuarioMasAlta');
+      const formulario = document.getElementById('formOferta');
+      const campoOferta = document.getElementById('subastaOferta');
+      const cuerpoHistorial = document.getElementById('subastaOfertasBody');
+      const botonReiniciar = document.getElementById('subastaReiniciar');
+      const toast = document.getElementById('subastaToast');
+      const toastError = document.getElementById('subastaToastError');
+      const toastEstado = document.getElementById('subastaToastEstado');
+      let estadoSubasta;
+      let intervaloTemporizador = null;
+      let temporizadorToast = null;
+      let envioEnCurso = false;
+      let ultimoEnvioEn = 0;
+
+      function redondearMonto(monto) {
+        return Math.round((monto + Number.EPSILON) * 100) / 100;
+      }
+
+      function formatearMonto(monto) {
+        const opciones = Number.isInteger(monto)
+          ? { maximumFractionDigits: 0 }
+          : { minimumFractionDigits: 2, maximumFractionDigits: 2 };
+        return '$' + monto.toLocaleString('es-MX', opciones);
+      }
+
+      function formatearMontoCampo(monto) {
+        if (Number.isInteger(monto)) {
+          return String(monto);
+        }
+        return monto.toFixed(2).replace(/0+$/, '').replace(/\.$/, '');
+      }
+
+      function validarHora(hora) {
+        if (typeof hora !== 'string' || !/^\d{2}:\d{2}$/.test(hora)) {
+          return false;
+        }
+        const partes = hora.split(':');
+        return Number(partes[0]) <= 23 && Number(partes[1]) <= 59;
+      }
+
+      function normalizarOferta(oferta) {
+        if (
+          !oferta ||
+          typeof oferta !== 'object' ||
+          typeof oferta.usuario !== 'string' ||
+          oferta.usuario.length > 40 ||
+          typeof oferta.monto !== 'number' ||
+          !Number.isFinite(oferta.monto) ||
+          oferta.monto <= 0 ||
+          typeof oferta.mia !== 'boolean' ||
+          !validarHora(oferta.hora)
+        ) {
+          return null;
+        }
+
+        const monto = redondearMonto(oferta.monto);
+        return monto > 0
+          ? {
+            usuario: oferta.usuario,
+            monto: monto,
+            hora: oferta.hora,
+            mia: oferta.mia
+          }
+          : null;
+      }
+
+      function crearFinRonda() {
+        return Date.now() + duracionRondaInicial;
+      }
+
+      function guardarEstado() {
+        try {
+          window.localStorage.setItem(claveSubasta, JSON.stringify({
+            fin: estadoSubasta.fin,
+            ofertas: estadoSubasta.ofertas.slice(0, maximoOfertas)
+          }));
+        } catch (error) {
+          return false;
+        }
+        return true;
+      }
+
+      function leerEstado() {
+        let datosGuardados = null;
+        try {
+          const datos = window.localStorage.getItem(claveSubasta);
+          datosGuardados = datos ? JSON.parse(datos) : null;
+        } catch (error) {
+          datosGuardados = null;
+        }
+
+        let ofertas = ofertasIniciales.map(function (oferta) {
+          return Object.assign({}, oferta);
+        });
+        if (datosGuardados && Array.isArray(datosGuardados.ofertas)) {
+          const ofertasValidas = datosGuardados.ofertas
+            .map(normalizarOferta)
+            .filter(Boolean)
+            .slice(0, maximoOfertas);
+          if (ofertasValidas.length) {
+            ofertas = ofertasValidas;
+          }
+        }
+
+        const finValido = datosGuardados &&
+          typeof datosGuardados.fin === 'number' &&
+          Number.isFinite(datosGuardados.fin) &&
+          datosGuardados.fin > Date.now();
+        return {
+          fin: finValido ? datosGuardados.fin : crearFinRonda(),
+          ofertas: ofertas
+        };
+      }
+
+      function obtenerIndiceMasAlto() {
+        let indiceMasAlto = 0;
+        for (let indice = 1; indice < estadoSubasta.ofertas.length; indice += 1) {
+          if (estadoSubasta.ofertas[indice].monto > estadoSubasta.ofertas[indiceMasAlto].monto) {
+            indiceMasAlto = indice;
+          }
+        }
+        return indiceMasAlto;
+      }
+
+      function renderizarOfertaMasAlta() {
+        const oferta = estadoSubasta.ofertas[obtenerIndiceMasAlto()];
+        const nuevoMonto = formatearMonto(oferta.monto) + ' MXN';
+        if (montoAlto.textContent && montoAlto.textContent !== nuevoMonto) {
+          montoAlto.classList.remove('subasta-monto-pop');
+          void montoAlto.offsetWidth;
+          montoAlto.classList.add('subasta-monto-pop');
+        }
+        montoAlto.textContent = nuevoMonto;
+        usuarioAlto.textContent = 'de ' + oferta.usuario;
+        campoOferta.placeholder = 'Mayor a ' + formatearMonto(oferta.monto);
+      }
+
+      function crearFilaOferta(oferta, indice, indiceMasAlto, animar) {
+        const fila = document.createElement('tr');
+        if (animar) {
+          fila.classList.add('subasta-fila-entrada');
+        }
+
+        const celdaUsuario = document.createElement('td');
+        const identidad = document.createElement('div');
+        identidad.className = 'subasta-identidad';
+        const avatar = document.createElement('span');
+        const nombreUsuario = oferta.usuario || 'Anónimo';
+        avatar.className = 'pub-avatar pub-avatar--' + PublicacionesVinyly.obtenerColorAvatar(nombreUsuario);
+        avatar.textContent = PublicacionesVinyly.obtenerIniciales(nombreUsuario);
+        avatar.setAttribute('aria-hidden', 'true');
+        const textoIdentidad = document.createElement('span');
+        textoIdentidad.className = 'subasta-nombre-usuario';
+        textoIdentidad.textContent = nombreUsuario;
+        identidad.append(avatar, textoIdentidad);
+        if (oferta.mia) {
+          const etiquetaMia = document.createElement('span');
+          etiquetaMia.className = 'subasta-etiqueta subasta-etiqueta-mia';
+          etiquetaMia.textContent = 'Tú';
+          identidad.appendChild(etiquetaMia);
+        }
+        if (indice === indiceMasAlto) {
+          const etiquetaAlta = document.createElement('span');
+          etiquetaAlta.className = 'subasta-etiqueta subasta-etiqueta-alta';
+          etiquetaAlta.textContent = 'Más alta';
+          identidad.appendChild(etiquetaAlta);
+        }
+        celdaUsuario.appendChild(identidad);
+
+        const celdaMonto = document.createElement('td');
+        celdaMonto.className = 'subasta-celda-monto';
+        celdaMonto.textContent = formatearMonto(oferta.monto) + ' MXN';
+        const celdaHora = document.createElement('td');
+        celdaHora.className = 'subasta-celda-hora';
+        celdaHora.textContent = oferta.hora;
+        fila.append(celdaUsuario, celdaMonto, celdaHora);
+        return fila;
+      }
+
+      function renderizarHistorial(animarPrimeraFila) {
+        while (cuerpoHistorial.firstChild) {
+          cuerpoHistorial.removeChild(cuerpoHistorial.firstChild);
+        }
+
+        const indiceMasAlto = obtenerIndiceMasAlto();
+        estadoSubasta.ofertas.forEach(function (oferta, indice) {
+          cuerpoHistorial.appendChild(crearFilaOferta(
+            oferta,
+            indice,
+            indiceMasAlto,
+            Boolean(animarPrimeraFila && indice === 0)
+          ));
+        });
+        renderizarOfertaMasAlta();
+      }
+
+      function actualizarTemporizador() {
+        const ahora = Date.now();
+        if (!Number.isFinite(estadoSubasta.fin) || estadoSubasta.fin <= ahora) {
+          estadoSubasta.fin = crearFinRonda();
+          guardarEstado();
+        }
+
+        const restante = Math.max(0, Math.ceil((estadoSubasta.fin - ahora) / 1000));
+        const hh = Math.floor(restante / 3600);
+        const mm = Math.floor((restante % 3600) / 60);
+        const ss = restante % 60;
+        horas.textContent = String(hh).padStart(2, '0');
+        minutos.textContent = String(mm).padStart(2, '0');
+        segundos.textContent = String(ss).padStart(2, '0');
+      }
+
+      function iniciarTemporizador() {
+        actualizarTemporizador();
+        if (intervaloTemporizador === null) {
+          intervaloTemporizador = window.setInterval(actualizarTemporizador, 1000);
+        }
+      }
+
+      function mostrarToast(tipo, texto) {
+        window.clearTimeout(temporizadorToast);
+        toastError.hidden = true;
+        toastEstado.hidden = true;
+        toastError.textContent = '';
+        toastEstado.textContent = '';
+        toast.classList.remove('subasta-toast-error', 'subasta-toast-exito');
+
+        if (tipo === 'error') {
+          toast.classList.add('subasta-toast-error');
+          toastError.textContent = texto;
+          toastError.hidden = false;
+        } else {
+          toast.classList.add('subasta-toast-exito');
+          toastEstado.textContent = texto;
+          toastEstado.hidden = false;
+        }
+        toast.hidden = false;
+        temporizadorToast = window.setTimeout(function () {
+          toast.hidden = true;
+          toastError.hidden = true;
+          toastEstado.hidden = true;
+          toastError.textContent = '';
+          toastEstado.textContent = '';
+        }, 3500);
+      }
+
+      function normalizarCampoMonto(valor) {
+        const caracteresValidos = String(valor).replace(/[^\d.]/g, '');
+        const punto = caracteresValidos.indexOf('.');
+        let normalizado;
+        if (punto === -1) {
+          normalizado = caracteresValidos;
+        } else {
+          const entero = caracteresValidos.slice(0, punto);
+          const decimales = caracteresValidos.slice(punto + 1).replace(/\./g, '').slice(0, 2);
+          normalizado = entero + '.' + decimales;
+        }
+        return normalizado.slice(0, 9);
+      }
+
+      function actualizarCampoMonto() {
+        const valorNormalizado = normalizarCampoMonto(campoOferta.value);
+        if (campoOferta.value !== valorNormalizado) {
+          campoOferta.value = valorNormalizado;
+        }
+      }
+
+      function obtenerNombreOferente() {
+        try {
+          const autor = window.localStorage.getItem('autorPublicacionesVinyly');
+          return typeof autor === 'string' && autor.trim()
+            ? autor.trim().slice(0, 40)
+            : 'Anónimo';
+        } catch (error) {
+          return 'Anónimo';
+        }
+      }
+
+      function obtenerHoraActual() {
+        return new Intl.DateTimeFormat('es-MX', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hourCycle: 'h23'
+        }).format(new Date());
+      }
+
+      formulario.addEventListener('submit', function (evento) {
+        evento.preventDefault();
+        const ahora = Date.now();
+        if (envioEnCurso || ahora - ultimoEnvioEn < 400) {
+          return;
+        }
+
+        envioEnCurso = true;
+        ultimoEnvioEn = ahora;
+        try {
+          const montoLeido = Number(campoOferta.value);
+          const monto = Number.isFinite(montoLeido) ? redondearMonto(montoLeido) : 0;
+          const ofertaMasAlta = estadoSubasta.ofertas[obtenerIndiceMasAlto()].monto;
+          if (!(monto > ofertaMasAlta)) {
+            mostrarToast('error', 'La oferta debe ser mayor a ' + formatearMonto(ofertaMasAlta));
+            campoOferta.classList.remove('subasta-campo-shake');
+            void campoOferta.offsetWidth;
+            campoOferta.classList.add('subasta-campo-shake');
+            campoOferta.focus();
+            return;
+          }
+
+          estadoSubasta.ofertas.unshift({
+            usuario: obtenerNombreOferente(),
+            monto: monto,
+            hora: obtenerHoraActual(),
+            mia: true
+          });
+          estadoSubasta.ofertas = estadoSubasta.ofertas.slice(0, maximoOfertas);
+          guardarEstado();
+          renderizarHistorial(true);
+          campoOferta.value = '';
+          mostrarToast('exito', 'Oferta registrada (simulado)');
+        } finally {
+          envioEnCurso = false;
+        }
+      });
+
+      campoOferta.addEventListener('input', actualizarCampoMonto);
+      campoOferta.addEventListener('paste', function (evento) {
+        evento.preventDefault();
+        const textoPegado = evento.clipboardData ? evento.clipboardData.getData('text') : '';
+        const inicio = campoOferta.selectionStart;
+        const fin = campoOferta.selectionEnd;
+        campoOferta.setRangeText(
+          normalizarCampoMonto(textoPegado),
+          inicio,
+          fin,
+          'end'
+        );
+        actualizarCampoMonto();
+      });
+      campoOferta.addEventListener('animationend', function () {
+        campoOferta.classList.remove('subasta-campo-shake');
+      });
+      montoAlto.addEventListener('animationend', function () {
+        montoAlto.classList.remove('subasta-monto-pop');
+      });
+
+      document.querySelectorAll('.subasta-chip').forEach(function (boton) {
+        boton.addEventListener('click', function () {
+          const ofertaMasAlta = estadoSubasta.ofertas[obtenerIndiceMasAlto()].monto;
+          const incremento = Number(boton.dataset.increment);
+          campoOferta.value = formatearMontoCampo(redondearMonto(ofertaMasAlta + incremento));
+          campoOferta.focus();
+        });
+      });
+
+      botonReiniciar.addEventListener('click', function () {
+        estadoSubasta = {
+          fin: crearFinRonda(),
+          ofertas: ofertasIniciales.map(function (oferta) {
+            return Object.assign({}, oferta);
+          })
+        };
+        guardarEstado();
+        renderizarHistorial(false);
+        iniciarTemporizador();
+        mostrarToast('exito', 'Subasta reiniciada (simulado)');
+      });
+
+      function sincronizarPagina() {
+        estadoSubasta = leerEstado();
+        guardarEstado();
+        renderizarHistorial(false);
+        iniciarTemporizador();
+      }
+
+      if (productoSubasta) {
+        nombre.textContent = productoSubasta.nombre + ' — Edición de coleccionista';
+        artista.textContent = productoSubasta.artista;
+        descripcion.textContent = 'Una pieza icónica que marcó la historia del pop y merece un lugar especial en tu colección. Su sonido legendario cobra nueva vida en vinilo.';
+        portada.setAttribute('aria-label', 'Portada de ' + productoSubasta.nombre);
+        if (productoSubasta.foto) {
+          portada.style.backgroundImage = 'url("' + productoSubasta.foto + '")';
+          portada.style.backgroundSize = 'cover';
+          portada.style.backgroundPosition = 'center';
+        } else if (productoSubasta.imagen) {
+          portada.classList.add(productoSubasta.imagen);
+        }
+      }
+
+      sincronizarPagina();
+      window.addEventListener('pageshow', sincronizarPagina);
+      window.addEventListener('pagehide', function () {
+        if (intervaloTemporizador !== null) {
+          window.clearInterval(intervaloTemporizador);
+          intervaloTemporizador = null;
+        }
+      });
+    }());
+  </script>
+  <script src="js/navbar.js"></script>
+</body>
+</html>

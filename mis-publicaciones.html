@@ -67,6 +67,7 @@
         <a href="landing.html">Inicio</a>
         <a href="index.html#nosotros">Nosotros</a>
         <a href="contacto.html">Contacto</a>
+        <a href="subasta.html">Subasta</a>
       </div>
       <div class="footer-columna">
         <h4>Contacto</h4>
@@ -135,6 +136,12 @@
         fecha.dateTime = publicacion.fecha;
         fecha.textContent = `Publicado el ${modulo.formatearFecha(publicacion.fecha)}`;
         datos.append(nombre, artista, descripcion, fecha);
+        if (publicacion.editadaEn) {
+          const etiquetaEditada = document.createElement('span');
+          etiquetaEditada.className = 'mispub-fecha-editada';
+          etiquetaEditada.textContent = '(editado)';
+          datos.appendChild(etiquetaEditada);
+        }
 
         const pie = document.createElement('div');
         pie.className = 'mispub-pie';
@@ -144,13 +151,21 @@
         const estadoPublicado = document.createElement('span');
         estadoPublicado.className = 'mispub-etiqueta';
         estadoPublicado.textContent = 'Publicado ✓';
+        const acciones = document.createElement('div');
+        acciones.className = 'mispub-acciones';
+        const editar = document.createElement('a');
+        editar.className = 'mispub-editar';
+        editar.href = 'publicar.html?editar=' + encodeURIComponent(publicacion.id);
+        editar.setAttribute('aria-label', `Editar la publicación ${publicacion.nombre}`);
+        editar.textContent = 'Editar';
         const eliminar = document.createElement('button');
         eliminar.type = 'button';
         eliminar.className = 'mispub-eliminar';
         eliminar.dataset.id = publicacion.id;
         eliminar.setAttribute('aria-label', `Eliminar la publicación ${publicacion.nombre}`);
         eliminar.textContent = 'Eliminar';
-        pie.append(precio, estadoPublicado, eliminar);
+        acciones.append(editar, eliminar);
+        pie.append(precio, estadoPublicado, acciones);
         tarjeta.append(portada, datos, pie);
         return tarjeta;
       }

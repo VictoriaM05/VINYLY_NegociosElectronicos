@@ -78,6 +78,16 @@
       <p class="marketplace-contador" id="marketplaceContador" aria-live="polite">0 publicaciones</p>
     </section>
 
+    <section class="marketplace-subasta-banner" aria-label="Subasta en vivo">
+      <div class="marketplace-subasta-icono" aria-hidden="true">🔨</div>
+      <div class="marketplace-subasta-texto">
+        <p class="marketplace-subasta-eyebrow">Subasta en vivo</p>
+        <h2 class="marketplace-subasta-titulo"><span class="acento">Thriller — Edición de coleccionista</span></h2>
+        <p class="marketplace-subasta-descripcion">Puja por un vinilo único. Gana quien ofrezca más.</p>
+      </div>
+      <a class="btn-gradiente marketplace-subasta-boton" href="subasta.html">Ir a la subasta</a>
+    </section>
+
     <section class="marketplace-grid" id="marketplaceGrid" aria-label="Publicaciones de la comunidad"></section>
 
     <section class="marketplace-vacio marketplace-vacio-resultados" id="marketplaceVacioResultados" aria-labelledby="marketplaceVacioResultadosTitulo" hidden>
@@ -116,6 +126,7 @@
         <button class="btn-gradiente marketplace-modal-contactar" id="marketplaceModalContactar" type="button">Contactar al vendedor</button>
         <div class="marketplace-modal-propia" id="marketplaceModalPropia" hidden>
           <p>Esta es tu publicación</p>
+          <a id="marketplaceModalEditar" href="publicar.html">Editar esta publicación</a>
           <a href="mis-publicaciones.html">Administrar en Mis publicaciones</a>
         </div>
       </div>
@@ -136,6 +147,7 @@
         <a href="landing.html">Inicio</a>
         <a href="index.html#nosotros">Nosotros</a>
         <a href="contacto.html">Contacto</a>
+        <a href="subasta.html">Subasta</a>
       </div>
 
       <div class="footer-columna">
@@ -181,6 +193,7 @@
       const modalFechaVendedor = document.getElementById('marketplaceModalFechaVendedor');
       const modalContactar = document.getElementById('marketplaceModalContactar');
       const modalPropia = document.getElementById('marketplaceModalPropia');
+      const modalEditar = document.getElementById('marketplaceModalEditar');
       const modalEstado = document.getElementById('marketplaceModalEstado');
       const fotosEjemplo = [
         'resources/1989_disco.jpg',
@@ -508,6 +521,9 @@
 
         modalContactar.hidden = publicacion.esMia;
         modalPropia.hidden = !publicacion.esMia;
+        if (publicacion.esMia) {
+          modalEditar.href = 'publicar.html?editar=' + encodeURIComponent(publicacion.id);
+        }
         botonActivador = boton;
         modal.hidden = false;
         document.body.classList.add('modal-abierto');

@@ -35,9 +35,10 @@
     <span class="brillo brillo-1" aria-hidden="true"></span>
     <span class="brillo brillo-2" aria-hidden="true"></span>
     <div class="publicar-hero-texto">
-      <p class="publicar-eyebrow">Vende tu vinilo</p>
-      <h1><span class="acento">Publica tu producto</span></h1>
+      <p id="publicarEyebrow" class="publicar-eyebrow">Vende tu vinilo</p>
+      <h1><span id="publicarTitulo" class="acento">Publica tu producto</span></h1>
       <p class="publicar-hero-descripcion">Comparte un vinilo con la comunidad VINYLY.</p>
+      <p id="publicarAvisoEdicion" class="publicar-aviso-edicion" role="status" hidden>No encontramos esa publicación; puedes publicar una nueva</p>
     </div>
   </section>
 
@@ -97,6 +98,7 @@
             <p id="publicarFotoNota" class="publicar-foto-nota" role="status" aria-live="polite" hidden>No pudimos leer esa imagen</p>
           </div>
 
+          <a id="publicarCancelarEdicion" class="publicar-cancelar-edicion" href="mis-publicaciones.html" hidden>Cancelar</a>
           <button type="submit" class="btn-gradiente publicar-boton">Publicar</button>
           <div id="publicarEstado" class="publicar-estado" role="status" aria-live="polite" hidden>
             <p id="publicarMensaje" class="publicar-mensaje">Publicado correctamente</p>
@@ -153,6 +155,7 @@
         <a href="landing.html">Inicio</a>
         <a href="index.html#nosotros">Nosotros</a>
         <a href="contacto.html">Contacto</a>
+        <a href="subasta.html">Subasta</a>
       </div>
       <div class="footer-columna">
         <h4>Contacto</h4>
@@ -170,7 +173,16 @@
   <script>
     (function () {
       const modulo = window.PublicacionesVinyly;
+      const parametrosUrl = new URLSearchParams(window.location.search);
+      const idEdicion = parametrosUrl.get('editar');
+      const publicacionEdicion = idEdicion === null ? null : modulo.obtenerPublicacion(idEdicion);
+      const modoEdicion = publicacionEdicion !== null;
       const formulario = document.getElementById('formPublicar');
+      const eyebrow = document.getElementById('publicarEyebrow');
+      const titulo = document.getElementById('publicarTitulo');
+      const avisoEdicion = document.getElementById('publicarAvisoEdicion');
+      const cancelarEdicion = document.getElementById('publicarCancelarEdicion');
+      const botonEnviar = formulario.querySelector('[type="submit"]');
       const campoNombre = document.getElementById('publicarNombre');
       const campoArtista = document.getElementById('publicarArtista');
       const campoAutor = document.getElementById('publicarAutor');
@@ -199,12 +211,25 @@
       let tokenFoto = 0;
       let autorRecordado = '';
 
-      try {
-        autorRecordado = window.localStorage.getItem('autorPublicacionesVinyly') || '';
-      } catch (error) {
-        autorRecordado = '';
+      if (modoEdicion) {
+        document.title = 'VINYLY - Edita tu publicación';
+        eyebrow.textContent = 'Editando tu publicación';
+        titulo.textContent = 'Edita tu publicación';
+        botonEnviar.textContent = 'Guardar cambios';
+        cancelarEdicion.hidden = false;
+        botonPublicarOtro.hidden = true;
+      } else {
+        if (idEdicion !== null) {
+          avisoEdicion.hidden = false;
+        }
+        try {
+          autorRecordado = window.localStorage.getItem('autorPublicacionesVinyly') || '';
+        } catch (error) {
+          autorRecordado = '';
+        }
+        campoAutor.value = autorRecordado.slice(0, 40);
       }
-      campoAutor.value = autorRecordado.slice(0, 40);
+      let envioEnCurso = false;
 
       function recordarAutor(autor) {
         autorRecordado = autor;
@@ -407,28 +432,56 @@
 
       formulario.addEventListener('submit', async function (evento) {
         evento.preventDefault();
-        await esperarFotoVigente();
+        if (envioEnCurso) {
+          return;
+        }
 
-        const nombre = campoNombre.value.trim();
-        const autor = campoAutor.value.trim().slice(0, 40);
-        recordarAutor(autor);
-        if (nombre) {
+        envioEnCurso = true;
+        botonEnviar.disabled = true;
+        try {
+          await esperarFotoVigente();
+
+          const nombre = campoNombre.value.trim();
+          const autor = campoAutor.value.trim().slice(0, 40);
           const valorPrecio = campoPrecio.value.trim();
           const precio = valorPrecio && Number.isFinite(Number(valorPrecio)) && Number(valorPrecio) > 0
             ? Number(valorPrecio)
             : null;
-          modulo.agregarPublicacion({
-            nombre: nombre,
-            artista: campoArtista.value.trim(),
-            autor: autor,
-            precio: precio,
-            descripcion: campoDescripcion.value.trim(),
-            foto: fotoDataUrl
-          });
-        }
 
-        limpiarFormulario();
-        mostrarMensajeExito();
+          if (modoEdicion) {
+            mensaje.textContent = 'Publicación actualizada (simulado)';
+            if (nombre) {
+              modulo.actualizarPublicacion(idEdicion, {
+                nombre: nombre,
+                artista: campoArtista.value.trim(),
+                autor: autor,
+                precio: precio,
+                descripcion: campoDescripcion.value.trim(),
+                foto: fotoDataUrl
+              });
+            }
+            mostrarMensajeExito();
+            return;
+          }
+
+          recordarAutor(autor);
+          if (nombre) {
+            modulo.agregarPublicacion({
+              nombre: nombre,
+              artista: campoArtista.value.trim(),
+              autor: autor,
+              precio: precio,
+              descripcion: campoDescripcion.value.trim(),
+              foto: fotoDataUrl
+            });
+          }
+
+          limpiarFormulario();
+          mostrarMensajeExito();
+        } finally {
+          envioEnCurso = false;
+          botonEnviar.disabled = false;
+        }
       });
 
       botonPublicarOtro.addEventListener('click', function () {
@@ -437,7 +490,26 @@
         campoNombre.focus();
       });
 
-      actualizarVista();
+      if (modoEdicion) {
+        campoNombre.value = publicacionEdicion.nombre;
+        campoArtista.value = publicacionEdicion.artista;
+        campoAutor.value = publicacionEdicion.autor;
+        campoPrecio.value = publicacionEdicion.precio === null ? '' : String(publicacionEdicion.precio);
+        campoDescripcion.value = publicacionEdicion.descripcion;
+        fotoDataUrl = publicacionEdicion.foto;
+        if (fotoDataUrl.indexOf('data:image/') === 0) {
+          miniaturaFoto.src = fotoDataUrl;
+          miniaturaFoto.alt = `Portada de ${campoNombre.value.trim() || 'tu vinilo'}`;
+          miniaturaFoto.hidden = false;
+          zonaFoto.classList.add('publicar-foto-tiene-imagen');
+          botonQuitarFoto.hidden = false;
+        }
+        [campoNombre, campoArtista, campoAutor, campoPrecio, campoDescripcion].forEach(function (campo) {
+          campo.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+      } else {
+        actualizarVista();
+      }
     }());
   </script>
   <script src="js/navbar.js"></script>

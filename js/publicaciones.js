@@ -114,8 +114,32 @@
         (publicacion.foto === '' || publicacion.foto.indexOf(prefijoImagenValido) === 0)
         ? publicacion.foto
         : '',
-      fecha: typeof publicacion.fecha === 'string' ? publicacion.fecha : ''
+      fecha: typeof publicacion.fecha === 'string' ? publicacion.fecha : '',
+      editadaEn: esFechaISO(publicacion.editadaEn) ? publicacion.editadaEn : ''
     };
+  }
+
+  function esFechaISO(fecha) {
+    if (typeof fecha !== 'string') {
+      return false;
+    }
+
+    const partes = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d+)?(?:Z|([+-])(\d{2}):(\d{2}))$/.exec(fecha);
+    if (!partes || !Number.isFinite(Date.parse(fecha))) {
+      return false;
+    }
+
+    const fechaCalendario = new Date(0);
+    fechaCalendario.setUTCFullYear(Number(partes[1]), Number(partes[2]) - 1, Number(partes[3]));
+    fechaCalendario.setUTCHours(Number(partes[4]), Number(partes[5]), Number(partes[6]), 0);
+
+    return fechaCalendario.getUTCFullYear() === Number(partes[1]) &&
+      fechaCalendario.getUTCMonth() === Number(partes[2]) - 1 &&
+      fechaCalendario.getUTCDate() === Number(partes[3]) &&
+      Number(partes[4]) <= 23 &&
+      Number(partes[5]) <= 59 &&
+      Number(partes[6]) <= 59 &&
+      (!partes[7] || (Number(partes[8]) <= 23 && Number(partes[9]) <= 59));
   }
 
   function leerPublicaciones() {
@@ -169,6 +193,75 @@
       publicaciones: publicaciones,
       persistido: resultado.persistido
     };
+  }
+
+  function obtenerPublicacion(id) {
+    if (typeof id !== 'string' || id.indexOf('demo-') === 0) {
+      return null;
+    }
+
+    const publicacion = leerPublicaciones().find(function (item) {
+      return item.id === id;
+    });
+    return publicacion ? Object.assign({}, publicacion) : null;
+  }
+
+  function actualizarPublicacion(id, datos) {
+    const resultadoBase = {
+      encontrada: false,
+      actualizada: false,
+      persistido: false,
+      publicacion: null
+    };
+
+    try {
+      if (
+        typeof id !== 'string' ||
+        id.indexOf('demo-') === 0 ||
+        !esObjeto(datos)
+      ) {
+        return resultadoBase;
+      }
+
+      const publicaciones = leerPublicaciones();
+      const indice = publicaciones.findIndex(function (publicacion) {
+        return publicacion.id === id;
+      });
+      if (indice === -1) {
+        return resultadoBase;
+      }
+
+      const original = publicaciones[indice];
+      const actualizada = {
+        id: original.id,
+        nombre: typeof datos.nombre === 'string' ? datos.nombre : '',
+        artista: typeof datos.artista === 'string' ? datos.artista : '',
+        autor: typeof datos.autor === 'string' ? datos.autor.trim().slice(0, 40) : '',
+        precio: typeof datos.precio === 'number' &&
+          Number.isFinite(datos.precio) &&
+          datos.precio > 0
+          ? datos.precio
+          : null,
+        descripcion: typeof datos.descripcion === 'string' ? datos.descripcion : '',
+        foto: typeof datos.foto === 'string' &&
+          (datos.foto === '' || datos.foto.indexOf(prefijoImagenValido) === 0)
+          ? datos.foto
+          : '',
+        fecha: original.fecha,
+        editadaEn: new Date().toISOString()
+      };
+      publicaciones[indice] = actualizada;
+      const guardado = guardarPublicaciones(publicaciones);
+
+      return {
+        encontrada: true,
+        actualizada: true,
+        persistido: guardado.persistido,
+        publicacion: Object.assign({}, actualizada)
+      };
+    } catch (error) {
+      return resultadoBase;
+    }
   }
 
   function eliminarPublicacion(id, publicacionesActuales) {
@@ -232,6 +325,7 @@
         descripcion: publicacion.descripcion,
         autor: resolverAutor(publicacion.autor),
         fecha: publicacion.fecha,
+        editadaEn: '',
         foto: publicacion.foto,
         esMia: false
       };
@@ -245,6 +339,7 @@
         descripcion: publicacion.descripcion,
         autor: resolverAutor(publicacion.autor),
         fecha: publicacion.fecha,
+        editadaEn: publicacion.editadaEn,
         foto: publicacion.foto,
         esMia: true
       };
@@ -333,6 +428,8 @@
     leerMarketplace: leerMarketplace,
     guardarPublicaciones: guardarPublicaciones,
     agregarPublicacion: agregarPublicacion,
+    obtenerPublicacion: obtenerPublicacion,
+    actualizarPublicacion: actualizarPublicacion,
     eliminarPublicacion: eliminarPublicacion,
     formatearPrecio: formatearPrecio,
     formatearFecha: formatearFecha,
