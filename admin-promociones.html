@@ -23,30 +23,130 @@
     <a class="admin-exit" href="landing.html">Salir <span aria-hidden="true">↗</span></a>
   </aside>
 
-  <main class="admin-main">
+  <main class="admin-main admin-promociones-page">
     <header class="admin-page-header">
       <div>
         <p class="admin-eyebrow">Beneficios para clientes</p>
         <h1>Promociones</h1>
       </div>
-      <span class="admin-date">CÓDIGOS DE DEMOSTRACIÓN</span>
+      <div class="admin-promo-header-actions">
+        <span class="admin-date" id="promo-summary"></span>
+        <a class="admin-promo-store-link" href="promociones.html">Ver en la tienda</a>
+        <button class="btn-gradiente admin-primary-button" id="add-promo-button" type="button">Agregar promoción</button>
+      </div>
     </header>
 
+    <section class="admin-form-panel admin-promo-form-panel" id="promo-form-panel" aria-labelledby="promo-form-title" hidden>
+      <div class="admin-section-heading">
+        <div>
+          <p class="admin-eyebrow">Edición de beneficios</p>
+          <h2 id="promo-form-title">Agregar promoción</h2>
+        </div>
+      </div>
+      <div class="admin-promo-editor-grid">
+        <form id="promo-form" class="admin-promo-form" novalidate>
+          <div class="admin-promo-field">
+            <label for="promo-title">Título</label>
+            <input id="promo-title" name="titulo" type="text" maxlength="40" aria-describedby="promo-title-error">
+            <p class="admin-promo-error" id="promo-title-error" hidden></p>
+          </div>
+          <div class="admin-promo-field">
+            <label for="promo-code">Código</label>
+            <input id="promo-code" name="codigo" type="text" autocomplete="off" spellcheck="false" aria-describedby="promo-code-error">
+            <p class="admin-promo-error" id="promo-code-error" hidden></p>
+          </div>
+          <div class="admin-promo-field">
+            <label for="promo-type">Tipo</label>
+            <select id="promo-type" name="tipo" aria-describedby="promo-type-error"></select>
+            <p class="admin-promo-error" id="promo-type-error" hidden></p>
+          </div>
+          <div class="admin-promo-field" id="promo-value-field">
+            <label for="promo-value">Valor</label>
+            <input id="promo-value" name="valor" type="text" inputmode="numeric" autocomplete="off" aria-describedby="promo-value-error">
+            <p class="admin-promo-error" id="promo-value-error" hidden></p>
+          </div>
+          <div class="admin-promo-field admin-promo-description-field">
+            <label for="promo-description">Descripción</label>
+            <textarea id="promo-description" name="descripcion" rows="3" maxlength="120" aria-describedby="promo-description-count promo-description-error"></textarea>
+            <div class="admin-promo-description-meta">
+              <span id="promo-description-count">0/120</span>
+              <p class="admin-promo-error" id="promo-description-error" hidden></p>
+            </div>
+          </div>
+          <fieldset class="admin-promo-icon-field" id="promo-icon-field" aria-describedby="promo-icon-error">
+            <legend>Ícono</legend>
+            <div class="admin-promo-icon-options" id="promo-icon-options"></div>
+            <p class="admin-promo-error" id="promo-icon-error" hidden></p>
+          </fieldset>
+          <div class="admin-promo-field">
+            <label for="promo-valid-until">Vigencia hasta</label>
+            <input id="promo-valid-until" name="vigencia" type="date" aria-describedby="promo-valid-until-error">
+            <p class="admin-promo-error" id="promo-valid-until-error" hidden></p>
+          </div>
+          <div class="admin-promo-field">
+            <label for="promo-status">Estado</label>
+            <select id="promo-status" name="estado" aria-describedby="promo-status-error"></select>
+            <p class="admin-promo-error" id="promo-status-error" hidden></p>
+          </div>
+          <p class="admin-promo-help">La vigencia es solo informativa: lo que decide si el código funciona en la tienda es el estado.</p>
+          <div class="admin-form-actions admin-promo-form-actions">
+            <button class="btn-gradiente admin-primary-button" type="submit">Guardar</button>
+            <button class="admin-secondary-button" id="cancel-promo-button" type="button">Cancelar</button>
+          </div>
+        </form>
+
+        <aside class="admin-promo-preview" aria-hidden="true">
+          <p class="admin-promo-preview-title">Así lo verán tus clientes</p>
+          <article class="promo-card">
+            <div class="promo-valor">
+              <span class="promo-icono" id="promo-preview-icon">🎧</span>
+              <strong id="promo-preview-value">10%</strong>
+            </div>
+            <div class="promo-cuerpo">
+              <h2 id="promo-preview-title">Título de promoción</h2>
+              <p id="promo-preview-description">Tu descripción aparecerá aquí.</p>
+              <small class="promo-vigencia" id="promo-preview-validity" hidden></small>
+              <span class="promo-codigo" id="promo-preview-code">
+                <span>CODIGO</span>
+                <small>Vista previa</small>
+              </span>
+            </div>
+          </article>
+        </aside>
+      </div>
+    </section>
+
+    <p class="admin-feedback" id="promo-feedback" role="status" aria-live="polite"></p>
+
     <section class="admin-table-section admin-listing-table" aria-label="Lista de promociones">
-      <div class="admin-table-wrap">
-        <table class="admin-table">
+      <div class="admin-table-wrap" id="promo-table-wrap">
+        <table class="admin-table admin-promos-table">
           <thead>
-            <tr><th>Promoción</th><th>Código</th><th>Descuento</th><th>Vigencia</th><th>Estado</th></tr>
+            <tr><th>Promoción</th><th>Código</th><th>Descuento</th><th>Vigencia</th><th>Estado</th><th class="admin-actions-heading">Acciones</th></tr>
           </thead>
-          <tbody>
-            <tr><td>Pop de temporada</td><td><code class="admin-promo-code">POP10</code></td><td>10%</td><td>Hasta 31 oct 2026</td><td><span class="admin-status status-delivered">Activa</span></td></tr>
-            <tr><td>Vinilo de bienvenida</td><td><code class="admin-promo-code">VINYLY15</code></td><td>15%</td><td>Hasta 15 nov 2026</td><td><span class="admin-status status-delivered">Activa</span></td></tr>
-            <tr><td>Semana de clásicos</td><td><code class="admin-promo-code">CLASICOS20</code></td><td>20%</td><td>Hasta 20 sep 2026</td><td><span class="admin-status status-cancelled">Finalizada</span></td></tr>
-            <tr><td>Envío de colección</td><td><code class="admin-promo-code">ENVIOGRATIS</code></td><td>Envío gratis</td><td>Hasta 05 dic 2026</td><td><span class="admin-status status-pending">Programada</span></td></tr>
-          </tbody>
+          <tbody id="promo-table-body"></tbody>
         </table>
       </div>
     </section>
+    <div class="admin-promo-list-actions">
+      <button class="admin-secondary-button" id="reset-promos-button" type="button">Restablecer ejemplos</button>
+    </div>
   </main>
+
+  <div class="modal-overlay" id="promo-confirm-modal" hidden>
+    <section class="modal-caja" role="dialog" aria-modal="true" aria-labelledby="promo-modal-title" aria-describedby="promo-modal-text">
+      <button class="modal-cerrar" id="promo-modal-close" type="button" aria-label="Cerrar">×</button>
+      <p class="modal-etiqueta">Confirmar acción</p>
+      <h2 id="promo-modal-title"></h2>
+      <p class="modal-texto" id="promo-modal-text"></p>
+      <div class="modal-acciones">
+        <button class="modal-boton-secundario" id="promo-modal-cancel" type="button">Cancelar</button>
+        <button class="modal-boton-peligro" id="promo-modal-confirm" type="button">Eliminar</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="js/promociones.js"></script>
+  <script src="js/admin-promociones.js"></script>
 </body>
 </html>

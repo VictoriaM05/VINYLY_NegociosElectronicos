@@ -111,34 +111,88 @@
     const inputCodigo = document.getElementById('inputCodigo');
     const promosMensaje = document.getElementById('promosMensaje');
     const promosDetalle = document.getElementById('promosDetalle');
+    const iconosSinPromos = document.createElement('span');
 
     function formatearPrecio(precio) {
       return `$${Number(precio).toLocaleString('es-MX')} MXN`;
     }
 
-    // Dibuja las tarjetas a partir del arreglo PROMOCIONES (una sola fuente de datos).
+    function agregarTextoConEnlace(contenedor, antes, etiqueta, destino, despues) {
+      contenedor.appendChild(document.createTextNode(antes));
+      const enlace = document.createElement('a');
+      enlace.href = destino;
+      enlace.textContent = etiqueta;
+      contenedor.appendChild(enlace);
+      contenedor.appendChild(document.createTextNode(despues || ''));
+    }
+
     function renderizarPromos() {
       const aplicada = obtenerDescuentoAplicado();
+      const promociones = leerPromocionesActivas();
+      promosGrid.replaceChildren();
 
-      promosGrid.innerHTML = PROMOCIONES.map(function (promo) {
+      if (promociones.length === 0) {
+        const estadoVacio = document.createElement('div');
+        estadoVacio.className = 'promos-vacio';
+        const icono = document.createElement('span');
+        icono.className = 'promos-vacio-icono';
+        icono.setAttribute('aria-hidden', 'true');
+        icono.textContent = '💿';
+        const texto = document.createElement('p');
+        texto.textContent = 'Por ahora no hay promociones activas. ¡Vuelve pronto!';
+        estadoVacio.append(icono, texto);
+        promosGrid.appendChild(estadoVacio);
+        return;
+      }
+
+      promociones.forEach(function (promo) {
+        const etiqueta = etiquetaPromocion(promo);
+        if (!etiqueta) {
+          return;
+        }
+
         const esAplicada = aplicada && aplicada.codigo === promo.codigo;
-        return `
-          <article class="promo-card${esAplicada ? ' aplicada' : ''}">
-            <div class="promo-valor">
-              <span class="promo-icono" aria-hidden="true">${promo.icono}</span>
-              <strong>${promo.etiqueta}</strong>
-            </div>
-            <div class="promo-cuerpo">
-              <h2>${promo.titulo}</h2>
-              <p>${promo.descripcion}</p>
-              <button type="button" class="promo-codigo" data-codigo="${promo.codigo}">
-                <span>${promo.codigo}</span>
-                <small>${esAplicada ? 'Aplicado ✓' : 'Usar'}</small>
-              </button>
-            </div>
-          </article>
-        `;
-      }).join('');
+        const tarjeta = document.createElement('article');
+        tarjeta.className = 'promo-card' + (esAplicada ? ' aplicada' : '');
+        const valor = document.createElement('div');
+        valor.className = 'promo-valor';
+        const icono = document.createElement('span');
+        icono.className = 'promo-icono';
+        icono.setAttribute('aria-hidden', 'true');
+        icono.textContent = promo.icono;
+        const etiquetaNodo = document.createElement('strong');
+        etiquetaNodo.textContent = etiqueta;
+        valor.append(icono, etiquetaNodo);
+
+        const cuerpo = document.createElement('div');
+        cuerpo.className = 'promo-cuerpo';
+        const titulo = document.createElement('h2');
+        titulo.textContent = promo.titulo;
+        const descripcion = document.createElement('p');
+        descripcion.textContent = promo.descripcion;
+        cuerpo.append(titulo, descripcion);
+
+        const vigencia = formatearVigencia(promo);
+        if (vigencia) {
+          const vigenciaNodo = document.createElement('small');
+          vigenciaNodo.className = 'promo-vigencia';
+          vigenciaNodo.textContent = vigencia;
+          cuerpo.appendChild(vigenciaNodo);
+        }
+
+        const boton = document.createElement('button');
+        boton.type = 'button';
+        boton.className = 'promo-codigo';
+        boton.dataset.codigo = promo.codigo;
+        const codigo = document.createElement('span');
+        codigo.textContent = promo.codigo;
+        const estado = document.createElement('small');
+        estado.textContent = esAplicada ? 'Aplicado ✓' : 'Usar';
+        boton.append(codigo, estado);
+        cuerpo.appendChild(boton);
+        tarjeta.append(valor, cuerpo);
+        promosGrid.appendChild(tarjeta);
+      });
     }
 
     function mostrarMensaje(texto) {
@@ -153,21 +207,25 @@
     // Explica cuánto se ahorra con el carrito que la persona tiene ahorita.
     function mostrarDetalle(promocion) {
       const carrito = obtenerCarrito();
+      promosDetalle.replaceChildren();
 
       if (carrito.length === 0) {
-        promosDetalle.innerHTML = `Código ${promocion.codigo} activo. Se aplicará cuando agregues vinilos a tu <a href="carrito.html">carrito</a>.`;
+        agregarTextoConEnlace(promosDetalle, 'Código ' + promocion.codigo
+          + ' activo. Se aplicará cuando agregues vinilos a tu ', 'carrito', 'carrito.html', '.');
         return;
       }
 
       const descuento = calcularDescuento(promocion, carrito);
 
       if (descuento === 0) {
-        promosDetalle.innerHTML = `Código ${promocion.codigo} activo. Agrega otro vinilo a tu <a href="catalogo.html">catálogo</a> para aprovechar el descuento.`;
+        agregarTextoConEnlace(promosDetalle, 'Código ' + promocion.codigo
+          + ' activo. Agrega otro vinilo a tu ', 'catálogo', 'catalogo.html', ' para aprovechar el descuento.');
         return;
       }
 
       const total = calcularSubtotal(carrito) - descuento;
-      promosDetalle.innerHTML = `Ahorras ${formatearPrecio(descuento)}: tu total sería ${formatearPrecio(total)}. <a href="carrito.html">Ver mi carrito</a>`;
+      agregarTextoConEnlace(promosDetalle, 'Ahorras ' + formatearPrecio(descuento)
+        + ': tu total sería ' + formatearPrecio(total) + '. ', 'Ver mi carrito', 'carrito.html');
     }
 
     formCodigo.addEventListener('submit', function (evento) {
@@ -183,7 +241,7 @@
         renderizarPromos();
       }
 
-      mostrarMensaje('Descuento aplicado correctamente.');
+      mostrarMensaje('Descuento aplicado (simulado)');
     });
 
     // Tocar el código de una tarjeta lo pone en la caja de abajo.
@@ -198,13 +256,24 @@
       inputCodigo.focus({ preventScroll: true });
     });
 
-    renderizarPromos();
-
-    // Si ya había un código aplicado de antes, se vuelve a explicar.
-    const descuentoActivo = obtenerDescuentoAplicado();
-    if (descuentoActivo) {
-      mostrarDetalle(descuentoActivo);
+    function actualizarPromos() {
+      renderizarPromos();
+      promosDetalle.replaceChildren();
+      const descuentoActivo = obtenerDescuentoAplicado();
+      if (descuentoActivo) {
+        mostrarDetalle(descuentoActivo);
+      }
     }
+
+    function alCambiarAlmacenamiento(evento) {
+      if (evento.key === null || evento.key === CLAVE_PROMOCIONES || evento.key === CLAVE_DESCUENTO) {
+        actualizarPromos();
+      }
+    }
+
+    window.addEventListener('pageshow', actualizarPromos);
+    window.addEventListener('storage', alCambiarAlmacenamiento);
+    actualizarPromos();
   </script>
   <script src="js/navbar.js"></script>
 </body>

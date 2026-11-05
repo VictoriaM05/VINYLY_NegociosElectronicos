@@ -166,6 +166,8 @@
     (function () {
       'use strict';
 
+      // Coincide con el nombre que se muestra en el perfil.
+      const NOMBRE_USUARIO = 'Pedrito Vinilo';
       const claveSubasta = 'subastaVinyly';
       const duracionRondaInicial = 59 * 60 * 1000 + 59 * 1000;
       const maximoOfertas = 30;
@@ -204,6 +206,10 @@
 
       function redondearMonto(monto) {
         return Math.round((monto + Number.EPSILON) * 100) / 100;
+      }
+
+      function nombreVisible(oferta) {
+        return oferta.mia ? NOMBRE_USUARIO : oferta.usuario;
       }
 
       function formatearMonto(monto) {
@@ -321,7 +327,7 @@
           montoAlto.classList.add('subasta-monto-pop');
         }
         montoAlto.textContent = nuevoMonto;
-        usuarioAlto.textContent = 'de ' + oferta.usuario;
+        usuarioAlto.textContent = 'de ' + nombreVisible(oferta);
         campoOferta.placeholder = 'Mayor a ' + formatearMonto(oferta.monto);
       }
 
@@ -335,7 +341,7 @@
         const identidad = document.createElement('div');
         identidad.className = 'subasta-identidad';
         const avatar = document.createElement('span');
-        const nombreUsuario = oferta.usuario || 'Anónimo';
+        const nombreUsuario = nombreVisible(oferta);
         avatar.className = 'pub-avatar pub-avatar--' + PublicacionesVinyly.obtenerColorAvatar(nombreUsuario);
         avatar.textContent = PublicacionesVinyly.obtenerIniciales(nombreUsuario);
         avatar.setAttribute('aria-hidden', 'true');
@@ -455,17 +461,6 @@
         }
       }
 
-      function obtenerNombreOferente() {
-        try {
-          const autor = window.localStorage.getItem('autorPublicacionesVinyly');
-          return typeof autor === 'string' && autor.trim()
-            ? autor.trim().slice(0, 40)
-            : 'Anónimo';
-        } catch (error) {
-          return 'Anónimo';
-        }
-      }
-
       function obtenerHoraActual() {
         return new Intl.DateTimeFormat('es-MX', {
           hour: '2-digit',
@@ -497,7 +492,7 @@
           }
 
           estadoSubasta.ofertas.unshift({
-            usuario: obtenerNombreOferente(),
+            usuario: NOMBRE_USUARIO,
             monto: monto,
             hora: obtenerHoraActual(),
             mia: true

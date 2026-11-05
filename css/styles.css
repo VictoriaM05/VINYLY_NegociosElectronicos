@@ -3988,6 +3988,33 @@ body.modal-abierto {
   line-height: 1.5;
 }
 
+.promo-vigencia {
+  display: block;
+  margin: -8px 0 16px;
+  color: var(--gris);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+}
+
+.promos-vacio {
+  grid-column: 1 / -1;
+  padding: 32px 20px;
+  color: var(--gris);
+  text-align: center;
+}
+
+.promos-vacio-icono {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 42px;
+  line-height: 1;
+}
+
+.promos-vacio p {
+  margin: 0;
+  font-size: 16px;
+}
+
 /* el código es un botón: al tocarlo se copia a la caja de abajo */
 .promo-codigo {
   display: inline-flex;
@@ -4811,6 +4838,35 @@ body.modal-abierto {
   margin-bottom: 24px;
   color: var(--gris);
   font-size: 14px;
+}
+
+.comunidad-publicando-como {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  min-width: 0;
+}
+
+.comunidad-publicando-etiqueta {
+  color: var(--gris);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+}
+
+.comunidad-publicando-avatar {
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  font-size: 11px;
+}
+
+.comunidad-publicando-nombre {
+  min-width: 0;
+  color: var(--oscuro);
+  font-size: 13px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .comunidad-formulario {
@@ -7270,141 +7326,6 @@ body.modal-abierto {
   background: linear-gradient(to bottom, transparent 76px, var(--crema) 76px);
 }
 
-.marketplace-subasta-banner {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 18px;
-  max-width: 1320px;
-  margin: 0 auto 30px;
-  overflow: hidden;
-  padding: clamp(18px, 3vw, 28px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 26px;
-  color: var(--blanco);
-  background:
-    radial-gradient(circle at 8% 0%, rgba(224, 96, 158, 0.24), transparent 38%),
-    radial-gradient(circle at 92% 100%, rgba(124, 92, 214, 0.32), transparent 42%),
-    var(--oscuro);
-  box-shadow: 0 20px 46px rgba(20, 20, 26, 0.17);
-}
-
-.marketplace-subasta-banner::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 22px 22px;
-}
-
-.marketplace-subasta-icono,
-.marketplace-subasta-texto,
-.marketplace-subasta-boton {
-  position: relative;
-  z-index: 1;
-}
-
-.marketplace-subasta-icono {
-  display: grid;
-  flex: 0 0 54px;
-  width: 54px;
-  height: 54px;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--morado), var(--rosa));
-  box-shadow: 0 8px 22px rgba(124, 92, 214, 0.3);
-  font-size: 25px;
-}
-
-.marketplace-subasta-texto {
-  min-width: 0;
-}
-
-.marketplace-subasta-eyebrow {
-  margin-bottom: 4px;
-  color: var(--dorado);
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.marketplace-subasta-titulo {
-  margin-bottom: 4px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(19px, 2.4vw, 26px);
-  line-height: 1.18;
-  overflow-wrap: anywhere;
-}
-
-.marketplace-subasta-titulo .acento {
-  color: transparent;
-}
-
-.marketplace-subasta-descripcion {
-  color: rgba(255, 255, 255, 0.86);
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-.marketplace-subasta-boton {
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-  justify-content: center;
-  padding: 0 20px;
-  white-space: nowrap;
-}
-
-.marketplace-subasta-boton:hover {
-  transform: none;
-  box-shadow: 0 12px 28px rgba(224, 96, 158, 0.28);
-}
-
-.marketplace-subasta-boton:focus-visible {
-  outline: 3px solid var(--dorado);
-  outline-offset: 4px;
-}
-
-@media (max-width: 640px) {
-  .marketplace-subasta-banner {
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 12px;
-    margin-bottom: 24px;
-    padding: 18px;
-    border-radius: 22px;
-  }
-
-  .marketplace-subasta-icono {
-    width: 44px;
-    height: 44px;
-    font-size: 21px;
-  }
-
-  .marketplace-subasta-titulo {
-    font-size: clamp(18px, 5vw, 23px);
-  }
-
-  .marketplace-subasta-descripcion {
-    font-size: 11px;
-  }
-
-  .marketplace-subasta-boton {
-    grid-column: 1 / -1;
-    width: 100%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marketplace-subasta-boton {
-    transition: none;
-  }
-}
-
 .marketplace-herramientas {
   display: grid;
   grid-template-columns: minmax(240px, 1fr) minmax(320px, auto) auto;
@@ -9271,6 +9192,746 @@ body.nav-abierto {
   .subasta-campo-shake {
     animation: none;
     transition: none;
+  }
+}
+
+/* ADMIN PROMOCIONES */
+.admin-promo-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.admin-promo-store-link {
+  color: var(--morado);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.admin-promo-header-actions :focus-visible,
+.admin-promociones-page :focus-visible {
+  outline: 3px solid rgba(63, 191, 176, 0.72);
+  outline-offset: 3px;
+}
+
+.admin-promo-summary {
+  white-space: nowrap;
+}
+
+.admin-promo-form-panel {
+  min-width: 0;
+}
+
+.admin-promo-editor-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.85fr);
+  align-items: start;
+  gap: 28px;
+  margin-top: 20px;
+}
+
+.admin-promo-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  min-width: 0;
+}
+
+.admin-promo-field,
+.admin-promo-icon-field {
+  min-width: 0;
+}
+
+.admin-promo-field label,
+.admin-promo-icon-field legend {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--oscuro);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.admin-promo-field input,
+.admin-promo-field select,
+.admin-promo-field textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 11px 13px;
+  border: 1px solid rgba(20, 20, 26, 0.16);
+  border-radius: 8px;
+  background: var(--blanco);
+  color: var(--oscuro);
+  font: 400 14px 'Inter', sans-serif;
+}
+
+.admin-promo-field textarea {
+  min-height: 86px;
+  resize: vertical;
+}
+
+.admin-promo-field input:focus,
+.admin-promo-field select:focus,
+.admin-promo-field textarea:focus {
+  border-color: var(--morado);
+  outline: 2px solid rgba(124, 92, 214, 0.2);
+}
+
+.admin-promo-value-field[hidden],
+.admin-promo-error[hidden],
+.admin-promo-preview .promo-vigencia[hidden] {
+  display: none !important;
+}
+
+.admin-promo-description-field,
+.admin-promo-icon-field,
+.admin-promo-help,
+.admin-promo-form-actions {
+  grid-column: 1 / -1;
+}
+
+.admin-promo-icon-field {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.admin-promo-icon-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-promo-icon-option {
+  position: relative;
+  display: inline-flex;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(20, 20, 26, 0.15);
+  border-radius: 8px;
+  background: var(--blanco);
+  cursor: pointer;
+  font-size: 21px;
+}
+
+.admin-promo-icon-option input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.admin-promo-icon-option:has(input:checked) {
+  border-color: var(--morado);
+  background: rgba(124, 92, 214, 0.1);
+  box-shadow: inset 0 0 0 1px var(--morado);
+}
+
+.admin-promo-icon-option:has(input:focus-visible) {
+  outline: 3px solid rgba(63, 191, 176, 0.72);
+  outline-offset: 3px;
+}
+
+.admin-promo-error {
+  margin: 5px 0 0;
+  color: #B93A78;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.admin-promo-description-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--gris);
+  font-size: 11px;
+}
+
+.admin-promo-description-meta .admin-promo-error {
+  margin-left: auto;
+  text-align: right;
+}
+
+.admin-promo-help {
+  margin: -4px 0 0;
+  color: var(--gris);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.admin-promo-form-actions {
+  flex-wrap: wrap;
+}
+
+.admin-promo-preview {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid rgba(20, 20, 26, 0.08);
+  border-radius: 10px;
+  background: linear-gradient(145deg, rgba(242, 193, 78, 0.12), rgba(224, 96, 158, 0.08));
+  pointer-events: none;
+}
+
+.admin-promo-preview-title {
+  margin-bottom: 14px;
+  color: var(--gris);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.admin-promo-preview .promo-card {
+  grid-template-columns: minmax(76px, 96px) minmax(0, 1fr);
+  min-width: 0;
+  transition: none;
+}
+
+.admin-promo-preview .promo-card:hover,
+.admin-promo-preview .promo-codigo:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.admin-promo-preview .promo-valor {
+  padding: 18px 6px;
+}
+
+.admin-promo-preview .promo-valor strong {
+  font-size: 25px;
+}
+
+.admin-promo-preview .promo-cuerpo {
+  min-width: 0;
+  padding: 18px 14px;
+}
+
+.admin-promo-preview .promo-cuerpo h2,
+.admin-promo-preview .promo-cuerpo p {
+  overflow-wrap: anywhere;
+}
+
+.admin-promo-preview .promo-codigo {
+  max-width: 100%;
+  cursor: default;
+  pointer-events: none;
+  transition: none;
+}
+
+.admin-promo-preview .promo-codigo > span {
+  overflow-wrap: anywhere;
+}
+
+.admin-promo-list-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+.admin-promos-table {
+  min-width: 940px;
+}
+
+.admin-promo-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.admin-promo-name strong {
+  overflow-wrap: anywhere;
+}
+
+.admin-promo-table-icon {
+  flex: 0 0 auto;
+  font-size: 20px;
+}
+
+.status-paused {
+  background: rgba(88, 91, 101, 0.12);
+  color: #555862;
+}
+
+.admin-promo-empty-cell {
+  white-space: normal !important;
+}
+
+.admin-promo-empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 82px;
+}
+
+.admin-promo-empty p {
+  margin: 0;
+  color: var(--gris);
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .admin-promo-editor-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-promo-preview {
+    max-width: 520px;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-promociones-page .admin-page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-promo-header-actions {
+    justify-content: flex-start;
+    gap: 9px 12px;
+    width: 100%;
+  }
+
+  .admin-promo-summary {
+    width: 100%;
+    text-align: left;
+  }
+
+  .admin-promo-form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-promo-description-field,
+  .admin-promo-icon-field,
+  .admin-promo-help,
+  .admin-promo-form-actions {
+    grid-column: auto;
+  }
+
+  .admin-promo-form-actions,
+  .admin-promo-empty {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-promo-form-actions button,
+  .admin-promo-empty button {
+    width: 100%;
+  }
+
+  .admin-promo-preview {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 390px) {
+  .admin-promo-header-actions .admin-primary-button {
+    max-width: none;
+  }
+
+  .admin-promo-preview .promo-card {
+    grid-template-columns: 76px minmax(0, 1fr);
+  }
+
+  .admin-promo-preview .promo-codigo {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-promo-preview .promo-card,
+  .admin-promo-preview .promo-codigo {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* INICIO: SUBASTA */
+.inicio-subasta {
+  width: 100%;
+  overflow: hidden;
+  padding: 58px clamp(18px, 5vw, 60px) 76px;
+  background: var(--crema);
+}
+
+.inicio-subasta-cinta {
+  width: 100%;
+  max-width: 1320px;
+  height: 38px;
+  margin: 0 auto 18px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--morado), var(--rosa));
+  color: var(--blanco);
+}
+
+.inicio-subasta-cinta-pista {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  align-items: center;
+  animation: inicio-subasta-deslizar 38s linear infinite;
+  will-change: transform;
+}
+
+.inicio-subasta-cinta-grupo {
+  flex: 0 0 auto;
+  padding-right: 26px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.inicio-subasta-tarjeta {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 72px);
+  width: 100%;
+  max-width: 1320px;
+  min-width: 0;
+  min-height: 530px;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: clamp(34px, 5vw, 76px);
+  border-radius: 32px;
+  background:
+    linear-gradient(rgba(20, 20, 26, 0.18), rgba(20, 20, 26, 0.18)),
+    radial-gradient(circle at 94% 7%, rgba(242, 193, 78, 0.24), transparent 25%),
+    linear-gradient(115deg, rgba(20, 20, 26, 0.4), rgba(20, 20, 26, 0.3)),
+    linear-gradient(125deg, var(--morado), var(--rosa));
+  box-shadow: 0 32px 76px rgba(20, 20, 26, 0.25);
+  isolation: isolate;
+}
+
+.inicio-subasta-tarjeta::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.11) 1px, transparent 1px);
+  background-size: 22px 22px;
+  content: '';
+  pointer-events: none;
+}
+
+.inicio-subasta-visual,
+.inicio-subasta-contenido {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.inicio-subasta-visual {
+  display: grid;
+  min-height: 400px;
+  place-items: center;
+}
+
+.inicio-subasta-disco {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 0;
+  width: 370px;
+  height: 370px;
+  margin: -185px 0 0 -185px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.19), transparent 32%),
+    repeating-radial-gradient(circle at 50% 50%, #18181e 0 3px, #282830 3px 6px);
+  box-shadow: 0 28px 56px rgba(20, 20, 26, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  animation: inicio-subasta-girar 18s linear infinite;
+}
+
+.inicio-subasta-disco::before,
+.inicio-subasta-disco::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  content: '';
+  transform: translate(-50%, -50%);
+}
+
+.inicio-subasta-disco::before {
+  width: 36%;
+  height: 36%;
+  background: linear-gradient(135deg, var(--morado), var(--rosa));
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.16);
+}
+
+.inicio-subasta-disco::after {
+  width: 6%;
+  height: 6%;
+  background: var(--oscuro);
+}
+
+.inicio-subasta-portada {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: min(82%, 360px);
+  height: auto;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 20px;
+  box-shadow: 0 30px 60px rgba(20, 20, 26, 0.45);
+  object-fit: cover;
+  transform: rotate(-4deg);
+  transition: transform 0.45s ease;
+}
+
+.inicio-subasta-tarjeta:hover .inicio-subasta-portada {
+  transform: rotate(0);
+}
+
+.inicio-subasta-contenido {
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.inicio-subasta-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 22px;
+  padding: 9px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 999px;
+  background: rgba(20, 20, 26, 0.32);
+  color: var(--blanco);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.inicio-subasta-punto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #72E0B7;
+  box-shadow: 0 0 0 0 rgba(114, 224, 183, 0.75);
+  animation: inicio-subasta-latido 1.8s ease-out infinite;
+}
+
+.inicio-subasta-eyebrow {
+  margin-bottom: 9px;
+  color: var(--dorado);
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.inicio-subasta-titulo {
+  margin: 0;
+  color: var(--blanco);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 78px;
+  font-weight: 700;
+  line-height: 0.98;
+  overflow-wrap: anywhere;
+}
+
+.inicio-subasta-titulo .acento {
+  background: none;
+  color: var(--blanco);
+  -webkit-text-fill-color: currentColor;
+}
+
+.inicio-subasta-edicion {
+  margin-top: 9px;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.inicio-subasta-descripcion {
+  max-width: 490px;
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.inicio-subasta-oferta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  margin-top: 26px;
+  padding: 12px 17px;
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--blanco);
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+  backdrop-filter: blur(8px);
+}
+
+.inicio-subasta [hidden] {
+  display: none;
+}
+
+.inicio-subasta-boton {
+  display: flex;
+  width: max-content;
+  min-height: 54px;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 24px;
+  padding: 0 24px;
+  border: 2px solid rgba(255, 255, 255, 0.88);
+  border-radius: 999px;
+  background: var(--blanco);
+  color: var(--oscuro);
+  font-size: 15px;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inicio-subasta-boton:hover {
+  box-shadow: 0 12px 30px rgba(20, 20, 26, 0.28);
+  transform: translateY(-2px);
+}
+
+.inicio-subasta-boton:focus-visible {
+  outline: 3px solid var(--dorado);
+  outline-offset: 4px;
+}
+
+.inicio-subasta-flecha {
+  font-size: 20px;
+  transition: transform 0.2s ease;
+}
+
+.inicio-subasta-boton:hover .inicio-subasta-flecha {
+  transform: translateX(5px);
+}
+
+@keyframes inicio-subasta-deslizar {
+  to { transform: translateX(-50%); }
+}
+
+@keyframes inicio-subasta-girar {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes inicio-subasta-latido {
+  70% { box-shadow: 0 0 0 9px rgba(114, 224, 183, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(114, 224, 183, 0); }
+}
+
+@media (max-width: 900px) {
+  .inicio-subasta-tarjeta {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 26px;
+    padding: 42px;
+  }
+
+  .inicio-subasta-visual {
+    min-height: 350px;
+  }
+
+  .inicio-subasta-contenido {
+    text-align: center;
+  }
+
+  .inicio-subasta-descripcion {
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .inicio-subasta {
+    padding: 38px 18px 48px;
+  }
+
+  .inicio-subasta-tarjeta {
+    gap: 18px;
+    padding: 22px;
+    border-radius: 26px;
+  }
+
+  .inicio-subasta-visual {
+    min-height: 270px;
+  }
+
+  .inicio-subasta-disco {
+    width: 260px;
+    height: 260px;
+    margin: -130px 0 0 -130px;
+    opacity: 0.62;
+  }
+
+  .inicio-subasta-portada {
+    width: min(82%, 250px);
+    border-radius: 16px;
+  }
+
+  .inicio-subasta-estado {
+    margin-bottom: 16px;
+  }
+
+  .inicio-subasta-titulo {
+    font-size: 48px;
+  }
+
+  .inicio-subasta-edicion {
+    font-size: 20px;
+  }
+
+  .inicio-subasta-descripcion {
+    font-size: 14px;
+  }
+
+  .inicio-subasta-oferta {
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  .inicio-subasta-boton {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inicio-subasta-cinta-pista,
+  .inicio-subasta-disco,
+  .inicio-subasta-punto {
+    animation: none;
+    will-change: auto;
+  }
+
+  .inicio-subasta-portada,
+  .inicio-subasta-boton,
+  .inicio-subasta-flecha {
+    transition: none;
+  }
+
+  .inicio-subasta-tarjeta:hover .inicio-subasta-portada {
+    transform: none;
   }
 }
 
