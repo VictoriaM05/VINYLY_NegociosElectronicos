@@ -35,7 +35,7 @@
     <span class="brillo brillo-1" aria-hidden="true"></span>
     <span class="brillo brillo-2" aria-hidden="true"></span>
     <div class="subasta-hero-texto">
-      <p class="subasta-eyebrow">Subasta en vivo (simulada)</p>
+      <p class="subasta-eyebrow">Subasta en vivo</p>
       <h1><span class="acento">Subasta</span></h1>
       <p class="subasta-hero-descripcion">Puja por un vinilo de coleccionista. Gana quien ofrezca más.</p>
     </div>
@@ -113,7 +113,7 @@
           <p class="subasta-historial-eyebrow">Cada puja cuenta</p>
           <h2 id="subastaHistorialTitulo">Historial de ofertas</h2>
         </div>
-        <span class="subasta-historial-pill">En tiempo real · simulado</span>
+        <span class="subasta-historial-pill">En tiempo real ·</span>
       </div>
       <div class="subasta-tabla-contenedor">
         <table class="subasta-tabla">
@@ -127,7 +127,7 @@
           <tbody id="subastaOfertasBody"></tbody>
         </table>
       </div>
-      <button type="button" id="subastaReiniciar" class="subasta-reiniciar">Reiniciar subasta (simulado)</button>
+      <button type="button" id="subastaReiniciar" class="subasta-reiniciar">Reiniciar subasta</button>
     </section>
   </main>
 
@@ -501,7 +501,7 @@
           guardarEstado();
           renderizarHistorial(true);
           campoOferta.value = '';
-          mostrarToast('exito', 'Oferta registrada (simulado)');
+          mostrarToast('exito', 'Oferta registrada con éxito');
         } finally {
           envioEnCurso = false;
         }
@@ -547,7 +547,7 @@
         guardarEstado();
         renderizarHistorial(false);
         iniciarTemporizador();
-        mostrarToast('exito', 'Subasta reiniciada (simulado)');
+        mostrarToast('exito', 'Subasta reiniciada');
       });
 
       function sincronizarPagina() {

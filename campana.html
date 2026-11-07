@@ -109,7 +109,7 @@
         <h2>Lo que dicen nuestros clientes</h2>
       </div>
 
-      <div class="campana-testimonios-grid">
+      <div class="campana-testimonios-grid" id="campanaResenasGrid">
         <article class="campana-testimonio">
           <div class="campana-estrellas" aria-label="5 de 5 estrellas">★★★★★</div>
           <blockquote>“El sonido tiene una calidez increíble; ahora sí escucho mis discos completos.”</blockquote>
@@ -146,6 +146,8 @@
           </div>
         </article>
       </div>
+      <div id="campanaResenaFormulario"></div>
+      <p class="resena-aviso" id="campanaResenasMensaje" role="status" aria-live="polite"></p>
     </section>
 
     <section class="campana-cierre">
@@ -190,6 +192,7 @@
 
   <script src="js/productos.js"></script>
   <script src="js/carrito.js"></script>
+  <script src="js/resenas.js"></script>
   <script>
     const idProductoDestacado = 4;
     const productoDestacado = productos.find(function (producto) {
@@ -229,6 +232,467 @@
     } else {
       mensajeError.hidden = false;
     }
+
+    const apiResenas = window.ResenasVinyly;
+    const cuadrillaResenas = document.getElementById('campanaResenasGrid');
+    const contenedorFormularioResena = document.getElementById('campanaResenaFormulario');
+    const mensajeResenas = document.getElementById('campanaResenasMensaje');
+    const formularioResena = crearFormularioResena();
+    let temporizadorMensajeResenas;
+    let edicionResenaActiva = null;
+    let ignorarEventoResenasLocal = false;
+    let renderPendiente = false;
+    let primeraCargaResena = true;
+
+    function obtenerInicialesResena(nombre) {
+      return nombre
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(function (parte) {
+          return parte.charAt(0).toLocaleUpperCase('es-MX');
+        })
+        .join('');
+    }
+
+    function obtenerColorAvatarResena(nombre) {
+      const suma = Array.from(nombre).reduce(function (total, letra) {
+        return total + (letra.codePointAt(0) || 0);
+      }, 0);
+      return ['morado', 'rosa', 'dorado', 'turquesa'][suma % 4];
+    }
+
+    function crearFormularioResena() {
+      const formulario = document.createElement('form');
+      formulario.className = 'campana-testimonio resena-formulario';
+      formulario.id = 'campanaResenaForm';
+      formulario.noValidate = true;
+
+      const encabezado = document.createElement('h3');
+      encabezado.className = 'resena-formulario-titulo';
+      encabezado.textContent = 'Cuéntanos tu experiencia';
+
+      const selector = apiResenas.crearSelectorEstrellas({ nombre: 'tienda' });
+      selector.elemento.setAttribute('aria-describedby', 'campanaResenaAyuda campanaResenaError');
+      selector.elemento.setAttribute('aria-invalid', 'false');
+      selector.elemento.id = 'campanaResenaSelector';
+
+      const error = document.createElement('p');
+      error.className = 'resena-error';
+      error.id = 'campanaResenaError';
+      error.hidden = true;
+      error.textContent = 'Elige de 1 a 5 estrellas';
+
+      const ayuda = document.createElement('p');
+      ayuda.className = 'resena-ayuda';
+      ayuda.id = 'campanaResenaAyuda';
+      ayuda.textContent = 'Elige tus estrellas; el comentario es opcional.';
+
+      const etiquetaTexto = document.createElement('label');
+      etiquetaTexto.className = 'resena-etiqueta-campo';
+      etiquetaTexto.htmlFor = 'campanaResenaTexto';
+      etiquetaTexto.textContent = 'Tu comentario (opcional)';
+
+      const textarea = document.createElement('textarea');
+      textarea.className = 'resena-textarea';
+      textarea.id = 'campanaResenaTexto';
+      textarea.maxLength = apiResenas.MAX_CARACTERES;
+      textarea.rows = 4;
+      textarea.setAttribute('aria-describedby', 'campanaResenaAyuda campanaResenaContador');
+
+      const detalles = document.createElement('div');
+      detalles.className = 'resena-detalles';
+      detalles.append(ayuda);
+
+      const contador = document.createElement('span');
+      contador.className = 'resena-contador';
+      contador.id = 'campanaResenaContador';
+      contador.textContent = `0/${apiResenas.MAX_CARACTERES}`;
+
+      const boton = document.createElement('button');
+      boton.type = 'submit';
+      boton.className = 'btn-gradiente resena-publicar';
+      boton.textContent = 'Publicar reseña';
+
+      const pie = document.createElement('div');
+      pie.className = 'resena-formulario-pie';
+      pie.append(contador, boton);
+
+      formulario.append(encabezado, selector.elemento, error, detalles, etiquetaTexto, textarea, pie);
+      formulario._selectorResena = selector;
+      formulario._textoResena = textarea;
+      formulario._contadorResena = contador;
+      formulario._errorResena = error;
+      formulario._botonPublicarResena = boton;
+      formulario._ayudaResena = ayuda;
+
+      textarea.addEventListener('input', function () {
+        contador.textContent = `${textarea.value.length}/${apiResenas.MAX_CARACTERES}`;
+        if (renderPendiente && !hayBorradorFormulario()) {
+          renderizarResena();
+        }
+      });
+      selector.elemento.addEventListener('change', function () {
+        ocultarErrorResena(formulario);
+      });
+      formulario.addEventListener('submit', publicarResena);
+      contenedorFormularioResena.appendChild(formulario);
+      return formulario;
+    }
+
+    function ocultarErrorResena(formulario) {
+      formulario._errorResena.hidden = true;
+      formulario._selectorResena.elemento.setAttribute('aria-invalid', 'false');
+    }
+
+    function mostrarErrorResena(formulario, texto) {
+      formulario._errorResena.textContent = texto;
+      formulario._errorResena.hidden = false;
+      formulario._selectorResena.elemento.setAttribute('aria-invalid', 'true');
+      formulario._selectorResena.elemento.querySelector('.resena-opcion-input').focus();
+    }
+
+    function mostrarAvisoResena(texto) {
+      window.clearTimeout(temporizadorMensajeResenas);
+      mensajeResenas.textContent = texto;
+      mensajeResenas.classList.add('resena-aviso-visible');
+      temporizadorMensajeResenas = window.setTimeout(function () {
+        mensajeResenas.textContent = '';
+        mensajeResenas.classList.remove('resena-aviso-visible');
+      }, 3000);
+    }
+
+    function crearTarjetaResena(resena, animar) {
+      const tarjeta = document.createElement('article');
+      tarjeta.className = `campana-testimonio resena-tarjeta${animar ? ' resena-entrada' : ''}`;
+      tarjeta.dataset.resenaId = resena.id;
+      tarjeta.dataset.resenaTienda = 'true';
+
+      const contenido = document.createElement('div');
+      contenido.className = 'resena-contenido';
+      contenido.appendChild(apiResenas.crearEstrellasLectura(resena.estrellas));
+
+      const texto = document.createElement('blockquote');
+      texto.className = 'resena-texto';
+      texto.textContent = resena.texto;
+      contenido.appendChild(texto);
+
+      const cliente = document.createElement('div');
+      cliente.className = 'campana-cliente resena-cliente';
+
+      const avatar = document.createElement('span');
+      avatar.className = `campana-avatar campana-avatar-${obtenerColorAvatarResena(apiResenas.NOMBRE_USUARIO)}`;
+      avatar.setAttribute('aria-hidden', 'true');
+      avatar.textContent = obtenerInicialesResena(apiResenas.NOMBRE_USUARIO);
+
+      const datosCliente = document.createElement('div');
+      datosCliente.className = 'resena-cliente-datos';
+
+      const nombre = document.createElement('p');
+      nombre.className = 'campana-cliente-nombre';
+      nombre.textContent = apiResenas.NOMBRE_USUARIO;
+
+      const detallesFecha = document.createElement('div');
+      detallesFecha.className = 'resena-fecha-detalles';
+      const fecha = document.createElement('time');
+      fecha.className = 'resena-fecha';
+      fecha.dateTime = resena.fecha;
+      fecha.textContent = apiResenas.formatearFecha(resena.fecha);
+      detallesFecha.appendChild(fecha);
+
+      if (resena.editadaEn) {
+        const editada = document.createElement('span');
+        editada.className = 'resena-editada';
+        editada.textContent = '(editada)';
+        detallesFecha.appendChild(editada);
+      }
+
+      const etiqueta = document.createElement('span');
+      etiqueta.className = 'resena-etiqueta';
+      etiqueta.textContent = 'Tú';
+      datosCliente.append(nombre, etiqueta, detallesFecha);
+      cliente.append(avatar, datosCliente);
+
+      const acciones = document.createElement('div');
+      acciones.className = 'resena-acciones';
+      const botonEditar = document.createElement('button');
+      botonEditar.type = 'button';
+      botonEditar.className = 'resena-editar';
+      botonEditar.setAttribute('aria-label', 'Editar tu reseña de la tienda');
+      botonEditar.setAttribute('data-accion', 'editar');
+      botonEditar.textContent = 'Editar';
+
+      const botonEliminar = document.createElement('button');
+      botonEliminar.type = 'button';
+      botonEliminar.className = 'resena-eliminar';
+      botonEliminar.setAttribute('aria-label', 'Eliminar tu reseña de la tienda');
+      botonEliminar.setAttribute('data-accion', 'eliminar');
+      botonEliminar.textContent = 'Eliminar';
+      acciones.append(botonEditar, botonEliminar);
+
+      tarjeta.append(contenido, cliente, acciones);
+      return tarjeta;
+    }
+
+    function hayBorradorFormulario() {
+      return Boolean(formularioResena._textoResena.value || formularioResena._selectorResena.obtenerValor());
+    }
+
+    function renderizarResena(opciones) {
+      const conservarBorrador = opciones && opciones.conservarBorrador;
+      if (edicionResenaActiva || (conservarBorrador && hayBorradorFormulario())) {
+        renderPendiente = true;
+        return;
+      }
+
+      const tarjetaAnterior = cuadrillaResenas.querySelector('[data-resena-tienda="true"]');
+      if (tarjetaAnterior) {
+        tarjetaAnterior.remove();
+      }
+
+      const resena = apiResenas.obtenerResena(null);
+      if (resena) {
+        const tarjeta = crearTarjetaResena(resena, primeraCargaResena);
+        cuadrillaResenas.insertBefore(tarjeta, cuadrillaResenas.firstChild);
+        formularioResena.hidden = true;
+      } else {
+        formularioResena.hidden = false;
+      }
+
+      primeraCargaResena = false;
+      renderPendiente = false;
+      if (opciones && opciones.enfocarEditar) {
+        const nuevaTarjeta = cuadrillaResenas.querySelector('[data-resena-tienda="true"]');
+        const botonEditar = nuevaTarjeta && nuevaTarjeta.querySelector('[data-accion="editar"]');
+        if (botonEditar) {
+          botonEditar.focus();
+        }
+      }
+    }
+
+    function ejecutarCambioLocal(operacion) {
+      ignorarEventoResenasLocal = true;
+      try {
+        return operacion();
+      } finally {
+        ignorarEventoResenasLocal = false;
+      }
+    }
+
+    function publicarResena(evento) {
+      evento.preventDefault();
+      const estrellas = formularioResena._selectorResena.obtenerValor();
+      if (!estrellas) {
+        ocultarErrorResena(formularioResena);
+        formularioResena._selectorResena.elemento.removeAttribute('aria-invalid');
+        formularioResena._selectorResena.elemento.setAttribute('aria-describedby', 'campanaResenaAyuda');
+        mostrarAvisoResena('Reseña publicada correctamente.');
+        return;
+      }
+
+      ocultarErrorResena(formularioResena);
+      const resultado = ejecutarCambioLocal(function () {
+        return apiResenas.guardarResena({
+          productoId: null,
+          estrellas: estrellas,
+          texto: formularioResena._textoResena.value
+        });
+      });
+      if (!resultado.ok) {
+        mostrarErrorResena(formularioResena, resultado.mensaje || 'Elige de 1 a 5 estrellas');
+        return;
+      }
+
+      formularioResena._textoResena.value = '';
+      formularioResena._contadorResena.textContent = `0/${apiResenas.MAX_CARACTERES}`;
+      formularioResena._selectorResena.limpiar();
+      renderPendiente = false;
+      renderizarResena();
+      mostrarAvisoResena('Reseña publicada correctamente.');
+    }
+
+    function iniciarEdicionResena(tarjeta, resena) {
+      const contenido = tarjeta.querySelector('.resena-contenido');
+      const editor = document.createElement('div');
+      editor.className = 'resena-editor';
+
+      const selector = apiResenas.crearSelectorEstrellas({
+        nombre: 'editar-tienda',
+        valor: resena.estrellas
+      });
+      selector.elemento.setAttribute('aria-label', 'Editar calificación de la reseña');
+      selector.elemento.setAttribute('aria-invalid', 'false');
+
+      const textarea = document.createElement('textarea');
+      textarea.className = 'resena-textarea';
+      textarea.id = 'campanaResenaEdicionTexto';
+      textarea.maxLength = apiResenas.MAX_CARACTERES;
+      textarea.rows = 4;
+      textarea.setAttribute('aria-label', 'Editar el comentario de tu reseña');
+
+      const contador = document.createElement('span');
+      contador.className = 'resena-contador';
+      contador.id = 'campanaResenaEdicionContador';
+      textarea.value = resena.texto;
+      contador.textContent = `${textarea.value.length}/${apiResenas.MAX_CARACTERES}`;
+      textarea.setAttribute('aria-describedby', contador.id);
+      textarea.addEventListener('input', function () {
+        contador.textContent = `${textarea.value.length}/${apiResenas.MAX_CARACTERES}`;
+      });
+
+      const acciones = document.createElement('div');
+      acciones.className = 'resena-acciones';
+      const botonGuardar = document.createElement('button');
+      botonGuardar.type = 'button';
+      botonGuardar.className = 'resena-guardar';
+      botonGuardar.setAttribute('data-accion', 'guardar');
+      botonGuardar.textContent = 'Guardar';
+
+      const botonCancelar = document.createElement('button');
+      botonCancelar.type = 'button';
+      botonCancelar.className = 'resena-cancelar';
+      botonCancelar.setAttribute('data-accion', 'cancelar');
+      botonCancelar.textContent = 'Cancelar';
+      acciones.append(botonGuardar, botonCancelar);
+      editor.append(selector.elemento, textarea, contador, acciones);
+
+      const accionesOriginales = tarjeta.querySelector('.resena-acciones');
+      const botonEditar = accionesOriginales.querySelector('[data-accion="editar"]');
+      contenido.replaceWith(editor);
+      accionesOriginales.remove();
+      edicionResenaActiva = {
+        id: resena.id,
+        tarjeta: tarjeta,
+        contenido: contenido,
+        editor: editor,
+        selector: selector,
+        textarea: textarea,
+        botonEditar: botonEditar
+      };
+      textarea.focus();
+      textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+    }
+
+    function finalizarEdicionResena(cancelar, actualizar) {
+      if (!edicionResenaActiva) {
+        return;
+      }
+      const edicion = edicionResenaActiva;
+      edicionResenaActiva = null;
+
+      if (cancelar && renderPendiente) {
+        renderizarResena({ enfocarEditar: true });
+        return;
+      }
+
+      const tarjetaActual = cuadrillaResenas.querySelector('[data-resena-tienda="true"]');
+      if (actualizar || (renderPendiente && tarjetaActual)) {
+        renderizarResena({ enfocarEditar: true });
+        return;
+      }
+
+      edicion.editor.replaceWith(edicion.contenido);
+      const acciones = document.createElement('div');
+      acciones.className = 'resena-acciones';
+      acciones.append(edicion.botonEditar);
+      const botonEliminar = document.createElement('button');
+      botonEliminar.type = 'button';
+      botonEliminar.className = 'resena-eliminar';
+      botonEliminar.setAttribute('aria-label', 'Eliminar tu reseña de la tienda');
+      botonEliminar.setAttribute('data-accion', 'eliminar');
+      botonEliminar.textContent = 'Eliminar';
+      acciones.appendChild(botonEliminar);
+      edicion.tarjeta.appendChild(acciones);
+      edicion.botonEditar.focus();
+      renderPendiente = false;
+    }
+
+    function guardarEdicionResena() {
+      if (!edicionResenaActiva) {
+        return;
+      }
+      const edicion = edicionResenaActiva;
+      const estrellas = edicion.selector.obtenerValor();
+      if (!estrellas) {
+        edicion.selector.elemento.setAttribute('aria-invalid', 'true');
+        edicion.selector.elemento.querySelector('.resena-opcion-input').focus();
+        return;
+      }
+
+      const resultado = ejecutarCambioLocal(function () {
+        return apiResenas.guardarResena({
+          productoId: null,
+          estrellas: estrellas,
+          texto: edicion.textarea.value
+        });
+      });
+      if (!resultado.ok) {
+        return;
+      }
+      finalizarEdicionResena(false, true);
+      mostrarAvisoResena('Reseña actualizada correctamente.');
+    }
+
+    cuadrillaResenas.addEventListener('click', function (evento) {
+      const boton = evento.target.closest('button[data-accion]');
+      if (!boton) {
+        return;
+      }
+      const tarjeta = boton.closest('[data-resena-tienda="true"]');
+      if (!tarjeta) {
+        return;
+      }
+
+      const accion = boton.dataset.accion;
+      if (accion === 'editar' && !edicionResenaActiva) {
+        const resena = apiResenas.obtenerResena(null);
+        if (resena) {
+          iniciarEdicionResena(tarjeta, resena);
+        }
+      } else if (accion === 'guardar') {
+        guardarEdicionResena();
+      } else if (accion === 'cancelar') {
+        finalizarEdicionResena(true, false);
+      } else if (accion === 'eliminar') {
+        const resultado = ejecutarCambioLocal(function () {
+          return apiResenas.eliminarResena(tarjeta.dataset.resenaId);
+        });
+        if (resultado.ok) {
+          if (edicionResenaActiva) {
+            edicionResenaActiva = null;
+          }
+          renderPendiente = false;
+          renderizarResena();
+          mostrarAvisoResena('Reseña eliminada.');
+        }
+      }
+    });
+
+    cuadrillaResenas.addEventListener('keydown', function (evento) {
+      if (evento.key === 'Escape' && edicionResenaActiva &&
+        edicionResenaActiva.tarjeta.contains(evento.target)) {
+        finalizarEdicionResena(true, false);
+      }
+    });
+
+    function actualizarAnteEventoExterno() {
+      renderizarResena({ conservarBorrador: true });
+    }
+
+    window.addEventListener('resenas:actualizadas', function () {
+      if (!ignorarEventoResenasLocal) {
+        actualizarAnteEventoExterno();
+      }
+    });
+
+    window.addEventListener('storage', function (evento) {
+      if (evento.key === 'resenasVinyly' || evento.key === null) {
+        actualizarAnteEventoExterno();
+      }
+    });
+
+    renderizarResena();
   </script>
   <script src="js/navbar.js"></script>
 </body>

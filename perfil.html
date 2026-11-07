@@ -70,6 +70,10 @@
           <span class="perfil-hero-contador-numero" id="perfilHeroComentarios">0</span>
           <span class="perfil-hero-contador-etiqueta">Comentarios</span>
         </div>
+        <div class="perfil-hero-contador">
+          <span class="perfil-hero-contador-numero" id="perfilHeroResenas">0</span>
+          <span class="perfil-hero-contador-etiqueta">Reseñas</span>
+        </div>
       </div>
     </div>
   </section>
@@ -150,7 +154,26 @@
                 <span class="perfil-actividad-flecha" aria-hidden="true">⌄</span>
               </summary>
               <div class="perfil-actividad-panel">
+                <div class="perfil-actividad-comentarios-formulario" id="perfilActividadComentariosFormulario"></div>
+                <p class="perfil-actividad-aviso" id="perfilActividadComentariosAviso" role="status" aria-live="polite"></p>
                 <div class="perfil-actividad-comentarios" id="perfilActividadComentariosLista"></div>
+              </div>
+            </details>
+
+            <details class="perfil-actividad-item" id="perfilActividadResenas">
+              <summary class="perfil-actividad-resumen">
+                <span class="perfil-actividad-icono" aria-hidden="true">⭐</span>
+                <span class="perfil-actividad-descripcion">
+                  <span class="perfil-actividad-titulo">Mis reseñas</span>
+                  <span class="perfil-actividad-subtitulo">Lo que opinas de la tienda y de tus vinilos</span>
+                </span>
+                <span class="perfil-actividad-contador" id="perfilActividadResenasContador">0</span>
+                <span class="perfil-actividad-flecha" aria-hidden="true">⌄</span>
+              </summary>
+              <div class="perfil-actividad-panel">
+                <form class="perfil-resena-formulario" id="perfilResenaFormulario"></form>
+                <p class="perfil-actividad-aviso" id="perfilActividadResenasAviso" role="status" aria-live="polite"></p>
+                <div class="perfil-actividad-resenas" id="perfilActividadResenasLista"></div>
               </div>
             </details>
           </div>
@@ -194,8 +217,10 @@
   </footer>
 
   <script src="js/publicaciones.js"></script>
+  <script src="js/comentarios.js"></script>
+  <script src="js/resenas.js"></script>
+  <script src="js/productos.js"></script>
   <script>
-    const claveComentariosPerfil = 'comunidadVinyly';
     const pedidosPerfil = [
       { numero: '#VNY-1042', fecha: '12 de octubre de 2026', cantidad: 2, total: '$1,420 MXN', estado: 'Entregado' },
       { numero: '#VNY-1038', fecha: '28 de septiembre de 2026', cantidad: 1, total: '$780 MXN', estado: 'En camino' },
@@ -205,6 +230,20 @@
     const listaPedidosPerfil = document.getElementById('perfilActividadComprasLista');
     const listaPublicacionesPerfil = document.getElementById('perfilActividadPublicacionesLista');
     const listaComentariosPerfil = document.getElementById('perfilActividadComentariosLista');
+    const formularioComentariosPerfil = document.getElementById('perfilActividadComentariosFormulario');
+    const listaResenasPerfil = document.getElementById('perfilActividadResenasLista');
+    const formularioResenasPerfil = document.getElementById('perfilResenaFormulario');
+    const apiComentariosPerfil = window.ComentariosVinyly;
+    const apiResenasPerfil = window.ResenasVinyly;
+    const productosPerfil = Array.isArray(productos) ? productos : [];
+    const productosPorIdPerfil = new Map(productosPerfil.map(function (producto) {
+      return [producto.id, producto];
+    }));
+    let edicionPerfilActiva = null;
+    let ignorarEventosActividad = false;
+    let temporizadorAvisoComentarios = 0;
+    let temporizadorAvisoResenas = 0;
+    let selectorResenaPerfil = null;
 
     function crearElementoPerfil(etiqueta, clase, texto) {
       const elemento = document.createElement(etiqueta);
@@ -299,58 +338,709 @@
       listaPublicacionesPerfil.appendChild(acciones);
     }
 
-    function leerComentariosPerfil() {
-      try {
-        const comentariosGuardados = JSON.parse(window.localStorage.getItem(claveComentariosPerfil) || '[]');
-        if (!Array.isArray(comentariosGuardados)) {
-          return [];
-        }
-        return comentariosGuardados.filter(function (comentario) {
-          return comentario !== null &&
-            typeof comentario === 'object' &&
-            !Array.isArray(comentario) &&
-            typeof comentario.texto === 'string';
-        }).reverse();
-      } catch (error) {
-        return [];
+    function crearBotonActividad(texto, accion, clase, etiqueta) {
+      const boton = crearElementoPerfil('button', clase, texto);
+      boton.type = 'button';
+      boton.dataset.accion = accion;
+      if (etiqueta) {
+        boton.setAttribute('aria-label', etiqueta);
+      }
+      return boton;
+    }
+
+    function mostrarAvisoActividad(elemento, texto, tipo) {
+      const temporizador = tipo === 'comentarios' ? temporizadorAvisoComentarios : temporizadorAvisoResenas;
+      window.clearTimeout(temporizador);
+      elemento.textContent = texto;
+      const nuevoTemporizador = window.setTimeout(function () {
+        elemento.textContent = '';
+      }, 3000);
+      if (tipo === 'comentarios') {
+        temporizadorAvisoComentarios = nuevoTemporizador;
+      } else {
+        temporizadorAvisoResenas = nuevoTemporizador;
       }
     }
 
-    function renderizarComentariosPerfil(comentarios) {
-      listaComentariosPerfil.replaceChildren();
-      if (comentarios.length === 0) {
+    function crearContadorPerfil(maximo) {
+      return crearElementoPerfil('span', 'resena-contador', `0/${maximo}`);
+    }
+
+    function crearTextAreaActividad(id, etiqueta, maximo, valor) {
+      const campo = document.createElement('textarea');
+      campo.className = 'resena-textarea';
+      campo.id = id;
+      campo.maxLength = maximo;
+      campo.value = valor || '';
+      campo.setAttribute('aria-label', etiqueta);
+      return campo;
+    }
+
+    function actualizarContadorTexto(campo, contador, maximo) {
+      contador.textContent = `${campo.value.length}/${maximo}`;
+    }
+
+    function crearAvatarPerfil() {
+      const publicaciones = window.PublicacionesVinyly;
+      const avatar = document.createElement('span');
+      const color = publicaciones && typeof publicaciones.obtenerColorAvatar === 'function'
+        ? publicaciones.obtenerColorAvatar('Pedrito Vinilo')
+        : 'morado';
+      avatar.className = `pub-avatar pub-avatar--${color}`;
+      avatar.setAttribute('aria-hidden', 'true');
+      avatar.textContent = publicaciones && typeof publicaciones.obtenerIniciales === 'function'
+        ? publicaciones.obtenerIniciales('Pedrito Vinilo')
+        : 'PV';
+      return avatar;
+    }
+
+    function crearFormularioComentarioPerfil() {
+      const formulario = document.createElement('form');
+      formulario.className = 'perfil-actividad-formulario';
+      const identidad = document.createElement('div');
+      identidad.className = 'perfil-actividad-formulario-identidad';
+      identidad.append(crearAvatarPerfil(), crearElementoPerfil('span', '', 'Publicando como Pedrito Vinilo'));
+      const etiqueta = crearElementoPerfil('label', 'resena-etiqueta-campo', 'Escribe un comentario');
+      etiqueta.htmlFor = 'perfilComentarioTexto';
+      const campo = crearTextAreaActividad('perfilComentarioTexto', 'Escribe un comentario', 280, '');
+      const pie = document.createElement('div');
+      pie.className = 'resena-formulario-pie';
+      const contador = crearContadorPerfil(280);
+      const publicar = crearElementoPerfil('button', 'btn-gradiente resena-publicar', 'Publicar');
+      publicar.type = 'submit';
+      pie.append(contador, publicar);
+      formulario.append(identidad, etiqueta, campo, pie);
+      formulario.addEventListener('input', function (evento) {
+        if (evento.target === campo) {
+          actualizarContadorTexto(campo, contador, 280);
+        }
+      });
+      formulario.addEventListener('submit', function (evento) {
+        evento.preventDefault();
+        const resultado = apiComentariosPerfil.agregar(campo.value);
+        if (resultado.vacio) {
+          mostrarAvisoActividad(
+            document.getElementById('perfilActividadComentariosAviso'),
+            'Comentario publicado correctamente.',
+            'comentarios'
+          );
+          return;
+        }
+        if (resultado.ok) {
+          campo.value = '';
+          actualizarContadorTexto(campo, contador, 280);
+          mostrarAvisoActividad(
+            document.getElementById('perfilActividadComentariosAviso'),
+            'Comentario publicado correctamente.',
+            'comentarios'
+          );
+          actualizarActividadPerfil();
+        }
+      });
+      formularioComentariosPerfil.appendChild(formulario);
+    }
+
+    function crearTarjetaComentarioPerfil(comentario) {
+      const articulo = document.createElement('article');
+      articulo.className = 'perfil-actividad-comentario';
+      articulo.dataset.id = comentario.id;
+      articulo.dataset.texto = comentario.texto;
+      articulo.dataset.fecha = comentario.fecha;
+      articulo.dataset.editadoEn = comentario.editadoEn || '';
+      const meta = document.createElement('div');
+      meta.className = 'perfil-actividad-comentario-meta';
+      meta.appendChild(crearElementoPerfil(
+        'time',
+        'perfil-actividad-comentario-fecha',
+        comentario.fecha
+      ));
+      if (comentario.editadoEn) {
+        meta.appendChild(crearElementoPerfil('span', 'comunidad-etiqueta-editado', '(editado)'));
+      }
+      const acciones = document.createElement('div');
+      acciones.className = 'perfil-actividad-acciones';
+      acciones.append(
+        crearBotonActividad('Editar', 'editar-comentario', 'perfil-actividad-editar', 'Editar tu comentario'),
+        crearBotonActividad('Eliminar', 'eliminar-comentario', 'perfil-actividad-eliminar', 'Eliminar tu comentario')
+      );
+      meta.appendChild(acciones);
+      const texto = crearElementoPerfil('p', 'perfil-actividad-comentario-texto', comentario.texto);
+      articulo.append(meta, texto);
+      return articulo;
+    }
+
+    function sincronizarListaComentariosPerfil() {
+      const comentarios = apiComentariosPerfil.leerPropios().slice().reverse();
+      const mapa = new Map(comentarios.map(function (comentario) {
+        return [comentario.id, comentario];
+      }));
+      Array.from(listaComentariosPerfil.querySelectorAll('.perfil-actividad-comentario[data-id]')).forEach(function (tarjeta) {
+        if (!mapa.has(tarjeta.dataset.id) &&
+          (!edicionPerfilActiva || edicionPerfilActiva.tarjeta !== tarjeta)) {
+          tarjeta.remove();
+        }
+      });
+      comentarios.forEach(function (comentario) {
+        let tarjeta = Array.from(listaComentariosPerfil.children).find(function (elemento) {
+          return elemento.dataset && elemento.dataset.id === comentario.id;
+        });
+        if (!tarjeta) {
+          tarjeta = crearTarjetaComentarioPerfil(comentario);
+          listaComentariosPerfil.appendChild(tarjeta);
+        } else if (
+          (!edicionPerfilActiva || edicionPerfilActiva.tarjeta !== tarjeta) &&
+          (tarjeta.dataset.texto !== comentario.texto ||
+            tarjeta.dataset.fecha !== comentario.fecha ||
+            tarjeta.dataset.editadoEn !== (comentario.editadoEn || ''))
+        ) {
+          const actualizada = crearTarjetaComentarioPerfil(comentario);
+          tarjeta.replaceWith(actualizada);
+          tarjeta = actualizada;
+        }
+      });
+
+      const enlace = listaComentariosPerfil.querySelector('.perfil-actividad-enlace');
+      if (!comentarios.length && !listaComentariosPerfil.querySelector('.perfil-actividad-vacio')) {
         const vacio = document.createElement('div');
         vacio.className = 'perfil-actividad-vacio';
         vacio.appendChild(crearElementoPerfil('p', '', 'Aún no has comentado'));
-        const enlace = crearElementoPerfil('a', 'perfil-actividad-enlace', 'Ir a la Comunidad');
-        enlace.href = 'comunidad.html';
-        vacio.appendChild(enlace);
-        listaComentariosPerfil.appendChild(vacio);
-        return;
+        listaComentariosPerfil.prepend(vacio);
+      } else if (comentarios.length) {
+        const vacio = listaComentariosPerfil.querySelector('.perfil-actividad-vacio');
+        if (vacio) {
+          vacio.remove();
+        }
+      }
+      if (!enlace) {
+        const irComunidad = crearElementoPerfil('a', 'perfil-actividad-enlace', 'Ir a la Comunidad');
+        irComunidad.href = 'comunidad.html';
+        listaComentariosPerfil.appendChild(irComunidad);
       }
 
-      comentarios.forEach(function (comentario) {
-        const articulo = document.createElement('article');
-        articulo.className = 'perfil-actividad-comentario';
-        articulo.appendChild(crearElementoPerfil(
-          'time',
-          'perfil-actividad-comentario-fecha',
-          typeof comentario.fecha === 'string' ? comentario.fecha : 'Fecha no disponible'
-        ));
-        articulo.appendChild(crearElementoPerfil('p', 'perfil-actividad-comentario-texto', comentario.texto));
-        listaComentariosPerfil.appendChild(articulo);
+      const tarjetas = comentarios.map(function (comentario) {
+        return Array.from(listaComentariosPerfil.children).find(function (elemento) {
+          return elemento.dataset && elemento.dataset.id === comentario.id;
+        });
+      }).filter(Boolean);
+      const vacio = listaComentariosPerfil.querySelector('.perfil-actividad-vacio');
+      const ancla = vacio || listaComentariosPerfil.querySelector('.perfil-actividad-enlace');
+      tarjetas.forEach(function (tarjeta, indice) {
+        const siguiente = tarjetas[indice + 1] || ancla;
+        if (siguiente && tarjeta.nextElementSibling !== siguiente) {
+          listaComentariosPerfil.insertBefore(tarjeta, siguiente);
+        } else if (!siguiente && tarjeta !== listaComentariosPerfil.lastElementChild) {
+          listaComentariosPerfil.appendChild(tarjeta);
+        }
       });
-
-      const enlace = crearElementoPerfil('a', 'perfil-actividad-enlace', 'Ir a la Comunidad');
-      enlace.href = 'comunidad.html';
-      listaComentariosPerfil.appendChild(enlace);
     }
 
-    function actualizarContadoresPerfil(cantidadPublicaciones, comentarios) {
+    function cerrarEdicionActividad(restaurarFoco) {
+      if (!edicionPerfilActiva) {
+        return;
+      }
+      const edicion = edicionPerfilActiva;
+      edicionPerfilActiva = null;
+      edicion.cerrar();
+      if (edicion.tipo === 'comentario') {
+        sincronizarListaComentariosPerfil();
+      } else {
+        sincronizarListaResenasPerfil();
+      }
+      if (restaurarFoco) {
+        const tarjetaActual = Array.from(
+          edicion.tipo === 'comentario' ? listaComentariosPerfil.children : listaResenasPerfil.children
+        ).find(function (elemento) {
+          return elemento.dataset && elemento.dataset.id === edicion.id;
+        });
+        const botonActual = tarjetaActual && tarjetaActual.querySelector(
+          `[data-accion="${edicion.tipo === 'comentario' ? 'editar-comentario' : 'editar-resena'}"]`
+        );
+        if (botonActual) {
+          botonActual.focus();
+        }
+      }
+    }
+
+    function iniciarEdicionComentarioPerfil(tarjeta) {
+      if (edicionPerfilActiva) {
+        cerrarEdicionActividad(false);
+      }
+      const comentario = apiComentariosPerfil.leerPropios().find(function (elemento) {
+        return elemento.id === tarjeta.dataset.id;
+      });
+      if (!comentario) {
+        return;
+      }
+      const parrafo = tarjeta.querySelector('.perfil-actividad-comentario-texto');
+      const botonEditar = tarjeta.querySelector('[data-accion="editar-comentario"]');
+      const editor = document.createElement('div');
+      editor.className = 'perfil-actividad-editor';
+      const campo = crearTextAreaActividad(`perfil-editar-comentario-${comentario.id}`, 'Editar comentario', 280, comentario.texto);
+      const contador = crearContadorPerfil(280);
+      actualizarContadorTexto(campo, contador, 280);
+      const pie = document.createElement('div');
+      pie.className = 'resena-formulario-pie';
+      const guardar = crearBotonActividad('Guardar', 'guardar-comentario', 'resena-guardar', '');
+      const cancelar = crearBotonActividad('Cancelar', 'cancelar-edicion', 'resena-cancelar', '');
+      pie.append(contador, guardar, cancelar);
+      editor.append(campo, pie);
+      parrafo.hidden = true;
+      tarjeta.appendChild(editor);
+      campo.addEventListener('input', function () {
+        actualizarContadorTexto(campo, contador, 280);
+      });
+      campo.focus();
+      campo.setSelectionRange(campo.value.length, campo.value.length);
+      edicionPerfilActiva = {
+        tipo: 'comentario',
+        id: comentario.id,
+        tarjeta: tarjeta,
+        editor: editor,
+        botonEditar: botonEditar,
+        textarea: campo,
+        cerrar: function () {
+          editor.remove();
+          parrafo.hidden = false;
+        }
+      };
+    }
+
+    function manejarAccionComentarioPerfil(evento) {
+      const boton = evento.target.closest('button[data-accion]');
+      if (!boton || !listaComentariosPerfil.contains(boton)) {
+        return;
+      }
+      const tarjeta = boton.closest('.perfil-actividad-comentario');
+      if (!tarjeta) {
+        return;
+      }
+      if (boton.dataset.accion === 'editar-comentario') {
+        iniciarEdicionComentarioPerfil(tarjeta);
+      } else if (boton.dataset.accion === 'cancelar-edicion' && edicionPerfilActiva) {
+        cerrarEdicionActividad(true);
+      } else if (boton.dataset.accion === 'guardar-comentario' && edicionPerfilActiva) {
+        const resultado = apiComentariosPerfil.actualizar(edicionPerfilActiva.id, edicionPerfilActiva.textarea.value);
+        if (resultado.ok) {
+          cerrarEdicionActividad(true);
+          sincronizarListaComentariosPerfil();
+          mostrarAvisoActividad(document.getElementById('perfilActividadComentariosAviso'), 'Comentario actualizado correctamente.', 'comentarios');
+        } else if (resultado.sinCambios) {
+          cerrarEdicionActividad(true);
+          mostrarAvisoActividad(document.getElementById('perfilActividadComentariosAviso'), 'Sin cambios', 'comentarios');
+        } else if (resultado.noExiste) {
+          cerrarEdicionActividad(false);
+          sincronizarListaComentariosPerfil();
+          mostrarAvisoActividad(document.getElementById('perfilActividadComentariosAviso'), 'Ese comentario ya no existe', 'comentarios');
+        }
+      } else if (boton.dataset.accion === 'eliminar-comentario') {
+        if (edicionPerfilActiva && edicionPerfilActiva.tarjeta === tarjeta) {
+          cerrarEdicionActividad(false);
+        }
+        const resultado = apiComentariosPerfil.eliminar(tarjeta.dataset.id);
+        if (resultado.ok) {
+          sincronizarListaComentariosPerfil();
+          mostrarAvisoActividad(document.getElementById('perfilActividadComentariosAviso'), 'Comentario eliminado', 'comentarios');
+        }
+      }
+    }
+
+    function mostrarErrorEstrellas(contenedor, selector, error, id) {
+      const previo = contenedor.querySelector('.resena-error');
+      if (previo) {
+        previo.remove();
+      }
+      if (!error) {
+        selector.elemento.removeAttribute('aria-invalid');
+        selector.elemento.removeAttribute('aria-describedby');
+        return;
+      }
+      const mensaje = crearElementoPerfil('span', 'resena-error', 'Elige de 1 a 5 estrellas');
+      mensaje.id = id;
+      contenedor.appendChild(mensaje);
+      selector.elemento.setAttribute('aria-invalid', 'true');
+      selector.elemento.setAttribute('aria-describedby', id);
+      const primerRadio = selector.elemento.querySelector('.resena-opcion-input');
+      if (primerRadio) {
+        primerRadio.focus();
+      }
+    }
+
+    function construirFormularioResenaPerfil() {
+      formularioResenasPerfil.appendChild(crearElementoPerfil('h3', 'perfil-resena-formulario-titulo', 'Agregar reseña'));
+      const etiquetaDestino = crearElementoPerfil('label', 'resena-etiqueta-campo', '¿Sobre qué quieres opinar?');
+      etiquetaDestino.htmlFor = 'perfilResenaDestino';
+      const destino = document.createElement('select');
+      destino.className = 'resena-select perfil-resena-destino';
+      destino.id = 'perfilResenaDestino';
+      const inicial = document.createElement('option');
+      inicial.value = '';
+      inicial.textContent = 'Selecciona un destino';
+      destino.appendChild(inicial);
+      const tienda = document.createElement('option');
+      tienda.value = 'tienda';
+      tienda.textContent = 'La tienda VINYLY';
+      destino.appendChild(tienda);
+      productosPerfil.forEach(function (producto) {
+        const opcion = document.createElement('option');
+        opcion.value = String(producto.id);
+        opcion.textContent = `${producto.nombre} — ${producto.artista}`;
+        destino.appendChild(opcion);
+      });
+      const cajaSelector = document.createElement('div');
+      cajaSelector.className = 'perfil-resena-selector-contenedor';
+      selectorResenaPerfil = apiResenasPerfil.crearSelectorEstrellas({ nombre: 'perfil' });
+      if (selectorResenaPerfil && selectorResenaPerfil.elemento) {
+        cajaSelector.appendChild(selectorResenaPerfil.elemento);
+      }
+      const ayuda = crearElementoPerfil('p', 'resena-ayuda', 'Elige tus estrellas; el comentario es opcional.');
+      const etiquetaTexto = crearElementoPerfil('label', 'resena-etiqueta-campo', 'Comentario (opcional)');
+      etiquetaTexto.htmlFor = 'perfilResenaTexto';
+      const campo = crearTextAreaActividad('perfilResenaTexto', 'Comentario opcional de la reseña', 300, '');
+      const pie = document.createElement('div');
+      pie.className = 'resena-formulario-pie';
+      const contador = crearContadorPerfil(300);
+      const publicar = crearElementoPerfil('button', 'btn-gradiente resena-publicar', 'Publicar reseña');
+      publicar.type = 'submit';
+      const cancelar = crearElementoPerfil('button', 'resena-cancelar', 'Cancelar');
+      cancelar.type = 'button';
+      cancelar.hidden = true;
+      cancelar.dataset.accion = 'cancelar-formulario-resena';
+      pie.append(contador, publicar, cancelar);
+      formularioResenasPerfil.append(
+        etiquetaDestino,
+        destino,
+        cajaSelector,
+        ayuda,
+        etiquetaTexto,
+        campo,
+        pie
+      );
+      destino.addEventListener('change', function () {
+        const productoId = destino.value === 'tienda' ? null : Number(destino.value);
+        const valido = destino.value === 'tienda' ||
+          (Number.isInteger(productoId) && productosPorIdPerfil.has(productoId));
+        const existente = valido ? apiResenasPerfil.obtenerResena(productoId) : null;
+        selectorResenaPerfil.limpiar();
+        campo.value = existente ? existente.texto : '';
+        actualizarContadorTexto(campo, contador, 300);
+        if (existente) {
+          selectorResenaPerfil.establecerValor(existente.estrellas);
+        }
+        publicar.textContent = existente ? 'Guardar cambios' : 'Publicar reseña';
+        cancelar.hidden = !existente;
+        mostrarErrorEstrellas(cajaSelector, selectorResenaPerfil, false, 'perfilResenaError');
+      });
+      campo.addEventListener('input', function () {
+        actualizarContadorTexto(campo, contador, 300);
+      });
+      selectorResenaPerfil.elemento.addEventListener('change', function () {
+        mostrarErrorEstrellas(cajaSelector, selectorResenaPerfil, false, 'perfilResenaError');
+      });
+      formularioResenasPerfil.addEventListener('submit', function (evento) {
+        evento.preventDefault();
+        const productoId = destino.value === 'tienda' ? null : Number(destino.value);
+        if (!(destino.value === 'tienda' ||
+          (Number.isInteger(productoId) && productosPorIdPerfil.has(productoId)))) {
+          return;
+        }
+        if (!selectorResenaPerfil.obtenerValor()) {
+          const existente = apiResenasPerfil.obtenerResena(productoId);
+          if (existente) {
+            mostrarErrorEstrellas(cajaSelector, selectorResenaPerfil, true, 'perfilResenaError');
+            return;
+          }
+          mostrarErrorEstrellas(cajaSelector, selectorResenaPerfil, false, 'perfilResenaError');
+          mostrarAvisoActividad(
+            document.getElementById('perfilActividadResenasAviso'),
+            'Reseña publicada correctamente.',
+            'resenas'
+          );
+          return;
+        }
+        const existente = apiResenasPerfil.obtenerResena(productoId);
+        ignorarEventosActividad = true;
+        const resultado = apiResenasPerfil.guardarResena({
+          productoId: productoId,
+          estrellas: selectorResenaPerfil.obtenerValor(),
+          texto: campo.value
+        });
+        ignorarEventosActividad = false;
+        if (resultado.ok) {
+          destino.value = '';
+          selectorResenaPerfil.limpiar();
+          campo.value = '';
+          actualizarContadorTexto(campo, contador, 300);
+          publicar.textContent = 'Publicar reseña';
+          cancelar.hidden = true;
+          mostrarErrorEstrellas(cajaSelector, selectorResenaPerfil, false, 'perfilResenaError');
+          actualizarActividadPerfil();
+          mostrarAvisoActividad(
+            document.getElementById('perfilActividadResenasAviso'),
+            existente ? 'Reseña actualizada correctamente.' : 'Reseña publicada correctamente.',
+            'resenas'
+          );
+        }
+      });
+      cancelar.addEventListener('click', function () {
+        destino.value = '';
+        selectorResenaPerfil.limpiar();
+        campo.value = '';
+        actualizarContadorTexto(campo, contador, 300);
+        publicar.textContent = 'Publicar reseña';
+        cancelar.hidden = true;
+        mostrarErrorEstrellas(cajaSelector, selectorResenaPerfil, false, 'perfilResenaError');
+        campo.focus();
+      });
+    }
+
+    function crearTarjetaResenaPerfil(resena) {
+      const articulo = document.createElement('article');
+      articulo.className = 'perfil-actividad-resena';
+      articulo.dataset.id = resena.id;
+      articulo.dataset.productoId = resena.productoId === null ? 'tienda' : String(resena.productoId);
+      articulo.dataset.texto = resena.texto;
+      articulo.dataset.estrellas = String(resena.estrellas);
+      articulo.dataset.fecha = resena.fecha;
+      articulo.dataset.editadaEn = resena.editadaEn || '';
+      const destino = document.createElement('div');
+      destino.className = 'perfil-actividad-resena-destino';
+      if (resena.productoId === null) {
+        destino.appendChild(crearElementoPerfil('span', 'perfil-actividad-resena-tienda-icono', '⭐'));
+        destino.appendChild(crearElementoPerfil('strong', 'perfil-actividad-resena-producto', 'La tienda VINYLY'));
+      } else {
+        const producto = productosPorIdPerfil.get(resena.productoId);
+        if (producto) {
+          const portada = document.createElement('span');
+          portada.className = 'perfil-actividad-resena-portada';
+          portada.style.backgroundImage = `url("${producto.foto}")`;
+          portada.setAttribute('aria-hidden', 'true');
+          const enlaceProducto = crearElementoPerfil('a', 'perfil-actividad-resena-producto', `${producto.nombre} — ${producto.artista}`);
+          enlaceProducto.href = `detalle.html?id=${producto.id}#resenas`;
+          destino.append(portada, enlaceProducto);
+        } else {
+          destino.appendChild(crearElementoPerfil('strong', 'perfil-actividad-resena-producto', 'Vinilo del catálogo'));
+        }
+      }
+      const contenido = document.createElement('div');
+      contenido.className = 'perfil-actividad-resena-contenido';
+      const encabezado = document.createElement('div');
+      encabezado.className = 'perfil-actividad-resena-encabezado';
+      const estrellas = apiResenasPerfil.crearEstrellasLectura(resena.estrellas);
+      if (estrellas) {
+        encabezado.appendChild(estrellas);
+      }
+      const meta = document.createElement('div');
+      meta.className = 'resena-fecha-detalles';
+      meta.appendChild(crearElementoPerfil('time', 'resena-fecha', apiResenasPerfil.formatearFecha(resena.fecha)));
+      if (resena.editadaEn) {
+        meta.appendChild(crearElementoPerfil('span', 'resena-editada', '(editada)'));
+      }
+      encabezado.appendChild(meta);
+      const texto = crearElementoPerfil('p', 'perfil-actividad-resena-texto', resena.texto);
+      const acciones = document.createElement('div');
+      acciones.className = 'resena-acciones';
+      acciones.append(
+        crearBotonActividad('Editar', 'editar-resena', 'resena-editar', 'Editar tu reseña'),
+        crearBotonActividad('Eliminar', 'eliminar-resena', 'resena-eliminar', 'Eliminar tu reseña')
+      );
+      contenido.append(encabezado, texto, acciones);
+      articulo.append(destino, contenido);
+      return articulo;
+    }
+
+    function sincronizarListaResenasPerfil() {
+      const resenas = apiResenasPerfil.leerResenas().slice().sort(function (a, b) {
+        return Date.parse(b.fecha) - Date.parse(a.fecha);
+      });
+      const porId = new Map(resenas.map(function (resena) {
+        return [resena.id, resena];
+      }));
+      Array.from(listaResenasPerfil.querySelectorAll('.perfil-actividad-resena[data-id]')).forEach(function (tarjeta) {
+        if (!porId.has(tarjeta.dataset.id) &&
+          (!edicionPerfilActiva || edicionPerfilActiva.tarjeta !== tarjeta)) {
+          tarjeta.remove();
+        }
+      });
+      resenas.forEach(function (resena) {
+        const tarjetaActual = Array.from(listaResenasPerfil.children).find(function (elemento) {
+          return elemento.dataset && elemento.dataset.id === resena.id;
+        });
+        const firma = [resena.productoId, resena.texto, resena.estrellas, resena.fecha, resena.editadaEn || ''].join('|');
+        const firmaActual = tarjetaActual
+          ? [tarjetaActual.dataset.productoId, tarjetaActual.dataset.texto, tarjetaActual.dataset.estrellas, tarjetaActual.dataset.fecha, tarjetaActual.dataset.editadaEn].join('|')
+          : '';
+        if (!tarjetaActual) {
+          listaResenasPerfil.appendChild(crearTarjetaResenaPerfil(resena));
+        } else if (firma !== firmaActual &&
+          (!edicionPerfilActiva || edicionPerfilActiva.tarjeta !== tarjetaActual)) {
+          tarjetaActual.replaceWith(crearTarjetaResenaPerfil(resena));
+        }
+      });
+      let vacio = listaResenasPerfil.querySelector('.perfil-actividad-vacio');
+      if (!resenas.length && !vacio) {
+        vacio = document.createElement('div');
+        vacio.className = 'perfil-actividad-vacio';
+        vacio.appendChild(crearElementoPerfil('p', '', 'Aún no has dejado reseñas'));
+        listaResenasPerfil.prepend(vacio);
+      } else if (resenas.length && vacio) {
+        vacio.remove();
+      }
+      const tarjetas = resenas.map(function (resena) {
+        return Array.from(listaResenasPerfil.children).find(function (elemento) {
+          return elemento.dataset && elemento.dataset.id === resena.id;
+        });
+      }).filter(Boolean);
+      tarjetas.forEach(function (tarjeta, indice) {
+        const siguiente = tarjetas[indice + 1] || null;
+        if (siguiente && tarjeta.nextElementSibling !== siguiente) {
+          listaResenasPerfil.insertBefore(tarjeta, siguiente);
+        } else if (!siguiente && tarjeta !== listaResenasPerfil.lastElementChild) {
+          listaResenasPerfil.appendChild(tarjeta);
+        }
+      });
+      const opciones = formularioResenasPerfil.querySelectorAll('select option');
+      opciones.forEach(function (opcion) {
+        const productoId = opcion.value === 'tienda' ? null : Number(opcion.value);
+        const existente = opcion.value && apiResenasPerfil.obtenerResena(productoId);
+        if (opcion.value && opcion.value !== 'tienda') {
+          const producto = productosPorIdPerfil.get(productoId);
+          if (producto) {
+            opcion.textContent = `${producto.nombre} — ${producto.artista}${existente ? ' (ya reseñado)' : ''}`;
+          }
+        } else if (opcion.value === 'tienda') {
+          opcion.textContent = `La tienda VINYLY${existente ? ' (ya reseñada)' : ''}`;
+        }
+      });
+    }
+
+    function iniciarEdicionResenaPerfil(tarjeta) {
+      if (edicionPerfilActiva) {
+        cerrarEdicionActividad(false);
+      }
+      const resena = apiResenasPerfil.leerResenas().find(function (elemento) {
+        return elemento.id === tarjeta.dataset.id;
+      });
+      if (!resena) {
+        return;
+      }
+      const botonEditar = tarjeta.querySelector('[data-accion="editar-resena"]');
+      const estrellasOriginales = tarjeta.querySelector('.resena-estrellas');
+      const textoOriginal = tarjeta.querySelector('.perfil-actividad-resena-texto');
+      const accionesOriginales = tarjeta.querySelector('.resena-acciones');
+      const editor = document.createElement('div');
+      editor.className = 'perfil-actividad-editor resena-editor';
+      const selector = apiResenasPerfil.crearSelectorEstrellas({ nombre: 'perfil-editar', valor: resena.estrellas });
+      const errorEstrellas = crearElementoPerfil('span', 'resena-error', 'Elige de 1 a 5 estrellas');
+      errorEstrellas.id = `perfilEditarResenaError-${resena.id}`;
+      errorEstrellas.hidden = true;
+      const campo = crearTextAreaActividad(`perfil-editar-resena-${resena.id}`, 'Editar reseña', 300, resena.texto);
+      const contador = crearContadorPerfil(300);
+      actualizarContadorTexto(campo, contador, 300);
+      const pie = document.createElement('div');
+      pie.className = 'resena-formulario-pie';
+      pie.append(
+        contador,
+        crearBotonActividad('Guardar', 'guardar-resena', 'resena-guardar', ''),
+        crearBotonActividad('Cancelar', 'cancelar-edicion', 'resena-cancelar', '')
+      );
+      editor.append(selector.elemento, errorEstrellas, campo, pie);
+      estrellasOriginales.hidden = true;
+      textoOriginal.hidden = true;
+      accionesOriginales.hidden = true;
+      tarjeta.querySelector('.perfil-actividad-resena-contenido').appendChild(editor);
+      campo.addEventListener('input', function () {
+        actualizarContadorTexto(campo, contador, 300);
+      });
+      editor.addEventListener('keydown', function (evento) {
+        if (evento.key === 'Escape') {
+          cerrarEdicionActividad(true);
+        }
+      });
+      selector.elemento.addEventListener('change', function () {
+        errorEstrellas.hidden = true;
+        selector.elemento.removeAttribute('aria-invalid');
+        selector.elemento.removeAttribute('aria-describedby');
+      });
+      campo.focus();
+      campo.setSelectionRange(campo.value.length, campo.value.length);
+      edicionPerfilActiva = {
+        tipo: 'resena',
+        id: resena.id,
+        productoId: resena.productoId,
+        tarjeta: tarjeta,
+        editor: editor,
+        botonEditar: botonEditar,
+        textarea: campo,
+        selector: selector,
+        error: errorEstrellas,
+        cerrar: function () {
+          editor.remove();
+          estrellasOriginales.hidden = false;
+          textoOriginal.hidden = false;
+          accionesOriginales.hidden = false;
+        }
+      };
+    }
+
+    function manejarAccionResenaPerfil(evento) {
+      const boton = evento.target.closest('button[data-accion]');
+      if (!boton || !listaResenasPerfil.contains(boton)) {
+        return;
+      }
+      const tarjeta = boton.closest('.perfil-actividad-resena');
+      if (!tarjeta) {
+        return;
+      }
+      if (boton.dataset.accion === 'editar-resena') {
+        iniciarEdicionResenaPerfil(tarjeta);
+      } else if (boton.dataset.accion === 'cancelar-edicion' && edicionPerfilActiva) {
+        cerrarEdicionActividad(true);
+      } else if (boton.dataset.accion === 'guardar-resena' && edicionPerfilActiva) {
+        const edicion = edicionPerfilActiva;
+        if (!edicion.selector.obtenerValor()) {
+          edicion.error.hidden = false;
+          edicion.selector.elemento.setAttribute('aria-invalid', 'true');
+          edicion.selector.elemento.setAttribute('aria-describedby', edicion.error.id);
+          const radio = edicion.selector.elemento.querySelector('.resena-opcion-input');
+          if (radio) {
+            radio.focus();
+          }
+          return;
+        }
+        ignorarEventosActividad = true;
+        const resultado = apiResenasPerfil.guardarResena({
+          productoId: edicion.productoId,
+          estrellas: edicion.selector.obtenerValor(),
+          texto: edicion.textarea.value
+        });
+        ignorarEventosActividad = false;
+        if (resultado.ok) {
+          cerrarEdicionActividad(true);
+          sincronizarListaResenasPerfil();
+          actualizarContadoresActividadPerfil();
+          mostrarAvisoActividad(document.getElementById('perfilActividadResenasAviso'), 'Reseña actualizada correctamente.', 'resenas');
+        }
+      } else if (boton.dataset.accion === 'eliminar-resena') {
+        if (edicionPerfilActiva && edicionPerfilActiva.tarjeta === tarjeta) {
+          cerrarEdicionActividad(false);
+        }
+        const resultado = apiResenasPerfil.eliminarResena(tarjeta.dataset.id);
+        if (resultado.ok) {
+          sincronizarListaResenasPerfil();
+          actualizarContadoresActividadPerfil();
+          mostrarAvisoActividad(document.getElementById('perfilActividadResenasAviso'), 'Reseña eliminada.', 'resenas');
+        }
+      }
+    }
+
+    function actualizarContadoresPerfil(cantidadPublicaciones) {
+      const comentarios = apiComentariosPerfil.contar();
+      const resenas = apiResenasPerfil.contarResenas();
       const cantidades = {
         compras: pedidosPerfil.length,
         publicaciones: cantidadPublicaciones,
-        comentarios: comentarios.length
+        comentarios: comentarios,
+        resenas: resenas
       };
       document.getElementById('perfilHeroCompras').textContent = cantidades.compras;
       document.getElementById('perfilActividadComprasContador').textContent = cantidades.compras;
@@ -358,9 +1048,38 @@
       document.getElementById('perfilActividadPublicacionesContador').textContent = cantidades.publicaciones;
       document.getElementById('perfilHeroComentarios').textContent = cantidades.comentarios;
       document.getElementById('perfilActividadComentariosContador').textContent = cantidades.comentarios;
+      document.getElementById('perfilHeroResenas').textContent = cantidades.resenas;
+      document.getElementById('perfilActividadResenasContador').textContent = cantidades.resenas;
+    }
+
+    function actualizarContadoresActividadPerfil() {
+      const moduloPublicaciones = window.PublicacionesVinyly;
+      const publicaciones = moduloPublicaciones &&
+        typeof moduloPublicaciones.leerPublicaciones === 'function'
+        ? moduloPublicaciones.leerPublicaciones()
+        : [];
+      actualizarContadoresPerfil(Array.isArray(publicaciones) ? publicaciones.length : 0);
     }
 
     renderizarPedidosPerfil();
+    crearFormularioComentarioPerfil();
+    construirFormularioResenaPerfil();
+    listaComentariosPerfil.addEventListener('click', manejarAccionComentarioPerfil);
+    listaResenasPerfil.addEventListener('click', manejarAccionResenaPerfil);
+    listaComentariosPerfil.addEventListener('keydown', function (evento) {
+      if (evento.key === 'Escape' && edicionPerfilActiva &&
+        edicionPerfilActiva.tipo === 'comentario' &&
+        edicionPerfilActiva.editor.contains(evento.target)) {
+        cerrarEdicionActividad(true);
+      }
+    });
+    listaResenasPerfil.addEventListener('keydown', function (evento) {
+      if (evento.key === 'Escape' && edicionPerfilActiva &&
+        edicionPerfilActiva.tipo === 'resena' &&
+      edicionPerfilActiva.editor.contains(evento.target)) {
+        cerrarEdicionActividad(true);
+      }
+    });
 
     function actualizarActividadPerfil() {
       const moduloPublicaciones = window.PublicacionesVinyly;
@@ -370,14 +1089,36 @@
         ? moduloPublicaciones.leerPublicaciones()
         : [];
       const publicacionesValidas = Array.isArray(publicaciones) ? publicaciones : [];
-      const comentarios = leerComentariosPerfil();
       mostrarPublicacionesPerfil(publicacionesValidas);
-      renderizarComentariosPerfil(comentarios);
-      actualizarContadoresPerfil(publicacionesValidas.length, comentarios);
+      sincronizarListaComentariosPerfil();
+      sincronizarListaResenasPerfil();
+      actualizarContadoresPerfil(publicacionesValidas.length);
     }
 
     actualizarActividadPerfil();
     window.addEventListener('pageshow', actualizarActividadPerfil);
+    window.addEventListener('comentarios:actualizados', function () {
+      if (ignorarEventosActividad) {
+        return;
+      }
+      sincronizarListaComentariosPerfil();
+      actualizarContadoresActividadPerfil();
+    });
+    window.addEventListener('resenas:actualizadas', function () {
+      if (ignorarEventosActividad) {
+        return;
+      }
+      sincronizarListaResenasPerfil();
+      actualizarContadoresActividadPerfil();
+    });
+    window.addEventListener('storage', function (evento) {
+      if (evento.key === 'comunidadVinyly') {
+        return;
+      }
+      sincronizarListaComentariosPerfil();
+      sincronizarListaResenasPerfil();
+      actualizarContadoresActividadPerfil();
+    });
   </script>
   <script>
     // Seleccionamos el botón para cerrar la sesión simulada.
