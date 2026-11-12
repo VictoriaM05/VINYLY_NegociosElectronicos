@@ -220,13 +220,8 @@
   <script src="js/comentarios.js"></script>
   <script src="js/resenas.js"></script>
   <script src="js/productos.js"></script>
+  <script src="js/pedidos.js"></script>
   <script>
-    const pedidosPerfil = [
-      { numero: '#VNY-1042', fecha: '12 de octubre de 2026', cantidad: 2, total: '$1,420 MXN', estado: 'Entregado' },
-      { numero: '#VNY-1038', fecha: '28 de septiembre de 2026', cantidad: 1, total: '$780 MXN', estado: 'En camino' },
-      { numero: '#VNY-1029', fecha: '14 de septiembre de 2026', cantidad: 1, total: '$950 MXN', estado: 'Entregado' }
-    ];
-
     const listaPedidosPerfil = document.getElementById('perfilActividadComprasLista');
     const listaPublicacionesPerfil = document.getElementById('perfilActividadPublicacionesLista');
     const listaComentariosPerfil = document.getElementById('perfilActividadComentariosLista');
@@ -252,29 +247,204 @@
       return elemento;
     }
 
-    function renderizarPedidosPerfil() {
-      pedidosPerfil.forEach(function (pedido) {
-        const articulo = document.createElement('article');
-        articulo.className = 'perfil-actividad-pedido';
+    function obtenerPedidosPerfil() {
+      const modulo = window.PedidosVinyly;
+      if (!modulo || typeof modulo.leerPedidos !== 'function') {
+        return [];
+      }
 
-        const encabezado = document.createElement('div');
-        encabezado.className = 'perfil-actividad-pedido-encabezado';
-        encabezado.appendChild(crearElementoPerfil('strong', 'perfil-actividad-pedido-numero', pedido.numero));
-        encabezado.appendChild(crearElementoPerfil(
-          'span',
-          `perfil-actividad-estado ${pedido.estado === 'Entregado' ? 'perfil-actividad-estado-entregado' : 'perfil-actividad-estado-camino'}`,
-          pedido.estado
-        ));
+      try {
+        const pedidos = modulo.leerPedidos();
+        return Array.isArray(pedidos) ? pedidos.filter(function (pedido) {
+          return pedido && typeof pedido === 'object';
+        }) : [];
+      } catch (error) {
+        console.error('No se pudieron cargar las compras del perfil.', error);
+        return [];
+      }
+    }
 
-        const detalle = crearElementoPerfil(
-          'p',
-          'perfil-actividad-pedido-detalle',
-          `${pedido.fecha} · ${pedido.cantidad} ${pedido.cantidad === 1 ? 'vinilo' : 'vinilos'}`
-        );
-        const total = crearElementoPerfil('span', 'perfil-actividad-pedido-total', pedido.total);
-        articulo.append(encabezado, detalle, total);
-        listaPedidosPerfil.appendChild(articulo);
+    function obtenerCantidadPedidosPerfil() {
+      const modulo = window.PedidosVinyly;
+      if (!modulo || typeof modulo.contarPedidos !== 'function') {
+        return 0;
+      }
+
+      try {
+        const cantidad = modulo.contarPedidos();
+        return Number.isFinite(cantidad) && cantidad >= 0 ? cantidad : 0;
+      } catch (error) {
+        console.error('No se pudo actualizar el contador de compras.', error);
+        return 0;
+      }
+    }
+
+    function textoPedidoPerfil(valor) {
+      if (valor === null || valor === undefined || String(valor).trim() === '') {
+        return 'No proporcionado';
+      }
+      return String(valor);
+    }
+
+    function formatearFechaPedidoPerfil(fecha) {
+      const modulo = window.PedidosVinyly;
+      if (!modulo || typeof modulo.formatearFecha !== 'function') {
+        return '—';
+      }
+
+      try {
+        return modulo.formatearFecha(fecha);
+      } catch (error) {
+        return '—';
+      }
+    }
+
+    function formatearTotalPedidoPerfil(total) {
+      if (total === null || total === undefined || String(total).trim() === '') {
+        return 'No proporcionado';
+      }
+      const cantidad = Number(total);
+      if (!Number.isFinite(cantidad)) {
+        return String(total);
+      }
+      return '$' + new Intl.NumberFormat('es-MX', {
+        maximumFractionDigits: 2
+      }).format(cantidad) + ' MXN';
+    }
+
+    function contarVinilosPedidoPerfil(productosPedido) {
+      if (!Array.isArray(productosPedido)) {
+        return '— vinilos';
+      }
+      if (productosPedido.length === 0) {
+        return '0 vinilos';
+      }
+
+      let total = 0;
+      let cantidadesValidas = 0;
+      productosPedido.forEach(function (producto) {
+        const cantidad = producto && Number(producto.cantidad);
+        if (Number.isFinite(cantidad) && cantidad >= 0) {
+          total += cantidad;
+          cantidadesValidas += 1;
+        }
       });
+      if (cantidadesValidas === 0) {
+        return '— vinilos';
+      }
+      return total + (total === 1 ? ' vinilo' : ' vinilos');
+    }
+
+    function crearMiniaturasPedidoPerfil(productosPedido) {
+      const miniaturas = document.createElement('div');
+      miniaturas.className = 'perfil-actividad-pedido-miniaturas';
+      if (!Array.isArray(productosPedido)) {
+        return miniaturas;
+      }
+
+      productosPedido.slice(0, 3).forEach(function (producto) {
+        if (!producto || typeof producto.foto !== 'string' || !producto.foto.trim()) {
+          return;
+        }
+        const imagen = document.createElement('img');
+        imagen.className = 'perfil-actividad-pedido-miniatura';
+        imagen.setAttribute('src', producto.foto);
+        imagen.setAttribute('alt', textoPedidoPerfil(producto.nombre));
+        miniaturas.appendChild(imagen);
+      });
+      return miniaturas;
+    }
+
+    function crearTarjetaPedidoPerfil(pedido, folio) {
+      const articulo = document.createElement('article');
+      articulo.className = 'perfil-actividad-pedido';
+      articulo.setAttribute('data-folio', folio);
+
+      const encabezado = document.createElement('div');
+      encabezado.className = 'perfil-actividad-pedido-encabezado';
+      encabezado.appendChild(crearElementoPerfil(
+        'strong',
+        'perfil-actividad-pedido-numero',
+        textoPedidoPerfil(pedido.folio)
+      ));
+
+      const estado = textoPedidoPerfil(pedido.estado);
+      const clasesEstado = {
+        'Pagado': 'perfil-actividad-estado-pagado',
+        'Entregado': 'perfil-actividad-estado-entregado',
+        'En camino': 'perfil-actividad-estado-camino'
+      };
+      const claseEstado = clasesEstado[estado] || 'perfil-actividad-estado-desconocido';
+      encabezado.appendChild(crearElementoPerfil(
+        'span',
+        'perfil-actividad-estado ' + claseEstado,
+        estado
+      ));
+
+      const detalle = crearElementoPerfil(
+        'p',
+        'perfil-actividad-pedido-detalle',
+        formatearFechaPedidoPerfil(pedido.fecha) + ' · ' + contarVinilosPedidoPerfil(pedido.productos)
+      );
+      const miniaturas = crearMiniaturasPedidoPerfil(pedido.productos);
+      const total = crearElementoPerfil(
+        'span',
+        'perfil-actividad-pedido-total',
+        formatearTotalPedidoPerfil(pedido.total)
+      );
+      const enlace = document.createElement('a');
+      enlace.className = 'perfil-actividad-enlace perfil-actividad-pedido-enlace';
+      enlace.setAttribute('href', 'pedido.html?folio=' + encodeURIComponent(folio));
+      enlace.setAttribute('aria-label', 'Ver detalle del pedido ' + folio);
+      enlace.textContent = 'Ver detalle →';
+
+      articulo.replaceChildren(encabezado, detalle, miniaturas, total, enlace);
+      return articulo;
+    }
+
+    function sincronizarListaPedidosPerfil() {
+      const pedidos = obtenerPedidosPerfil();
+      if (pedidos.length === 0) {
+        const vacio = document.createElement('div');
+        vacio.className = 'perfil-actividad-vacio';
+        vacio.appendChild(crearElementoPerfil('p', '', 'Aún no has comprado nada'));
+        const enlaceCatalogo = crearElementoPerfil('a', 'perfil-actividad-enlace', 'Explorar catálogo');
+        enlaceCatalogo.setAttribute('href', 'catalogo.html');
+        vacio.appendChild(enlaceCatalogo);
+        listaPedidosPerfil.replaceChildren(vacio);
+        return;
+      }
+
+      const tarjetasExistentes = new Map();
+      Array.from(listaPedidosPerfil.querySelectorAll('.perfil-actividad-pedido[data-folio]'))
+        .forEach(function (tarjeta) {
+          tarjetasExistentes.set(tarjeta.getAttribute('data-folio'), tarjeta);
+        });
+      const listaActualizada = document.createDocumentFragment();
+
+      pedidos.forEach(function (pedido, indice) {
+        const folio = pedido.folio === null || pedido.folio === undefined
+          ? 'sin-folio-' + indice
+          : String(pedido.folio);
+        const articulo = tarjetasExistentes.get(folio) || document.createElement('article');
+        const tarjetaActualizada = crearTarjetaPedidoPerfil(pedido, folio);
+        articulo.className = tarjetaActualizada.className;
+        articulo.setAttribute('data-folio', folio);
+        articulo.replaceChildren(...Array.from(tarjetaActualizada.childNodes));
+        listaActualizada.appendChild(articulo);
+      });
+      listaPedidosPerfil.replaceChildren(listaActualizada);
+    }
+
+    function actualizarContadoresComprasPerfil() {
+      const cantidad = obtenerCantidadPedidosPerfil();
+      document.getElementById('perfilHeroCompras').textContent = cantidad;
+      document.getElementById('perfilActividadComprasContador').textContent = cantidad;
+    }
+
+    function actualizarPedidosPerfil() {
+      sincronizarListaPedidosPerfil();
+      actualizarContadoresComprasPerfil();
     }
 
     function mostrarPublicacionesPerfil(publicaciones) {
@@ -1037,7 +1207,7 @@
       const comentarios = apiComentariosPerfil.contar();
       const resenas = apiResenasPerfil.contarResenas();
       const cantidades = {
-        compras: pedidosPerfil.length,
+        compras: obtenerCantidadPedidosPerfil(),
         publicaciones: cantidadPublicaciones,
         comentarios: comentarios,
         resenas: resenas
@@ -1061,7 +1231,7 @@
       actualizarContadoresPerfil(Array.isArray(publicaciones) ? publicaciones.length : 0);
     }
 
-    renderizarPedidosPerfil();
+    actualizarPedidosPerfil();
     crearFormularioComentarioPerfil();
     construirFormularioResenaPerfil();
     listaComentariosPerfil.addEventListener('click', manejarAccionComentarioPerfil);
@@ -1092,11 +1262,13 @@
       mostrarPublicacionesPerfil(publicacionesValidas);
       sincronizarListaComentariosPerfil();
       sincronizarListaResenasPerfil();
+      sincronizarListaPedidosPerfil();
       actualizarContadoresPerfil(publicacionesValidas.length);
     }
 
     actualizarActividadPerfil();
     window.addEventListener('pageshow', actualizarActividadPerfil);
+    window.addEventListener('pedidos:actualizados', actualizarPedidosPerfil);
     window.addEventListener('comentarios:actualizados', function () {
       if (ignorarEventosActividad) {
         return;
@@ -1112,6 +1284,10 @@
       actualizarContadoresActividadPerfil();
     });
     window.addEventListener('storage', function (evento) {
+      if (evento.key === 'pedidosVinyly') {
+        actualizarPedidosPerfil();
+        return;
+      }
       if (evento.key === 'comunidadVinyly') {
         return;
       }

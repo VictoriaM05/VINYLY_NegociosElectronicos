@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>VINYLY - Checkout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="navbar">
+    <a href="landing.html" class="logo">
+      <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
+      <li><a href="campana.html">Campaña</a></li>
+      <li><a href="promociones.html">Promociones</a></li>
+      <li><a href="comunidad.html">Comunidad</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <div class="nav-icons">
+      <a href="carrito.html">Carrito</a>
+      <a href="login.html">Iniciar sesión</a>
+      <a href="perfil.html" class="avatar">CV</a>
+    </div>
+  </header>
+
+  <main class="carrito-pagina checkout-pagina">
+    <section class="carrito-hero checkout-hero">
+      <div class="disco" aria-hidden="true"></div>
+      <span class="brillo brillo-1" aria-hidden="true"></span>
+      <span class="brillo brillo-2" aria-hidden="true"></span>
+      <div class="carrito-hero-texto">
+        <p class="catalogo-eyebrow">Compra segura simulada</p>
+        <h1><span class="acento">Finaliza tu compra</span></h1>
+        <p>Completa tus datos para recibir tus vinilos.</p>
+        <ol class="carrito-pasos" id="checkoutPasos" aria-label="Pasos de compra">
+          <li class="carrito-paso activo" data-paso-indicador="1" aria-current="step"><span>1</span> Dirección</li>
+          <li class="carrito-paso" data-paso-indicador="2"><span>2</span> Pago</li>
+          <li class="carrito-paso" data-paso-indicador="3"><span>3</span> Confirmación</li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="carrito-contenido checkout-contenido">
+      <div class="checkout-panel">
+        <section class="checkout-seccion" id="checkoutPasoDireccion" aria-labelledby="checkoutTituloDireccion">
+          <h2 id="checkoutTituloDireccion" tabindex="-1">Dirección de envío</h2>
+          <p class="checkout-introduccion">¿A dónde enviamos tu colección?</p>
+          <form id="checkoutDireccionForm">
+            <div class="checkout-campos">
+              <div class="campo checkout-campo">
+                <input id="checkoutNombre" name="nombre" type="text" placeholder=" " autocomplete="name" value="Pedrito Vinilo">
+                <label for="checkoutNombre">Nombre completo</label>
+              </div>
+              <div class="campo checkout-campo">
+                <input id="checkoutTelefono" name="telefono" type="tel" placeholder=" " autocomplete="tel">
+                <label for="checkoutTelefono">Teléfono</label>
+              </div>
+              <div class="campo checkout-campo checkout-campo--ancho">
+                <input id="checkoutCalle" name="calle" type="text" placeholder=" " autocomplete="address-line1">
+                <label for="checkoutCalle">Calle y número</label>
+              </div>
+              <div class="campo checkout-campo">
+                <input id="checkoutColonia" name="colonia" type="text" placeholder=" " autocomplete="address-line2">
+                <label for="checkoutColonia">Colonia</label>
+              </div>
+              <div class="campo checkout-campo">
+                <input id="checkoutCiudad" name="ciudad" type="text" placeholder=" " autocomplete="address-level2">
+                <label for="checkoutCiudad">Ciudad</label>
+              </div>
+              <div class="campo checkout-campo">
+                <input id="checkoutEstado" name="estado" type="text" placeholder=" " autocomplete="address-level1">
+                <label for="checkoutEstado">Estado</label>
+              </div>
+              <div class="campo checkout-campo">
+                <input id="checkoutCp" name="cp" type="text" placeholder=" " autocomplete="postal-code">
+                <label for="checkoutCp">Código postal</label>
+              </div>
+            </div>
+            <p class="checkout-aviso">Pago simulado · Tus datos no se guardan</p>
+            <div class="checkout-acciones">
+              <button class="btn-gradiente" id="btnCheckoutContinuarPago" type="submit">Continuar al pago</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="checkout-seccion" id="checkoutPasoPago" aria-labelledby="checkoutTituloPago" hidden>
+          <h2 id="checkoutTituloPago" tabindex="-1">Método de pago</h2>
+          <p class="checkout-introduccion">Elige cómo quieres completar este pago simulado.</p>
+          <fieldset class="checkout-metodos">
+            <legend>Método de pago</legend>
+            <label class="checkout-metodo">
+              <input id="checkoutMetodoTarjeta" type="radio" name="metodoPago" value="tarjeta" checked>
+              <span class="checkout-metodo-texto"><strong>Tarjeta</strong><span>Crédito o débito</span></span>
+            </label>
+            <label class="checkout-metodo">
+              <input id="checkoutMetodoTransferencia" type="radio" name="metodoPago" value="transferencia">
+              <span class="checkout-metodo-texto"><strong>Transferencia</strong><span>Datos de ejemplo, no transferir</span></span>
+            </label>
+            <label class="checkout-metodo">
+              <input id="checkoutMetodoEwallet" type="radio" name="metodoPago" value="ewallet">
+              <span class="checkout-metodo-texto"><strong>E-wallet</strong><span>Saldo simulado</span></span>
+            </label>
+          </fieldset>
+          <section class="checkout-panel-pago" id="checkoutFormularioTarjeta" aria-labelledby="checkoutTituloTarjeta">
+            <h3 id="checkoutTituloTarjeta">Datos de tarjeta de prueba</h3>
+            <p class="checkout-ayuda">No uses una tarjeta real. Los datos no se guardan.</p>
+            <div class="checkout-campos">
+              <div class="campo checkout-campo checkout-campo--ancho">
+                <input id="checkoutTarjetaNombre" type="text" placeholder=" " autocomplete="cc-name">
+                <label for="checkoutTarjetaNombre">Nombre en la tarjeta</label>
+              </div>
+              <div class="campo checkout-campo checkout-campo--ancho">
+                <input id="checkoutNumeroTarjeta" type="text" autocomplete="off" placeholder=" ">
+                <label for="checkoutNumeroTarjeta">Número de tarjeta</label>
+              </div>
+              <div class="campo checkout-campo checkout-campo--vencimiento">
+                <input id="checkoutFechaTarjeta" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/AA" maxlength="5">
+                <label for="checkoutFechaTarjeta">Vencimiento MM/AA</label>
+              </div>
+              <div class="campo checkout-campo">
+                <input id="checkoutCvv" type="password" autocomplete="off" placeholder=" ">
+                <label for="checkoutCvv">CVV</label>
+              </div>
+            </div>
+          </section>
+
+          <section class="checkout-panel-pago" id="checkoutDatosTransferencia" aria-labelledby="checkoutTituloTransferencia" hidden>
+            <h3 id="checkoutTituloTransferencia">Transferencia de ejemplo</h3>
+            <p><strong>Banco:</strong> Banco Simulado Nacional</p>
+            <p><strong>Titular:</strong> VINYLY Simulado</p>
+            <p><strong>CLABE:</strong> 000000000000000000</p>
+            <p class="checkout-aviso">Datos de ejemplo, completamente ficticios. No realices una transferencia.</p>
+            <p><strong>Referencia:</strong> <span id="checkoutReferenciaTransferencia"></span></p>
+            <p><strong>Monto:</strong> <span id="checkoutMontoTransferencia"></span></p>
+          </section>
+
+          <section class="checkout-panel-pago" id="checkoutDatosEwallet" aria-labelledby="checkoutTituloEwallet" hidden>
+            <h3 id="checkoutTituloEwallet">E-wallet simulada</h3>
+            <p>Saldo disponible: <strong id="checkoutSaldoEwallet">$5,000 MXN</strong></p>
+            <p class="checkout-aviso" id="checkoutAvisoSaldo" role="status" hidden></p>
+          </section>
+
+          <p class="checkout-aviso" id="checkoutEstadoOperacion" role="status" hidden></p>
+          <div class="checkout-acciones checkout-acciones--doble">
+            <button class="modal-boton-secundario" id="btnCheckoutVolverDireccion" type="button">Volver</button>
+            <button class="btn-gradiente" id="btnCheckoutPagar" type="button">Pagar</button>
+          </div>
+        </section>
+
+        <section class="checkout-seccion checkout-confirmacion" id="checkoutPasoConfirmacion" aria-labelledby="checkoutEstadoPago" hidden>
+          <p class="checkout-confirmacion-etiqueta">Tu pedido está listo</p>
+          <h2 id="checkoutEstadoPago" tabindex="-1" role="status">Pago aprobado</h2>
+          <p class="checkout-confirmacion-folio">Número de pedido: <strong id="checkoutFolio"></strong></p>
+          <section class="checkout-confirmacion-detalle" aria-labelledby="checkoutTituloDetalle">
+            <h3 id="checkoutTituloDetalle">Resumen de la compra</h3>
+            <div id="checkoutConfirmacionProductos" class="checkout-productos"></div>
+            <dl class="checkout-direccion-confirmacion" id="checkoutConfirmacionDireccion"></dl>
+            <div class="checkout-confirmacion-totales" id="checkoutConfirmacionTotales"></div>
+            <p id="checkoutConfirmacionMetodo"></p>
+          </section>
+          <nav class="checkout-acciones-finales" aria-label="Siguientes acciones">
+            <a class="btn-gradiente" id="checkoutVerTicket" href="pedido.html">Ver mi ticket</a>
+            <a class="checkout-enlace-secundario" id="checkoutVerCompras" href="perfil.html">Ver mis compras</a>
+            <a class="checkout-enlace-secundario" id="checkoutSeguirComprando" href="catalogo.html">Seguir comprando</a>
+          </nav>
+        </section>
+      </div>
+
+      <aside class="carrito-resumen checkout-resumen" aria-labelledby="checkoutTituloResumen">
+        <header class="carrito-resumen-cabecera">
+          <h2 id="checkoutTituloResumen">Resumen del pedido</h2>
+          <p id="checkoutCantidad"></p>
+        </header>
+        <div class="checkout-productos" id="checkoutListaProductos"></div>
+        <div class="carrito-totales">
+          <p class="carrito-resumen-linea"><span>Subtotal</span><strong id="checkoutSubtotal"></strong></p>
+          <p class="carrito-resumen-linea carrito-descuento" id="checkoutDescuentoLinea" hidden>
+            <span id="checkoutEtiquetaDescuento"></span><strong id="checkoutDescuento"></strong>
+          </p>
+          <p class="carrito-resumen-linea carrito-total"><span>Total</span><strong id="checkoutTotal"></strong></p>
+        </div>
+        <p class="carrito-pago-nota">Pago simulado · Tus datos no se guardan</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-swirl-1"></div>
+    <div class="footer-swirl-2"></div>
+    <div class="footer-disco"></div>
+    <div class="footer-izquierda">
+      <div class="footer-columna">
+        <h4>Enlaces</h4>
+        <a href="landing.html">Inicio</a>
+        <a href="index.html#nosotros">Nosotros</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="subasta.html">Subasta</a>
+      </div>
+      <div class="footer-columna">
+        <h4>Contacto</h4>
+        <p>******</p>
+        <p>www.vinyly.com</p>
+      </div>
+    </div>
+    <div class="footer-columna footer-marca">
+      <h4>VINYLY</h4>
+      <p>Premium Sound, Pop Edition</p>
+    </div>
+  </footer>
+
+  <script src="js/productos.js"></script>
+  <script src="js/carrito.js"></script>
+  <script src="js/promociones.js"></script>
+  <script src="js/pedidos.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      const CLAVE_FOLIO_CHECKOUT = 'vinylyFolioCheckout';
+      const SALDO_EWALLET = 5000;
+      const pasos = {
+        1: document.getElementById('checkoutPasoDireccion'),
+        2: document.getElementById('checkoutPasoPago'),
+        3: document.getElementById('checkoutPasoConfirmacion')
+      };
+      const montoTotal = obtenerMontosCarrito().total;
+      let procesandoPago = false;
+      let pedidoActual = null;
+      const referenciaTransferencia = 'VNY-' + String(Date.now()).slice(-8);
+
+      function formatearPrecio(precio) {
+        return '$' + Number(precio).toLocaleString('es-MX') + ' MXN';
+      }
+
+      function obtenerMontosCarrito() {
+        const carrito = obtenerCarrito();
+        const subtotal = calcularSubtotal(carrito);
+        const promocion = obtenerDescuentoAplicado();
+        const descuento = promocion ? Math.min(calcularDescuento(promocion, carrito), subtotal) : 0;
+        return {
+          carrito: carrito,
+          promocion: promocion,
+          subtotal: subtotal,
+          descuento: descuento,
+          total: Math.max(0, subtotal - descuento)
+        };
+      }
+
+      function agregarFilaProducto(destino, producto) {
+        const fila = document.createElement('article');
+        fila.className = 'checkout-item';
+
+        if (producto.foto) {
+          const imagen = document.createElement('img');
+          imagen.className = 'checkout-imagen';
+          imagen.src = producto.foto;
+          imagen.alt = '';
+          imagen.loading = 'lazy';
+          fila.appendChild(imagen);
+        } else {
+          const imagen = document.createElement('div');
+          imagen.className = 'checkout-imagen ' + String(producto.imagen || '');
+          imagen.setAttribute('aria-hidden', 'true');
+          fila.appendChild(imagen);
+        }
+
+        const datos = document.createElement('div');
+        datos.className = 'checkout-item-datos';
+        const nombre = document.createElement('strong');
+        nombre.textContent = String(producto.nombre || '');
+        const artista = document.createElement('span');
+        artista.textContent = String(producto.artista || '');
+        const cantidad = document.createElement('span');
+        cantidad.textContent = 'Cantidad: ' + Number(producto.cantidad);
+        datos.append(nombre, artista, cantidad);
+        const precio = document.createElement('span');
+        precio.className = 'checkout-item-precio';
+        precio.textContent = formatearPrecio(Number(producto.precio) * Number(producto.cantidad));
+        fila.append(datos, precio);
+        destino.appendChild(fila);
+      }
+
+      function renderizarResumen(pedido) {
+        const montos = pedido
+          ? {
+            carrito: pedido.productos,
+            promocion: pedido.codigoDescuento ? { codigo: pedido.codigoDescuento } : null,
+            subtotal: pedido.subtotal,
+            descuento: pedido.descuento,
+            total: pedido.total
+          }
+          : obtenerMontosCarrito();
+        const lista = document.getElementById('checkoutListaProductos');
+        lista.replaceChildren();
+        montos.carrito.forEach(function (producto) {
+          agregarFilaProducto(lista, producto);
+        });
+
+        const cantidades = montos.carrito.reduce(function (suma, producto) {
+          return suma + Number(producto.cantidad);
+        }, 0);
+        document.getElementById('checkoutCantidad').textContent =
+          cantidades + ' vinilo' + (cantidades === 1 ? '' : 's');
+        document.getElementById('checkoutSubtotal').textContent = formatearPrecio(montos.subtotal);
+        document.getElementById('checkoutDescuentoLinea').hidden = !montos.promocion || montos.descuento === 0;
+        if (montos.promocion && montos.descuento > 0) {
+          document.getElementById('checkoutEtiquetaDescuento').textContent =
+            'Descuento (' + montos.promocion.codigo + ')';
+          document.getElementById('checkoutDescuento').textContent = '−' + formatearPrecio(montos.descuento);
+        }
+        document.getElementById('checkoutTotal').textContent = formatearPrecio(montos.total);
+        document.getElementById('checkoutMontoTransferencia').textContent = formatearPrecio(montos.total);
+      }
+
+      function activarPaso(numero) {
+        Object.keys(pasos).forEach(function (clave) {
+          pasos[clave].hidden = Number(clave) !== numero;
+        });
+        document.querySelectorAll('[data-paso-indicador]').forEach(function (indicador) {
+          const esActual = Number(indicador.dataset.pasoIndicador) === numero;
+          indicador.classList.toggle('activo', esActual);
+          if (esActual) {
+            indicador.setAttribute('aria-current', 'step');
+          } else {
+            indicador.removeAttribute('aria-current');
+          }
+        });
+        const encabezado = pasos[numero].querySelector('h2');
+        encabezado.focus();
+        window.scrollTo({
+          top: 0,
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+        });
+      }
+
+      function obtenerDetalleTarjetaYLimpiar() {
+        const numeroTarjeta = document.getElementById('checkoutNumeroTarjeta').value;
+        const digitosTarjeta = numeroTarjeta.replace(/\D/g, '');
+        let marca = 'Tarjeta';
+        if (/^4/.test(digitosTarjeta)) {
+          marca = 'Visa';
+        } else if (/^(5[1-5]|2[2-7])/.test(digitosTarjeta)) {
+          marca = 'Mastercard';
+        } else if (/^3[47]/.test(digitosTarjeta)) {
+          marca = 'American Express';
+        }
+        const detalle = {
+          marca: marca,
+          ultimos4: digitosTarjeta.length >= 4 ? digitosTarjeta.slice(-4) : '—'
+        };
+        document.getElementById('checkoutNumeroTarjeta').value = '';
+        document.getElementById('checkoutCvv').value = '';
+        document.getElementById('checkoutTarjetaNombre').value = '';
+        document.getElementById('checkoutFechaTarjeta').value = '';
+        return detalle;
+      }
+
+      function limpiarCamposSensibles() {
+        document.getElementById('checkoutNumeroTarjeta').value = '';
+        document.getElementById('checkoutCvv').value = '';
+        document.getElementById('checkoutTarjetaNombre').value = '';
+        document.getElementById('checkoutFechaTarjeta').value = '';
+      }
+
+      function mostrarEstadoOperacion(mensaje) {
+        const estado = document.getElementById('checkoutEstadoOperacion');
+        estado.textContent = mensaje;
+        estado.hidden = false;
+      }
+
+      function obtenerMetodoPago() {
+        const seleccionado = document.querySelector('input[name="metodoPago"]:checked');
+        return seleccionado ? seleccionado.value : 'tarjeta';
+      }
+
+      function crearConfirmacion(pedido) {
+        renderizarResumen(pedido);
+        document.getElementById('checkoutFolio').textContent = pedido.folio;
+        document.getElementById('checkoutVerTicket').href =
+          'pedido.html?folio=' + encodeURIComponent(pedido.folio);
+        const productos = document.getElementById('checkoutConfirmacionProductos');
+        productos.replaceChildren();
+        pedido.productos.forEach(function (producto) {
+          agregarFilaProducto(productos, producto);
+        });
+
+        const direccion = document.getElementById('checkoutConfirmacionDireccion');
+        direccion.replaceChildren();
+        [
+          ['Envío a', pedido.direccion.nombre],
+          ['Dirección', pedido.direccion.calle + ', ' + pedido.direccion.colonia],
+          ['Ciudad', pedido.direccion.ciudad + ', ' + pedido.direccion.estado + ', ' + pedido.direccion.cp],
+          ['Teléfono', pedido.direccion.telefono]
+        ].forEach(function (par) {
+          const termino = document.createElement('dt');
+          termino.textContent = par[0];
+          const valor = document.createElement('dd');
+          valor.textContent = par[1];
+          direccion.append(termino, valor);
+        });
+
+        const totales = document.getElementById('checkoutConfirmacionTotales');
+        totales.replaceChildren();
+        [
+          ['Subtotal', formatearPrecio(pedido.subtotal)],
+          ['Descuento' + (pedido.codigoDescuento ? ' (' + pedido.codigoDescuento + ')' : ''), '−' + formatearPrecio(pedido.descuento)],
+          ['Total', formatearPrecio(pedido.total)]
+        ].forEach(function (par, indice) {
+          if (indice === 1 && pedido.descuento <= 0) {
+            return;
+          }
+          const linea = document.createElement('p');
+          linea.className = indice === 2 ? 'carrito-resumen-linea carrito-total' : 'carrito-resumen-linea';
+          const etiqueta = document.createElement('span');
+          etiqueta.textContent = par[0];
+          const valor = document.createElement('strong');
+          valor.textContent = par[1];
+          linea.append(etiqueta, valor);
+          totales.appendChild(linea);
+        });
+
+        let textoMetodo = 'Método de pago: ';
+        if (pedido.metodoPago === 'tarjeta') {
+          textoMetodo += 'Tarjeta ' + pedido.pagoDetalle.marca + ' terminación ' + pedido.pagoDetalle.ultimos4;
+        } else if (pedido.metodoPago === 'transferencia') {
+          textoMetodo += 'Transferencia';
+        } else {
+          textoMetodo += 'E-wallet simulada';
+        }
+        document.getElementById('checkoutConfirmacionMetodo').textContent = textoMetodo;
+        activarPaso(3);
+      }
+
+      function validarFolioEnSesion() {
+        let folio = null;
+        try {
+          folio = sessionStorage.getItem(CLAVE_FOLIO_CHECKOUT);
+        } catch (error) {
+          mostrarEstadoOperacion('No se pudo acceder al almacenamiento de sesión. Recarga la página para volver a intentarlo.');
+          return false;
+        }
+        if (!folio) {
+          return false;
+        }
+
+        try {
+          const pedido = window.PedidosVinyly.obtenerPedido(folio);
+          if (pedido) {
+            pedidoActual = pedido;
+            renderizarResumen();
+            crearConfirmacion(pedido);
+            return true;
+          }
+          sessionStorage.removeItem(CLAVE_FOLIO_CHECKOUT);
+        } catch (error) {
+          mostrarEstadoOperacion('No se pudo recuperar el pedido: ' + error.message);
+          return false;
+        }
+        return false;
+      }
+
+      document.getElementById('checkoutDireccionForm').addEventListener('submit', function (evento) {
+        evento.preventDefault();
+        activarPaso(2);
+      });
+
+      document.getElementById('btnCheckoutVolverDireccion').addEventListener('click', function () {
+        activarPaso(1);
+      });
+
+      document.querySelectorAll('input[name="metodoPago"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+          document.getElementById('checkoutFormularioTarjeta').hidden = radio.value !== 'tarjeta';
+          document.getElementById('checkoutDatosTransferencia').hidden = radio.value !== 'transferencia';
+          document.getElementById('checkoutDatosEwallet').hidden = radio.value !== 'ewallet';
+          const avisoSaldo = document.getElementById('checkoutAvisoSaldo');
+          const saldoInsuficiente = radio.value === 'ewallet' && montoTotal > SALDO_EWALLET;
+          avisoSaldo.textContent = saldoInsuficiente
+            ? 'El total supera el saldo simulado disponible de ' + formatearPrecio(SALDO_EWALLET) + '.'
+            : '';
+          avisoSaldo.hidden = !saldoInsuficiente;
+          document.getElementById('btnCheckoutPagar').disabled = saldoInsuficiente;
+        });
+      });
+
+      document.getElementById('checkoutNumeroTarjeta').addEventListener('input', function (evento) {
+        const valor = evento.target.value;
+        if (/^[\d ]*$/.test(valor)) {
+          const digitos = valor.replace(/\s/g, '');
+          evento.target.value = digitos.replace(/(\d{4})(?=\d)/g, '$1 ');
+        }
+      });
+
+      const campoVencimiento = document.getElementById('checkoutFechaTarjeta');
+      let valorVencimientoAnterior = '';
+      campoVencimiento.addEventListener('beforeinput', function () {
+        valorVencimientoAnterior = campoVencimiento.value;
+      });
+      campoVencimiento.addEventListener('input', function (evento) {
+        const valor = campoVencimiento.value;
+        const inicio = campoVencimiento.selectionStart === null ? valor.length : campoVencimiento.selectionStart;
+        const fin = campoVencimiento.selectionEnd === null ? inicio : campoVencimiento.selectionEnd;
+        const digitos = valor.replace(/\D/g, '').slice(0, 4);
+        const borrarSeparador = evento.inputType
+          && evento.inputType.indexOf('delete') === 0
+          && valorVencimientoAnterior.indexOf('/') !== -1
+          && valor.indexOf('/') === -1
+          && valorVencimientoAnterior.replace(/\D/g, '').length === valor.replace(/\D/g, '').length;
+        const valorFormateado = borrarSeparador || digitos.length <= 2
+          ? digitos
+          : digitos.slice(0, 2) + '/' + digitos.slice(2);
+        const digitosAntesInicio = valor.slice(0, inicio).replace(/\D/g, '').length;
+        const digitosAntesFin = valor.slice(0, fin).replace(/\D/g, '').length;
+        const moverCursor = function (cantidad) {
+          if (borrarSeparador || cantidad <= 2) {
+            return cantidad;
+          }
+          return cantidad + 1;
+        };
+
+        campoVencimiento.value = valorFormateado;
+        campoVencimiento.setSelectionRange(
+          moverCursor(digitosAntesInicio),
+          moverCursor(digitosAntesFin)
+        );
+        valorVencimientoAnterior = valorFormateado;
+      });
+
+      document.getElementById('btnCheckoutPagar').addEventListener('click', async function (evento) {
+        const boton = evento.currentTarget;
+        if (procesandoPago || pedidoActual) {
+          return;
+        }
+
+        const metodoPago = obtenerMetodoPago();
+        if (metodoPago === 'ewallet' && montoTotal > SALDO_EWALLET) {
+          document.getElementById('checkoutAvisoSaldo').hidden = false;
+          return;
+        }
+
+        let pagoDetalle;
+        if (metodoPago === 'tarjeta') {
+          pagoDetalle = obtenerDetalleTarjetaYLimpiar();
+        } else if (metodoPago === 'transferencia') {
+          pagoDetalle = { referencia: referenciaTransferencia };
+        } else {
+          pagoDetalle = { proveedor: 'E-wallet simulada' };
+        }
+        limpiarCamposSensibles();
+
+        procesandoPago = true;
+        boton.disabled = true;
+        boton.textContent = 'Procesando...';
+        document.getElementById('checkoutEstadoOperacion').hidden = true;
+        await new Promise(function (resolver) { window.setTimeout(resolver, 1500); });
+
+        const datosDireccion = {
+          nombre: document.getElementById('checkoutNombre').value,
+          telefono: document.getElementById('checkoutTelefono').value,
+          calle: document.getElementById('checkoutCalle').value,
+          colonia: document.getElementById('checkoutColonia').value,
+          ciudad: document.getElementById('checkoutCiudad').value,
+          estado: document.getElementById('checkoutEstado').value,
+          cp: document.getElementById('checkoutCp').value
+        };
+        const resultado = window.PedidosVinyly.crearPedido({
+          direccion: datosDireccion,
+          metodoPago: metodoPago,
+          pagoDetalle: pagoDetalle
+        });
+        pagoDetalle = null;
+
+        if (!resultado.ok || !resultado.persistido || !resultado.pedido) {
+          procesandoPago = false;
+          boton.disabled = false;
+          boton.textContent = 'Pagar';
+          mostrarEstadoOperacion(resultado.error || 'No fue posible guardar el pedido. Inténtalo de nuevo.');
+          return;
+        }
+
+        pedidoActual = resultado.pedido;
+        let errorCierre = '';
+        try {
+          sessionStorage.setItem(CLAVE_FOLIO_CHECKOUT, pedidoActual.folio);
+        } catch (error) {
+          errorCierre = 'No se pudo guardar la confirmación de sesión. ';
+        }
+        try {
+          guardarCarrito([]);
+        } catch (error) {
+          errorCierre += 'No se pudo vaciar el carrito. ';
+        }
+        try {
+          quitarDescuento();
+        } catch (error) {
+          errorCierre += 'No se pudo quitar el descuento. ';
+        }
+        crearConfirmacion(pedidoActual);
+        if (errorCierre) {
+          mostrarEstadoOperacion(errorCierre + 'El pedido sí quedó guardado.');
+        }
+      });
+
+      document.getElementById('checkoutReferenciaTransferencia').textContent = referenciaTransferencia;
+      renderizarResumen();
+      const carritoInicial = obtenerCarrito();
+      if (carritoInicial.length > 0) {
+        try {
+          sessionStorage.removeItem(CLAVE_FOLIO_CHECKOUT);
+        } catch (error) {
+          mostrarEstadoOperacion('No se pudo preparar la sesión de compra.');
+        }
+      } else if (!validarFolioEnSesion()) {
+        window.location.replace('carrito.html');
+        return;
+      }
+
+    }());
+  </script>
+  <script src="js/navbar.js"></script>
+</body>
+</html>

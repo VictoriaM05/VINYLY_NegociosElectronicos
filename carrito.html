@@ -211,7 +211,9 @@
       }
 
       cerrarModalTerminos();
-      mensajePago.hidden = false;
+      if (obtenerCarrito().length > 0) {
+        window.location.href = 'checkout.html';
+      }
     });
     document.addEventListener('keydown', function (evento) {
       if (evento.key === 'Escape' && !modalTerminos.hidden) {

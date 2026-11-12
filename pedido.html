@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>VINYLY - Comprobante de compra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="ticket-body">
+  <header class="navbar ticket-navbar">
+    <a href="landing.html" class="logo">
+      <img src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="marketplace.html">Marketplace</a></li>
+      <li><a href="campana.html">Campaña</a></li>
+      <li><a href="promociones.html">Promociones</a></li>
+      <li><a href="comunidad.html">Comunidad</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <div class="nav-icons">
+      <a href="carrito.html">Carrito</a>
+      <a href="login.html">Iniciar sesión</a>
+      <a href="perfil.html" class="avatar">CV</a>
+    </div>
+  </header>
+
+  <main class="ticket-pagina">
+    <section class="ticket-no-encontrado" id="ticketNoEncontrado" aria-labelledby="ticketNoEncontradoTitulo" hidden>
+      <h1 class="ticket-no-encontrado-titulo" id="ticketNoEncontradoTitulo">No encontramos este pedido</h1>
+      <p class="ticket-texto-no-encontrado">Revisa el enlace o vuelve a tus compras para encontrar tu comprobante.</p>
+      <nav class="ticket-enlaces-error" aria-label="Enlaces de navegación">
+        <a class="ticket-enlace" href="perfil.html">Ver mis compras</a>
+        <a class="ticket-enlace" href="catalogo.html">Ir al catálogo</a>
+      </nav>
+    </section>
+
+    <div class="ticket-contenido" id="ticketContenido" hidden>
+      <article class="ticket-documento" id="pedidoTicket" aria-labelledby="ticketNegocio">
+        <header class="ticket-encabezado">
+          <img class="ticket-logo" src="resources/icono_vinyly.jpg" alt="Logo VINYLY">
+          <div class="ticket-negocio">
+            <h1 class="ticket-marca" id="ticketNegocio">VINYLY</h1>
+            <p class="ticket-lema">Premium Sound, Pop Edition</p>
+            <p class="ticket-leyenda">Comprobante simulado · No es un documento fiscal</p>
+          </div>
+        </header>
+
+        <section class="ticket-resumen-pedido" aria-label="Datos del pedido">
+          <div class="ticket-dato-principal">
+            <span class="ticket-etiqueta">Folio</span>
+            <strong class="ticket-folio ticket-dato-principal-valor" id="ticketFolio"></strong>
+          </div>
+          <div class="ticket-dato-principal">
+            <span class="ticket-etiqueta">Fecha y hora</span>
+            <strong class="ticket-dato-principal-valor" id="ticketFecha"></strong>
+          </div>
+          <div class="ticket-dato-principal">
+            <span class="ticket-etiqueta">Estado</span>
+            <strong class="ticket-dato-principal-valor" id="ticketEstado"></strong>
+          </div>
+        </section>
+
+        <section class="ticket-seccion" aria-labelledby="ticketTituloCliente">
+          <h2 class="ticket-seccion-titulo" id="ticketTituloCliente">Datos del cliente</h2>
+          <dl class="ticket-datos-cliente" id="ticketDatosCliente"></dl>
+        </section>
+
+        <section class="ticket-seccion" aria-labelledby="ticketTituloPago">
+          <h2 class="ticket-seccion-titulo" id="ticketTituloPago">Método de pago</h2>
+          <p class="ticket-metodo-pago" id="ticketMetodoPago"></p>
+        </section>
+
+        <section class="ticket-seccion" aria-labelledby="ticketTituloProductos">
+          <h2 class="ticket-seccion-titulo" id="ticketTituloProductos">Productos</h2>
+          <div class="ticket-productos" id="ticketProductos"></div>
+        </section>
+
+        <section class="ticket-totales" aria-label="Totales del pedido">
+          <p class="ticket-total-linea">
+            <span>Subtotal</span>
+            <strong class="ticket-cifra" id="ticketSubtotal"></strong>
+          </p>
+          <p class="ticket-total-linea" id="ticketDescuentoLinea" hidden>
+            <span id="ticketDescuentoEtiqueta"></span>
+            <strong class="ticket-cifra" id="ticketDescuento"></strong>
+          </p>
+          <p class="ticket-total-linea ticket-total-final">
+            <span>TOTAL</span>
+            <strong class="ticket-cifra" id="ticketTotal"></strong>
+          </p>
+        </section>
+
+        <footer class="ticket-pie">
+          <p class="ticket-gracias">Gracias por tu compra</p>
+        </footer>
+      </article>
+
+      <div class="ticket-acciones" aria-label="Acciones del comprobante">
+        <button class="ticket-boton ticket-boton--principal" id="ticketDescargar" type="button">Descargar PDF</button>
+        <button class="ticket-boton ticket-boton-secundario" id="ticketImprimir" type="button">Imprimir</button>
+        <a class="ticket-boton ticket-boton-secundario" href="perfil.html">Volver a mis compras</a>
+        <a class="ticket-boton ticket-boton-secundario" href="catalogo.html">Seguir comprando</a>
+      </div>
+      <p class="ticket-aviso-descarga" id="ticketAvisoDescarga" role="status" aria-live="polite" hidden></p>
+    </div>
+  </main>
+
+  <footer class="footer ticket-footer">
+    <div class="footer-swirl-1"></div>
+    <div class="footer-swirl-2"></div>
+    <div class="footer-disco"></div>
+    <div class="footer-izquierda">
+      <div class="footer-columna">
+        <h4>Enlaces</h4>
+        <a href="landing.html">Inicio</a>
+        <a href="index.html#nosotros">Nosotros</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="subasta.html">Subasta</a>
+      </div>
+      <div class="footer-columna">
+        <h4>Contacto</h4>
+        <p>******</p>
+        <p>www.vinyly.com</p>
+      </div>
+    </div>
+    <div class="footer-columna footer-marca">
+      <h4>VINYLY</h4>
+      <p>Premium Sound, Pop Edition</p>
+    </div>
+  </footer>
+
+  <script src="js/productos.js"></script>
+  <script src="js/pedidos.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      const estadoNoEncontrado = document.getElementById('ticketNoEncontrado');
+      const contenidoTicket = document.getElementById('ticketContenido');
+      const botonDescarga = document.getElementById('ticketDescargar');
+      const avisoDescarga = document.getElementById('ticketAvisoDescarga');
+      let temporizadorPreparacion = 0;
+      let temporizadorAviso = 0;
+
+      function mostrarNoEncontrado() {
+        contenidoTicket.hidden = true;
+        estadoNoEncontrado.hidden = false;
+      }
+
+      function textoSeguro(valor) {
+        if (valor === null || valor === undefined || String(valor).trim() === '') {
+          return 'No proporcionado';
+        }
+        return String(valor);
+      }
+
+      function crearDato(destino, etiqueta, valor) {
+        const termino = document.createElement('dt');
+        termino.className = 'ticket-dato-etiqueta';
+        termino.textContent = etiqueta;
+        const descripcion = document.createElement('dd');
+        descripcion.className = 'ticket-dato-valor';
+        descripcion.textContent = textoSeguro(valor);
+        destino.append(termino, descripcion);
+      }
+
+      function formatearFechaHora(valor) {
+        if (typeof valor !== 'string') {
+          return 'No proporcionado';
+        }
+        const fecha = new Date(valor);
+        if (Number.isNaN(fecha.getTime())) {
+          return 'No proporcionado';
+        }
+
+        return new Intl.DateTimeFormat('es-MX', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        }).format(fecha);
+      }
+
+      function formatearPrecio(valor) {
+        const numero = Number(valor);
+        if (!Number.isFinite(numero)) {
+          return '$0 MXN';
+        }
+        return '$' + numero.toLocaleString('es-MX') + ' MXN';
+      }
+
+      function normalizarMetodo(pedido) {
+        if (pedido.metodoPago === 'tarjeta') {
+          const detalle = pedido.pagoDetalle || {};
+          const marca = textoSeguro(detalle.marca);
+          const ultimos4 = textoSeguro(detalle.ultimos4);
+          return 'Tarjeta ' + (marca === 'No proporcionado' ? 'Tarjeta' : marca) +
+            ' · terminación ' + (ultimos4 === 'No proporcionado' ? '—' : ultimos4);
+        }
+        if (pedido.metodoPago === 'transferencia') {
+          return 'Transferencia';
+        }
+        if (pedido.metodoPago === 'ewallet') {
+          return 'E-wallet';
+        }
+        return 'No proporcionado';
+      }
+
+      function configurarMiniatura(imagen, producto) {
+        imagen.className = 'ticket-producto-imagen';
+        const foto = typeof producto.foto === 'string' ? producto.foto.trim() : '';
+        if (foto) {
+          imagen.src = foto;
+          imagen.alt = 'Portada de ' + textoSeguro(producto.nombre);
+          imagen.addEventListener('error', function () {
+            const respaldo = document.createElement('span');
+            respaldo.className = 'ticket-producto-imagen ' + claseImagen(producto.imagen);
+            respaldo.setAttribute('aria-hidden', 'true');
+            imagen.replaceWith(respaldo);
+          }, { once: true });
+          return imagen;
+        }
+
+        const respaldo = document.createElement('span');
+        respaldo.className = 'ticket-producto-imagen ' + claseImagen(producto.imagen);
+        respaldo.setAttribute('aria-hidden', 'true');
+        return respaldo;
+      }
+
+      function claseImagen(valor) {
+        return /^img-\d+$/.test(String(valor || '')) ? String(valor) : '';
+      }
+
+      function crearProducto(producto) {
+        const articulo = document.createElement('article');
+        articulo.className = 'ticket-producto';
+
+        const datosProducto = producto && typeof producto === 'object' ? producto : {};
+        if (typeof datosProducto.foto === 'string' && datosProducto.foto.trim()) {
+          articulo.appendChild(configurarMiniatura(document.createElement('img'), datosProducto));
+        } else {
+          const respaldo = document.createElement('span');
+          articulo.appendChild(configurarMiniatura(respaldo, datosProducto));
+        }
+
+        const detalles = document.createElement('div');
+        detalles.className = 'ticket-producto-detalles';
+        const nombre = document.createElement('h3');
+        nombre.className = 'ticket-producto-nombre';
+        nombre.textContent = textoSeguro(datosProducto.nombre);
+        const artista = document.createElement('p');
+        artista.className = 'ticket-producto-artista';
+        artista.textContent = textoSeguro(datosProducto.artista);
+        detalles.append(nombre, artista);
+
+        const cantidad = document.createElement('p');
+        cantidad.className = 'ticket-producto-cantidad';
+        cantidad.textContent = 'Cantidad: ' + textoSeguro(datosProducto.cantidad);
+        const precio = document.createElement('p');
+        precio.className = 'ticket-producto-precio';
+        precio.textContent = 'Unitario: ' + formatearPrecio(datosProducto.precio);
+        const subtotalProducto = Number(datosProducto.precio) * Number(datosProducto.cantidad);
+        const subtotal = document.createElement('p');
+        subtotal.className = 'ticket-producto-subtotal';
+        subtotal.textContent = 'Subtotal: ' + formatearPrecio(subtotalProducto);
+
+        articulo.append(detalles, cantidad, precio, subtotal);
+        return articulo;
+      }
+
+      function renderizarPedido(pedido) {
+        document.getElementById('ticketFolio').textContent = textoSeguro(pedido.folio);
+        document.getElementById('ticketFecha').textContent = formatearFechaHora(pedido.fecha);
+        document.getElementById('ticketEstado').textContent = textoSeguro(pedido.estado);
+        document.getElementById('ticketMetodoPago').textContent = normalizarMetodo(pedido);
+
+        const datosCliente = pedido.cliente && typeof pedido.cliente === 'object'
+          ? pedido.cliente
+          : {};
+        const direccion = pedido.direccion && typeof pedido.direccion === 'object'
+          ? pedido.direccion
+          : {};
+        const datos = document.getElementById('ticketDatosCliente');
+        crearDato(datos, 'Nombre', datosCliente.nombre || direccion.nombre);
+        crearDato(datos, 'Correo', datosCliente.correo);
+        crearDato(datos, 'Calle y número', direccion.calle);
+        crearDato(datos, 'Colonia', direccion.colonia);
+        crearDato(datos, 'Ciudad', direccion.ciudad);
+        crearDato(datos, 'Estado', direccion.estado);
+        crearDato(datos, 'Código postal', direccion.cp);
+        crearDato(datos, 'Teléfono', direccion.telefono);
+
+        const listaProductos = document.getElementById('ticketProductos');
+        const productos = Array.isArray(pedido.productos) ? pedido.productos : [];
+        if (productos.length) {
+          productos.forEach(function (producto) {
+            listaProductos.appendChild(crearProducto(producto));
+          });
+        } else {
+          const sinProductos = document.createElement('p');
+          sinProductos.className = 'ticket-sin-productos';
+          sinProductos.textContent = 'No proporcionado';
+          listaProductos.appendChild(sinProductos);
+        }
+
+        document.getElementById('ticketSubtotal').textContent = formatearPrecio(pedido.subtotal);
+        const descuento = Number(pedido.descuento);
+        const lineaDescuento = document.getElementById('ticketDescuentoLinea');
+        lineaDescuento.hidden = !Number.isFinite(descuento) || descuento <= 0;
+        if (!lineaDescuento.hidden) {
+          const codigo = textoSeguro(pedido.codigoDescuento);
+          document.getElementById('ticketDescuentoEtiqueta').textContent =
+            codigo === 'No proporcionado' ? 'Descuento' : 'Descuento (' + codigo + ')';
+          document.getElementById('ticketDescuento').textContent = '−' + formatearPrecio(descuento);
+        }
+        document.getElementById('ticketTotal').textContent = formatearPrecio(pedido.total);
+        contenidoTicket.hidden = false;
+      }
+
+      function manejarDescargaSimulada() {
+        window.clearTimeout(temporizadorPreparacion);
+        window.clearTimeout(temporizadorAviso);
+        avisoDescarga.hidden = true;
+        avisoDescarga.textContent = '';
+        botonDescarga.disabled = true;
+        botonDescarga.textContent = 'Preparando...';
+        const folio = document.getElementById('ticketFolio').textContent;
+
+        temporizadorPreparacion = window.setTimeout(function () {
+          botonDescarga.disabled = false;
+          botonDescarga.textContent = 'Descargar PDF';
+          avisoDescarga.textContent =
+            'Descarga simulada: tu comprobante se guardaría como VINYLY-' + folio + '.pdf';
+          avisoDescarga.hidden = false;
+          temporizadorAviso = window.setTimeout(function () {
+            avisoDescarga.hidden = true;
+            avisoDescarga.textContent = '';
+          }, 3000);
+        }, 700);
+      }
+
+      document.getElementById('ticketImprimir').addEventListener('click', function () {
+        window.print();
+      });
+      botonDescarga.addEventListener('click', manejarDescargaSimulada);
+
+      const parametros = new URLSearchParams(window.location.search);
+      const folio = parametros.get('folio');
+      if (!folio || !/^VNY-\d+$/.test(folio)) {
+        mostrarNoEncontrado();
+        return;
+      }
+
+      try {
+        const pedido = window.PedidosVinyly.obtenerPedido(folio);
+        if (!pedido) {
+          mostrarNoEncontrado();
+          return;
+        }
+        document.title = 'VINYLY - Comprobante ' + folio;
+        renderizarPedido(pedido);
+      } catch (error) {
+        mostrarNoEncontrado();
+      }
+    }());
+  </script>
+  <script src="js/navbar.js"></script>
+</body>
+</html>

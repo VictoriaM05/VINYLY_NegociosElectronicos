@@ -10616,6 +10616,910 @@ body.nav-abierto {
   }
 }
 
+/* CHECKOUT */
+.checkout-contenido {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+  gap: 28px;
+}
+
+.checkout-panel {
+  min-width: 0;
+  padding: clamp(22px, 4vw, 36px);
+  border: 1px solid rgba(20, 20, 26, 0.05);
+  border-radius: 22px;
+  background: var(--blanco);
+  box-shadow: 0 18px 42px rgba(20, 20, 26, 0.08);
+}
+
+.checkout-seccion h2 {
+  margin-bottom: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(24px, 3vw, 32px);
+  overflow-wrap: anywhere;
+}
+
+.checkout-seccion h2:focus {
+  outline: 3px solid rgba(124, 92, 214, 0.45);
+  outline-offset: 5px;
+}
+
+.checkout-introduccion,
+.checkout-ayuda {
+  margin-bottom: 24px;
+  color: var(--gris);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.checkout-campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 14px;
+}
+
+.checkout-campo {
+  min-width: 0;
+}
+
+.checkout-campo--ancho {
+  grid-column: 1 / -1;
+}
+
+.checkout-campo input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 22px 16px 8px;
+  border: 1px solid rgba(20, 20, 26, 0.16);
+  border-radius: 14px;
+  background: var(--blanco);
+  color: var(--oscuro);
+  font: 15px 'Inter', sans-serif;
+}
+
+.checkout-campo input:focus {
+  outline: 3px solid rgba(124, 92, 214, 0.28);
+  outline-offset: 1px;
+  border-color: var(--morado);
+}
+
+.checkout-campo label {
+  top: 17px;
+  left: 16px;
+}
+
+.checkout-campo--vencimiento label {
+  color: var(--gris);
+  transform: translateY(-10px) scale(0.78);
+}
+
+.checkout-aviso {
+  margin-top: 18px;
+  color: var(--gris);
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.checkout-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.checkout-acciones button {
+  min-height: 46px;
+  padding: 12px 24px;
+}
+
+.checkout-acciones--doble {
+  justify-content: space-between;
+}
+
+.checkout-acciones button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.checkout-metodos {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.checkout-metodos legend {
+  margin-bottom: 12px;
+  color: var(--oscuro);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.checkout-metodo {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 13px;
+  padding: 16px;
+  border: 1px solid rgba(20, 20, 26, 0.12);
+  border-radius: 16px;
+  background: var(--blanco);
+  cursor: pointer;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.checkout-metodo:has(input:checked) {
+  border-color: var(--morado);
+  box-shadow: 0 0 0 3px rgba(124, 92, 214, 0.12);
+}
+
+.checkout-metodo input[type="radio"] {
+  flex: 0 0 auto;
+  width: 19px;
+  height: 19px;
+  margin: 0;
+  accent-color: var(--morado);
+}
+
+.checkout-metodo input[type="radio"]:focus-visible {
+  outline: 3px solid rgba(124, 92, 214, 0.55);
+  outline-offset: 3px;
+}
+
+.checkout-metodo-texto {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+  overflow-wrap: anywhere;
+}
+
+.checkout-metodo-texto strong {
+  color: var(--oscuro);
+}
+
+.checkout-metodo-texto > span {
+  color: var(--gris);
+  font-size: 12px;
+}
+
+.checkout-panel-pago {
+  margin-top: 22px;
+  padding: 20px;
+  border: 1px solid rgba(20, 20, 26, 0.08);
+  border-radius: 18px;
+  background: var(--crema);
+  overflow-wrap: anywhere;
+}
+
+.checkout-panel-pago[hidden] {
+  display: none;
+}
+
+.checkout-panel-pago h3,
+.checkout-confirmacion-detalle h3 {
+  margin-bottom: 14px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+}
+
+.checkout-panel-pago > p {
+  margin: 8px 0;
+  color: var(--gris);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.checkout-panel-pago > p strong {
+  color: var(--oscuro);
+}
+
+.checkout-confirmacion-etiqueta {
+  margin-bottom: 8px;
+  color: var(--morado);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.checkout-confirmacion-folio {
+  margin: 18px 0;
+  color: var(--gris);
+  overflow-wrap: anywhere;
+}
+
+.checkout-confirmacion-folio strong {
+  color: var(--oscuro);
+  font-family: 'Space Mono', monospace;
+}
+
+.checkout-confirmacion-detalle {
+  padding: 20px;
+  border-radius: 18px;
+  background: var(--crema);
+  overflow-wrap: anywhere;
+}
+
+.checkout-productos {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkout-item {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(20, 20, 26, 0.08);
+}
+
+.checkout-imagen {
+  display: block;
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background-color: var(--crema);
+  object-fit: cover;
+}
+
+.checkout-item-datos {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+  color: var(--gris);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.checkout-item-datos strong {
+  color: var(--oscuro);
+  font-size: 13px;
+}
+
+.checkout-item-precio {
+  color: var(--oscuro);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.checkout-resumen {
+  min-width: 0;
+}
+
+.checkout-resumen .checkout-productos {
+  margin-bottom: 16px;
+}
+
+.checkout-direccion-confirmacion {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 4px;
+  margin: 20px 0;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.checkout-direccion-confirmacion dt {
+  margin-top: 8px;
+  color: var(--gris);
+  font-size: 11px;
+}
+
+.checkout-direccion-confirmacion dd {
+  margin: 0;
+  color: var(--oscuro);
+}
+
+.checkout-confirmacion-totales {
+  padding-top: 8px;
+  border-top: 1px dashed rgba(20, 20, 26, 0.2);
+}
+
+.checkout-confirmacion-metodo {
+  overflow-wrap: anywhere;
+}
+
+.checkout-acciones-finales {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 18px;
+  margin-top: 24px;
+}
+
+.checkout-acciones-finales .btn-gradiente {
+  padding: 13px 22px;
+  border-radius: 999px;
+  color: var(--blanco);
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+}
+
+.checkout-enlace-secundario {
+  color: var(--morado);
+  font-size: 13px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.checkout-pagina a:focus-visible,
+.checkout-pagina button:focus-visible {
+  outline: 3px solid var(--dorado);
+  outline-offset: 4px;
+}
+
+@media (max-width: 960px) {
+  .checkout-contenido {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .checkout-contenido {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .checkout-panel {
+    padding: 22px 16px;
+  }
+
+  .checkout-campos {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .checkout-campo--ancho {
+    grid-column: auto;
+  }
+
+  .checkout-acciones,
+  .checkout-acciones--doble {
+    flex-direction: column-reverse;
+  }
+
+  .checkout-acciones button {
+    width: 100%;
+  }
+
+  .checkout-panel-pago,
+  .checkout-confirmacion-detalle {
+    padding: 16px;
+  }
+
+  .checkout-item {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 9px;
+  }
+
+  .checkout-imagen {
+    width: 44px;
+    height: 44px;
+  }
+
+  .checkout-item-precio {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .checkout-acciones-finales {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkout-metodo {
+    transition: none;
+  }
+}
+
+/* TICKET */
+.ticket-body {
+  min-width: 320px;
+  background: var(--crema);
+}
+
+.ticket-pagina {
+  min-height: 60vh;
+  padding: 48px 20px 72px;
+  background: var(--crema);
+}
+
+.ticket-documento {
+  position: relative;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: clamp(22px, 5vw, 48px);
+  border: 2px dashed rgba(20, 20, 26, 0.3);
+  border-radius: 20px;
+  background: var(--blanco);
+  box-shadow: 0 18px 42px rgba(20, 20, 26, 0.1);
+  color: var(--oscuro);
+  overflow-wrap: anywhere;
+}
+
+.ticket-encabezado {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 24px;
+  border-bottom: 1px dashed rgba(20, 20, 26, 0.25);
+}
+
+.ticket-logo {
+  display: block;
+  width: 76px;
+  height: 76px;
+  flex: 0 0 auto;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.ticket-negocio {
+  min-width: 0;
+}
+
+.ticket-marca {
+  margin: 0 0 3px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 32px;
+  letter-spacing: 0.06em;
+}
+
+.ticket-lema {
+  margin: 0 0 8px;
+  color: var(--gris);
+  font-size: 13px;
+}
+
+.ticket-leyenda {
+  margin: 0;
+  color: var(--gris);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.ticket-resumen-pedido {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  padding: 22px 0;
+  border-bottom: 1px dashed rgba(20, 20, 26, 0.25);
+}
+
+.ticket-dato-principal {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ticket-etiqueta,
+.ticket-dato-etiqueta {
+  color: var(--gris);
+  font-size: 11px;
+}
+
+.ticket-dato-principal-valor,
+.ticket-folio {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.ticket-seccion {
+  margin-top: 24px;
+}
+
+.ticket-seccion-titulo {
+  margin: 0 0 14px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px;
+}
+
+.ticket-datos-cliente {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.34fr) minmax(0, 1fr);
+  gap: 8px 14px;
+  margin: 0;
+}
+
+.ticket-dato-valor {
+  min-width: 0;
+  margin: 0;
+  color: var(--oscuro);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.ticket-metodo-pago {
+  margin: 0;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.ticket-productos {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.ticket-producto {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) repeat(3, minmax(78px, 0.45fr));
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 14px 0;
+  border-top: 1px dashed rgba(20, 20, 26, 0.2);
+}
+
+.ticket-producto-imagen {
+  display: block;
+  width: 58px;
+  height: 58px;
+  border-radius: 9px;
+  background-color: var(--crema);
+  object-fit: cover;
+}
+
+.ticket-producto-detalles {
+  min-width: 0;
+}
+
+.ticket-producto-nombre {
+  margin: 0 0 4px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.ticket-producto-artista,
+.ticket-producto-cantidad,
+.ticket-producto-precio,
+.ticket-producto-subtotal {
+  margin: 0;
+  color: var(--gris);
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.ticket-producto-cantidad,
+.ticket-producto-precio,
+.ticket-producto-subtotal {
+  font-family: 'Space Mono', monospace;
+  text-align: right;
+}
+
+.ticket-producto-subtotal {
+  color: var(--oscuro);
+  font-weight: 700;
+}
+
+.ticket-sin-productos {
+  margin: 0;
+  padding: 14px 0;
+  border-top: 1px dashed rgba(20, 20, 26, 0.2);
+  color: var(--gris);
+  font-size: 13px;
+}
+
+.ticket-totales {
+  width: min(100%, 360px);
+  margin: 18px 0 0 auto;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(20, 20, 26, 0.25);
+}
+
+.ticket-total-linea {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0;
+  padding: 7px 0;
+  color: var(--gris);
+  font-size: 13px;
+}
+
+.ticket-total-linea .ticket-cifra {
+  color: var(--oscuro);
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.ticket-total-final {
+  align-items: baseline;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(20, 20, 26, 0.28);
+  color: var(--oscuro);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.ticket-total-final .ticket-cifra {
+  font-size: 22px;
+}
+
+.ticket-pie {
+  margin-top: 30px;
+  padding-top: 18px;
+  border-top: 1px dashed rgba(20, 20, 26, 0.25);
+  text-align: center;
+}
+
+.ticket-gracias {
+  margin: 0;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+}
+
+.ticket-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 780px;
+  margin: 24px auto 0;
+}
+
+.ticket-boton,
+.ticket-boton-secundario {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border: 1px solid rgba(20, 20, 26, 0.12);
+  border-radius: 999px;
+  background: var(--blanco);
+  color: var(--oscuro);
+  cursor: pointer;
+  font: 600 13px 'Inter', sans-serif;
+  text-decoration: none;
+  text-align: center;
+}
+
+.ticket-boton--principal {
+  border: 0;
+  background: linear-gradient(90deg, var(--morado), var(--rosa));
+  color: var(--blanco);
+}
+
+.ticket-acciones .ticket-boton:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.ticket-aviso-descarga {
+  max-width: 780px;
+  margin: 14px auto 0;
+  color: var(--gris);
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.ticket-aviso-descarga[hidden],
+.ticket-no-encontrado[hidden],
+.ticket-contenido[hidden] {
+  display: none;
+}
+
+.ticket-no-encontrado {
+  max-width: 640px;
+  margin: 32px auto;
+  padding: clamp(24px, 5vw, 44px);
+  border-radius: 22px;
+  background: var(--blanco);
+  box-shadow: 0 18px 42px rgba(20, 20, 26, 0.08);
+  text-align: center;
+}
+
+.ticket-no-encontrado-titulo {
+  margin: 0 0 10px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(26px, 5vw, 36px);
+  overflow-wrap: anywhere;
+}
+
+.ticket-texto-no-encontrado {
+  color: var(--gris);
+  line-height: 1.6;
+}
+
+.ticket-enlaces-error {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.ticket-enlace {
+  color: var(--morado);
+  font-weight: 700;
+}
+
+.ticket-enlace:focus-visible,
+.ticket-boton:focus-visible {
+  outline: 3px solid var(--dorado);
+  outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+  .ticket-pagina {
+    padding: 28px 14px 48px;
+  }
+
+  .ticket-documento {
+    padding: 22px 16px;
+  }
+
+  .ticket-encabezado {
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .ticket-logo {
+    width: 58px;
+    height: 58px;
+  }
+
+  .ticket-marca {
+    font-size: 26px;
+  }
+
+  .ticket-resumen-pedido {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .ticket-datos-cliente {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+  }
+
+  .ticket-dato-valor {
+    margin-bottom: 8px;
+  }
+
+  .ticket-producto {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 8px 12px;
+    align-items: start;
+  }
+
+  .ticket-producto-imagen {
+    grid-row: span 4;
+    width: 48px;
+    height: 48px;
+  }
+
+  .ticket-producto-cantidad,
+  .ticket-producto-precio,
+  .ticket-producto-subtotal {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .ticket-totales {
+    width: 100%;
+  }
+
+  .ticket-acciones {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .ticket-acciones .ticket-boton,
+  .ticket-boton-secundario {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticket-acciones .ticket-boton,
+  .ticket-boton-secundario {
+    transition: none;
+  }
+}
+
+@media print {
+  .ticket-body {
+    min-width: 0;
+    background: #fff;
+    color: #000;
+  }
+
+  .ticket-navbar,
+  .ticket-footer,
+  .ticket-acciones,
+  .ticket-aviso-descarga,
+  .ticket-no-encontrado {
+    display: none !important;
+  }
+
+  .ticket-pagina {
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+  }
+
+  .ticket-documento {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 10mm;
+    border: 1px dashed #000;
+    border-radius: 0;
+    background: #fff;
+    box-shadow: none;
+    color: #000;
+  }
+
+  .ticket-marca,
+  .ticket-lema,
+  .ticket-leyenda,
+  .ticket-seccion-titulo,
+  .ticket-dato-principal-valor,
+  .ticket-etiqueta,
+  .ticket-dato-etiqueta,
+  .ticket-dato-valor,
+  .ticket-metodo-pago,
+  .ticket-producto-nombre,
+  .ticket-producto-artista,
+  .ticket-producto-cantidad,
+  .ticket-producto-precio,
+  .ticket-producto-subtotal,
+  .ticket-sin-productos,
+  .ticket-total-linea,
+  .ticket-total-linea .ticket-cifra,
+  .ticket-total-final,
+  .ticket-total-final .ticket-cifra,
+  .ticket-gracias {
+    color: #000;
+  }
+
+  .ticket-logo,
+  .ticket-producto-imagen {
+    print-color-adjust: economy;
+    -webkit-print-color-adjust: economy;
+  }
+
+  .ticket-encabezado,
+  .ticket-resumen-pedido,
+  .ticket-producto,
+  .ticket-totales,
+  .ticket-pie {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
 /* PERFIL */
 .perfil {
   background: var(--crema);
@@ -11000,6 +11904,7 @@ body.nav-abierto {
 .perfil-actividad-pedido-numero {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 14px;
+  overflow-wrap: anywhere;
 }
 
 .perfil-actividad-estado {
@@ -11018,12 +11923,25 @@ body.nav-abierto {
 
 .perfil-actividad-estado-entregado {
   background: rgba(63, 191, 176, 0.16);
-  color: var(--turquesa);
+  color: #17665F;
 }
 
 .perfil-actividad-estado-camino {
   background: rgba(242, 193, 78, 0.27);
   color: var(--oscuro);
+}
+
+.perfil-actividad-estado-pagado {
+  background: rgba(124, 92, 214, 0.16);
+  color: #4A2D8A;
+}
+
+.perfil-actividad-estado-desconocido {
+  background: rgba(107, 107, 118, 0.12);
+  color: #42424B;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .perfil-actividad-estado-publicado {
@@ -11036,6 +11954,7 @@ body.nav-abierto {
   color: var(--gris);
   font-size: 12px;
   line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 .perfil-actividad-pedido-total {
@@ -11045,7 +11964,34 @@ body.nav-abierto {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 13px;
   font-weight: 700;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
+.perfil-actividad-pedido-miniaturas {
+  display: flex;
+  grid-column: 1;
+  grid-row: 3;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.perfil-actividad-pedido-miniatura {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.perfil-actividad-pedido-enlace {
+  grid-column: 1 / -1;
+  grid-row: 4;
+  overflow-wrap: anywhere;
+}
+
+.perfil-actividad-pedido-enlace:focus-visible {
+  border-radius: 3px;
+  outline: 2px solid var(--morado);
+  outline-offset: 4px;
 }
 
 .perfil-actividad-publicacion {
